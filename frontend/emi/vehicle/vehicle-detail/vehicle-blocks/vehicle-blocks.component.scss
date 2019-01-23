@@ -1,0 +1,82 @@
+@import "src/app/core/scss/fuse";
+
+
+.blocks-table {
+  flex: 1 1 auto;
+  border-bottom: 1px solid rgba(0, 0, 0, .12);
+  overflow: auto;
+
+  .mat-header-row {
+      min-height: 64px;
+  }
+
+  .item {
+      position: relative;
+      cursor: pointer;
+      height: 84px;
+  }
+
+  .mat-cell {
+      min-width: 0;
+      display: flex;
+      align-items: center;
+  }
+
+  .mat-column-id {
+      flex: 0 1 84px;
+  }
+
+  .mat-column-buttons {
+      flex: 0 1 80px;
+  }
+
+  .quantity-indicator {
+      display: inline-block;
+      vertical-align: middle;
+      width: 8px;
+      height: 8px;
+      border-radius: 4px;
+      margin-right: 8px;
+
+      & + span {
+          display: inline-block;
+          vertical-align: middle;
+      }
+  }
+
+  .active-icon {
+      border-radius: 50%;
+  }
+}
+
+
+.highlight{
+  background: #B9BBB9;
+}
+
+.selectedElement {
+  position: relative;
+  cursor: pointer;
+  height: 84px;
+}
+
+// Extract the palettes you need from the theme definition.
+
+
+.blink-button {
+background-color:mat-color($accent);
+animation:blink-button 2.5s linear infinite alternate 2.5s;
+}
+
+@keyframes blink-button {
+0%,80% {
+  background-color:mat-color($accent);
+}
+90% {
+  background-color:mat-color($primary, A400);
+}
+100% {
+  background-color:mat-color($accent);
+}
+}
+

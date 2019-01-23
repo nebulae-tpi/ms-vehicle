@@ -1,0 +1,171 @@
+type CommandResponse {
+  "Response code"
+  code: Int
+  "Response message"
+  message: String
+}
+
+enum VehicleFueltType {
+  GASOLINE
+  GAS
+  GASOLINE_AND_GAS
+  DIESEL
+} 
+
+type VehicleVehicleEntity {
+  "Vehicle ID"
+  _id: ID!
+  "User general info"
+  generalInfo: VehicleGeneralInfo
+  "Vehicle state"
+  state: Boolean!
+  "Vehicle features"
+  features: VehicleFeatures
+  "Vehicle blocking"
+  blockings: [String]
+  "Creation timestamp"
+  creationTimestamp: BigInt!
+  "Creator user"
+  creatorUser: String!
+  "Modification timestamp"
+  modificationTimestamp: BigInt!
+  "Modifier user"
+  modifierUser: String!
+  "Business ID"
+  businessId: String!
+}
+
+type VehicleGeneralInfo {
+  "Vehicle name"
+  licensePlate: String!,
+  "Vehicle description"
+  model: Int!
+  "Vehicle brand"
+  brand: String!
+  "Vehicle line"
+  line: String!
+}
+
+type VehicleOtherFeatures{
+  name: String!
+  active: Boolean
+} 
+
+input VehicleOtherFeaturesInput{
+  name: String!
+  active: Boolean
+} 
+
+type VehicleFeatures {
+  "Fuel type"
+  fuel: String
+  "Passenger capacity"
+  capacity: Int
+  "Others features"
+  others: [VehicleOtherFeatures]
+
+}
+
+input VehicleFeaturesInput{
+  "Fuel type"
+  fuel: String
+  "Passenger capacity"
+  capacity: Int
+  "Others features"
+  others: [VehicleOtherFeaturesInput]
+}
+
+type VehicleLocation{
+  "lat"
+  lat: Float
+  "lng"
+  lng: Float
+}
+
+input FilterInput {
+  "ID of the business"
+  businessId: String
+  "Name"
+  name: String
+  "State"
+  state: Boolean
+  "Creator user"
+  creatorUser: String
+  "modifier user"
+  modifierUser: String
+  "get data created after indicated timestamp"
+  creationTimestamp: BigInt
+}
+
+input PaginationInput {
+  "Page"
+  page: Int!
+  "Count"
+  count: Int!
+  "Sort, default: ASC"
+  sort: Int
+}
+
+input VehicleVehicleInput {
+  "Vehicle general info"
+  generalInfo: VehicleVehicleGeneralInfoInput!
+  "Vehicle status"
+  state: Boolean!
+  "Vehicle features"
+  features: VehicleFeaturesInput
+  "Vehicle blocking"
+  blockings: [String]
+  "Business ID"
+  businessId: String!
+}
+
+input VehicleVehicleGeneralInfoInput {
+  "Vehicle name"
+  licensePlate: String!,
+  "Vehicle description"
+  model: Int!
+  "Vehicle brand"
+  brand: String!
+  "Vehicle line"
+  line: String!
+}
+
+type VehicleVehicleBlock {
+  key: String
+  notes: String
+  vehicleId: String
+  startTime: BigInt
+  endTime: BigInt
+  user: String
+}
+
+type Query {
+  "Get Vehicles filtered "
+  VehicleVehicles(filterInput: FilterInput!, paginationInput: PaginationInput!): [VehicleVehicleEntity]
+  "Get the amount of Vehicles filtered "
+  VehicleVehiclesSize(filterInput: FilterInput!): Int!
+  "Get Vehicle by its id"
+  VehicleVehicle(id: String!): VehicleVehicleEntity
+  "get the Blocks of the related vehicle"
+  VehicleVehicleBlocks(id: String!): [VehicleVehicleBlock]
+}
+
+type Mutation {
+  "Create a new Vehicle"
+  VehicleCreateVehicle(input: VehicleVehicleInput!): CommandResponse
+  "Update the Vehicle generalInfo"
+  VehicleUpdateVehicleGeneralInfo(id:ID!, input: VehicleVehicleGeneralInfoInput!): CommandResponse
+  "Update the Vehicle state"
+  VehicleUpdateVehicleState(id: ID!, newState: Boolean!): CommandResponse
+  VehicleAddVehicleBlocking(id: ID!, blocking: String!): CommandResponse
+  VehicleRemoveVehicleBlocking(id: ID!, blockKey: String!): CommandResponse
+  VehicleUpdateVehicleFeatures(id: ID!, input: VehicleFeaturesInput!): CommandResponse
+}
+
+type Subscription {
+  "This events is triggered when a Vehicle is created or updated"
+  VehicleVehicleUpdatedSubscription: VehicleVehicleEntity
+  "This events is triggered when a Vehicle report new location update"
+  VehicleLocationUpdatedSubscription: VehicleLocation
+
+}

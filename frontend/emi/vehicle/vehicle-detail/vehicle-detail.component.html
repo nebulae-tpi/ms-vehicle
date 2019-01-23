@@ -1,0 +1,72 @@
+<div id="detail" class="page-layout carded fullwidth" fusePerfectScrollbar>
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg mat-accent-bg"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header white-fg" fxLayout="row" fxLayoutAlign="space-between center">
+
+            <!-- APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center">
+
+                <button class="mr-0 mr-sm-16" mat-icon-button [routerLink]="['../']">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+
+                <div fxLayout="column" fxLayoutAlign="start start" *fuseIfOnDom>
+
+                    <div class="h2" *ngIf="vehicle && vehicle._id">
+                        {{vehicle.name}}
+                    </div>
+
+                    <div class="h2" *ngIf="!vehicle || (vehicle && !vehicle._id)">
+                        {{'VEHICLE.DETAIL_HEADER_NEW' | translate}}
+                    </div>
+
+                    <div class="subtitle secondary-text">
+                        <span>{{'VEHICLE.DETAIL_HEADER_NAME' | translate}}</span>
+                    </div>
+                </div>
+            </div>
+            <!-- / APP TITLE -->
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card mat-white-bg">
+            <mat-tab-group dynamicHeight >
+                <mat-tab label="{{'VEHICLE.DETAILS.TABS.GENERAL_INFO' | translate}}">
+                    <vehicle-general-info [pageType]="pageType" [vehicle]="vehicle" *ngIf="pageType">
+                    </vehicle-general-info>
+                </mat-tab>
+                <mat-tab  *ngIf="pageType && vehicle" label="{{'VEHICLE.DETAILS.TABS.BLOCKS' | translate}}">
+                  <vehicle-blocks [vehicle]="vehicle">
+                  </vehicle-blocks>
+              </mat-tab>
+                <mat-tab *ngIf="pageType && vehicle" label="{{'VEHICLE.DETAILS.TABS.FEATURES' | translate}}">
+                    <vehicle-features [pageType]="pageType" [vehicle]="vehicle">
+
+                    </vehicle-features>
+                </mat-tab>
+                <mat-tab *ngIf="pageType && vehicle" label="{{'VEHICLE.DETAILS.TABS.LOCATION' | translate}}">
+                    <vehicle-location ngClass="small-map-content large-map-content" class="mat-elevation-z4"
+                    [ngClass.gt-xs]="{'small-map-content': false, 'large-map-content': true}"
+                    [ngClass.lt-sm]="{'small-map-content': true, 'large-map-content': false}" >
+
+                    </vehicle-location>
+                </mat-tab>
+
+            </mat-tab-group>
+
+            <!-- / CONTENT -->
+
+        </div>
+        <!-- / CONTENT CARD -->
+
+    </div>
+    <!-- / CENTER -->
+</div>

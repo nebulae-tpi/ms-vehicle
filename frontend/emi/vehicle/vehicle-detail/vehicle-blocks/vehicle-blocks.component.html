@@ -1,0 +1,90 @@
+<div class="content-card mat-white-bg" fxLayout="row wrap">
+  <!-- <div fxFlex="100" fxLayoutAlign="space-around center">
+
+    <button mat-fab fxHide fxShow.gt-xs (click)="insertBlock()">
+      <mat-icon aria-label="Example icon-button with a heart icon">add</mat-icon>
+    </button>
+    <button mat-mini-fab fxShow fxHide.gt-xs (click)="insertBlock()">
+      <mat-icon aria-label="Example icon-button with a heart icon">add</mat-icon>
+    </button>
+
+  </div> -->
+
+  <mat-table fxFlex="100" id="entity-table" class="blocks-table" #table [dataSource]="dataSource" fusePerfectScrollbar>
+
+      <!-- BLOCK KEY COLUMN -->
+      <ng-container cdkColumnDef="key">
+          <mat-header-cell *cdkHeaderCellDef fxLayoutAlign="center center">{{ "VEHICLE.BLOCKS.KEY" | translate }}
+          </mat-header-cell>
+          <mat-cell *cdkCellDef="let block" fxLayoutAlign="center center">
+              <p class="text-truncate">
+                  {{ block.key }}
+              </p>
+          </mat-cell>
+      </ng-container>
+
+      <!-- BLOCK NOTES COLUMN -->
+      <ng-container cdkColumnDef="notes">
+          <mat-header-cell *cdkHeaderCellDef fxLayoutAlign="center center" >{{ "VEHICLE.BLOCKS.NOTES" | translate }}
+          </mat-header-cell>
+          <mat-cell *cdkCellDef="let block" fxLayoutAlign="center center" >
+              <p class="text-truncate">
+                  {{ block.notes }}
+              </p>
+          </mat-cell>
+      </ng-container>
+
+      <!-- START_TIME BLOCK COLUMN -->
+      <ng-container cdkColumnDef="startTime">
+          <mat-header-cell *cdkHeaderCellDef fxHide fxShow.gt-xs fxLayoutAlign="center center">{{ "VEHICLE.BLOCKS.START_TIME" | translate }}
+          </mat-header-cell>
+          <mat-cell *cdkCellDef="let block" fxHide fxShow.gt-xs fxLayoutAlign="center center">
+              <p class="text-truncate">
+                  {{ block.startTime | date }}
+              </p>
+          </mat-cell>
+      </ng-container>
+
+      <!-- END_TIME BLOCK COLUMN -->
+      <ng-container cdkColumnDef="endTime">
+          <mat-header-cell *cdkHeaderCellDef fxHide fxShow.gt-xs fxLayoutAlign="center center">{{ "VEHICLE.BLOCKS.END_TIME" | translate }}
+          </mat-header-cell>
+          <mat-cell *cdkCellDef="let block" fxHide fxShow.gt-xs fxLayoutAlign="center center">
+              <p class="text-truncate"> {{ block.endTime | date }} </p>
+          </mat-cell>
+      </ng-container>
+
+      <!-- REMOVE BLOCK COLUMN -->
+      <ng-container cdkColumnDef="actions">
+          <mat-header-cell *cdkHeaderCellDef fxHide fxShow.gt-xs fxLayoutAlign="center center">{{ "VEHICLE.BLOCKS.ACTIONS" | translate }}
+          </mat-header-cell>
+          <mat-cell *cdkCellDef="let block" fxHide fxShow.gt-xs fxLayoutAlign="center center">
+            <button mat-icon-button (click)="removeBlock(block)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </mat-cell>
+      </ng-container>
+
+
+
+      <!-- Creator user Column -->
+      <ng-container cdkColumnDef="user">
+          <mat-header-cell *cdkHeaderCellDef fxLayoutAlign="center center">{{ "VEHICLE.BLOCKS.USER" | translate }}
+          </mat-header-cell>
+          <mat-cell *cdkCellDef="let block" fxLayoutAlign="center center">
+              <p class="text-truncate">{{ block.user }}</p>
+          </mat-cell>
+      </ng-container>
+
+      <mat-header-row *cdkHeaderRowDef="displayedColumns"></mat-header-row>
+
+      <mat-row *cdkRowDef="let row; columns: displayedColumns" class="selectedElement" [ngClass]="{
+                    highlight:
+                    selectedVehicle &&
+                    selectedVehicle._id == row._id
+                  }" [routerLink]="row._id" matRipple>
+      </mat-row>
+  </mat-table>
+  <mat-paginator fxFlex="100" #paginator [length]="tableSize" [pageIndex]="tablePage" [pageSize]="tableCount" [pageSizeOptions]="[5, 10, 25, 100]">
+  </mat-paginator>
+</div>

@@ -1,0 +1,8 @@
+[
+    {
+        "name": "vehicle",
+        "type": "graphql",        
+        "src": "api/emi-gateway/graphql/vehicle",
+        "preBuildCommands": []
+    }
+]

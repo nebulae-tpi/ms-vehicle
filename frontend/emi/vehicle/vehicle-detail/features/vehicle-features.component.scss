@@ -1,0 +1,19 @@
+@import "src/app/core/scss/fuse";
+.profile-box {
+    margin-top: 16px;
+    margin-bottom: 16px;
+    @include mat-elevation(2);
+    header {
+        padding: 16px;
+        .title {
+            font-size: 17px;
+        }
+        .more {
+            cursor: pointer;
+        }
+    }
+    .content {
+        padding: 16px;
+        background-color: #FFF;
+    }
+}

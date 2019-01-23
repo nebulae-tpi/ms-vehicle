@@ -1,0 +1,40 @@
+<div class="tab-content p-24" fxLayout="column" fusePerfectScrollbar>
+
+    <form name="vehicleFeaturesForm" [formGroup]="vehicleFeaturesForm" class="w-100-p" fxLayout="row wrap" class="mat-white-bg p-24 mr-24 mb-24">
+
+            <mat-form-field  class="w-100-p">
+            <mat-select  name="fuel" formControlName="fuel" placeholder="{{'VEHICLE.FEATURES.FUEL' | translate}}">
+              <mat-option  *ngFor="let fuelType of fuelTypes" [value]="fuelType">
+                {{ 'VEHICLE.FEATURES.FUEL_TYPES.'+ fuelType | translate }}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="vehicleFeaturesForm.hasError('required', ['fuel'])">
+                {{'VEHICLE.FUEL_REQUIRED' | translate}}
+            </mat-error>
+          </mat-form-field>
+        <mat-form-field class="w-100-p">
+            <input type="number" matInput name="capacity" formControlName="capacity" maxlength="15" placeholder="{{'VEHICLE.FEATURES.CAPACITY' | translate}}">
+            <mat-error *ngIf="vehicleFeaturesForm.hasError('required', ['capacity'])">
+                {{'VEHICLE.CAPACITY_REQUIRED' | translate}}
+            </mat-error>
+        </mat-form-field>
+
+
+        <h2>{{ 'VEHICLE.FEATURES.OTHERS_TITLE' | translate }}</h2>
+        <div fxFlex="100" formArrayName="others" *ngFor="let feature of vehicleFeaturesForm.get('others').controls ; let i = index;">
+          <div [formGroupName]="i">
+              <mat-checkbox class="example-margin"  [formControlName]="'active'">
+                  {{ 'VEHICLE.FEATURES.OTHERS.' + feature.get('name').value | translate }}
+              </mat-checkbox>
+          </div>
+         <!-- orderForm.controls.items.controls[i].controls.name.value -->
+        </div>
+        <div class="mt-16">
+          <button mat-raised-button *ngIf="pageType === 'edit'" (click)="updateVehicleFeatures()" [disabled]="vehicleFeaturesForm.invalid || vehicleFeaturesForm.pristine">
+            {{'VEHICLE.UPDATE' | translate}}
+          </button>
+        </div>
+
+    </form>
+
+</div>

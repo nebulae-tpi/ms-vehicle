@@ -1,0 +1,54 @@
+[
+    {
+        "name": "vehicle",
+        "src": "frontend/emi/vehicle",
+        "groups": [
+            {
+            "id": "BUSINESS_UNIT_MANAGER",
+            "icon": "location_searching",
+            "translate": {
+                "en": "Business units",
+                "es": "Unidades de negocio"
+            },
+            "priority": 200
+            }
+          ],
+          "subgroups": [
+            {
+                "groupId": "BUSINESS_UNIT_MANAGER",
+                "id": "management",
+                "icon": "settings",
+                "translate": {
+                    "en": "Management",
+                    "es": "Gestión"
+                },
+                "priority": 2000
+            }
+        ],
+        "contents": [
+            {
+                "id": "vehicle",
+                "groupId": "BUSINESS_UNIT_MANAGER",
+                "subgroupId": "management",                
+                "icon": "directions_bus",
+                "translate": {
+                    "en": "Vehicles",
+                    "es": "Vehículos"
+                },
+                "navURL": "/vehicle",
+                "path": "vehicle",
+                "loadChildren": "./main/content/vehicle/vehicle.module#VehicleModule",
+                "priority": 1000,
+                "roles" : ["PLATFORM-ADMIN"],
+                "default" : false
+            }            
+        ],
+        "preBuildCommands": [
+            "npm install @types/googlemaps --save"
+        ],
+        "indexHeadAmends": [
+            "<script src='https://maps.googleapis.com/maps/api/js?key=AIzaSyBktqvY5jde1Q5cHR7FwCCeiBSo4d5OOn8&libraries=places' async defer></script>"
+        ],
+        "environmentVars": {}
+    }
+]
