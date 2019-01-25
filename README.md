@@ -22,9 +22,9 @@ _This MicroService is built on top of NebulaE MicroService Framework.  Please se
 
 ```
 ├── frontend                            => Micro-FrontEnd  
-│   └── emi                      => Micro-FrontEnd for [emi FrontEnd](https://github.com/nebulae-tpm/emi)
+│   └── emi                      => Micro-FrontEnd for [emi FrontEnd](https://github.com/nebulae-tpi/emi)
 ├── api                                 => Micro-APIs  
-│   └── emi-gateway                           => Micro-API for [emi-gateway API](https://github.com/nebulae-tpm/emi-gateway)  
+│   └── emi-gateway                           => Micro-API for [emi-gateway API](https://github.com/nebulae-tpi/emi-gateway)  
 ├── backend                             => Micro-BackEnds  
 │   ├── vehicle                     => Micro-BackEnd responsible for ...
 ├── etc                                 => Micro-Service config Files.  
@@ -48,7 +48,7 @@ Exposed interfaces to send Commands and Queries by the CQRS principles.
 The MicroService exposes its interfaces as Micro-APIs that are nested on the general API.
 
 ## GraphQL throught emi-gateway API <a name="api_emi-gateway_graphql"></a>
-These are the exposed GraphQL functions throught the [emi-gateway API](https://github.com/nebulae-tpm/emi-gateway).  
+These are the exposed GraphQL functions throught the [emi-gateway API](https://github.com/nebulae-tpi/emi-gateway).  
 
 Note: You may find the GraphQL schema [here](api/emi-gateway/graphql/vehicle/schema.gql)
 
@@ -153,7 +153,7 @@ Each BackEnd has the following running commands:
 *   EventType: what for ...
 
 ### CronJobs <a name="backend_vehicle_cronjobs"></a>
-Time-based jobs that are configured and triggered by the [CronJob MicroService](https://github.com/nebulae-tpm/ms-cronjob)
+Time-based jobs that are configured and triggered by the [CronJob MicroService](https://github.com/nebulae-tpi/ms-cronjob)
 
 
 # Development environment <a name="dev_env"></a>
@@ -173,7 +173,7 @@ Time-based jobs that are configured and triggered by the [CronJob MicroService](
 
 ![Development environment](docs/images/ms-devices-location-dev-env.png "Dev_environment")
 ### 1. clone this repo  
-   ```git clone https://github.com/nebulae-tpm/ms-vehicle.git```  
+   ```git clone https://github.com/nebulae-tpi/ms-vehicle.git```  
    
 ### 2. start databases, broker and security systems using docker-compose
 ```
@@ -193,7 +193,7 @@ docker-compose up
 *  import the file located at docs/resources/keycloakRealmToImport.json
   
 #### Create the initial user:
-* select the DEV_tpm keycloak realm and click on the users option from the left panel.
+* select the DEV_tpi keycloak realm and click on the users option from the left panel.
 * select 'add user' option , fill the needed fields and enable the 'Email Verified' option.
 * set a password by editing the user, open the 'credentials' tabs, type a new password and deselect the 'Temporary' option
 
@@ -212,17 +212,17 @@ Add the **developer** and **operator** rol to your user:
 
 ### 5. Compose FrontEnd
 ```
-nebulae compose-ui development --shell-type=FUSE2_ANGULAR --shell-repo=https://github.com/nebulae-tpm/emi --frontend-id=emi --output-dir=/FULL_PATH_TO_REPO/ms-vehicle/playground/emi  --setup-file=/FULL_PATH_TO_REPO/ms-vehicle/etc/mfe-setup.json
+nebulae compose-ui development --shell-type=FUSE2_ANGULAR --shell-repo=https://github.com/nebulae-tpi/emi --frontend-id=emi --output-dir=/FULL_PATH_TO_REPO/ms-vehicle/playground/emi  --setup-file=/FULL_PATH_TO_REPO/ms-vehicle/etc/mfe-setup.json
 ```
 
 ### 6. Compose the API emi-gateway
 ```
-nebulae compose-api development --api-type=NEBULAE_GATEWAY --api-repo=https://github.com/nebulae-tpm/emi-gateway --api-id=emi-gateway --output-dir=FULL_PATH_TO_REPO/ms-vehicle/playground/emi-gateway  --setup-file=FULL_PATH_TO_REPO/ms-vehicle/etc/mapi-setup.json
+nebulae compose-api development --api-type=NEBULAE_GATEWAY --api-repo=https://github.com/nebulae-tpi/emi-gateway --api-id=emi-gateway --output-dir=FULL_PATH_TO_REPO/ms-vehicle/playground/emi-gateway  --setup-file=FULL_PATH_TO_REPO/ms-vehicle/etc/mapi-setup.json
 ```
 
 ### 7. Set the JWT token 
 * LogIn to keycloak http://localhost:8080/auth/admin/ (user: "keycloak", pass: "keycloak")
-* select the DEV_tpm keycloak realm and click on 'realm settings' in left panel
+* select the DEV_tpi keycloak realm and click on 'realm settings' in left panel
 * select keys option tab
 * click on 'public key' from the RSA key and copy the contents.
 * set this key value to the **JWT_PUBLIC_KEY** atribute in the following files: *WORKING_FOLDER*/ms-vehicle/backend/vehicle/.env   *WORKING_FOLDER*/ms-vehicle/playground/emi-gateway/.env  

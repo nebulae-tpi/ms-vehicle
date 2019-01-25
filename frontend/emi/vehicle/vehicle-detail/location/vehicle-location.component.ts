@@ -1,7 +1,7 @@
 import { TranslateService } from '@ngx-translate/core';
 import { KeycloakService } from 'keycloak-angular';
 import { FuseTranslationLoaderService } from '../../../../../core/services/translation-loader.service';
-import { Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild, Input } from '@angular/core';
 import { fuseAnimations } from '../../../../../core/animations';
 import { locale as english } from '../../i18n/en';
 import { locale as spanish } from '../../i18n/es';
@@ -10,10 +10,9 @@ import { DatePipe } from '@angular/common';
 import { FormGroup, FormControl } from '@angular/forms';
 import { MatSnackBar } from '@angular/material';
 import { MapRef } from './entities/agmMapRef';
-// import { MarkerCluster } from './entities/markerCluster';
-import { MarkerRef, PosPoint, MarkerRefOriginalInfoWindowContent } from './entities/markerRef';
-import { of, concat, from, forkJoin, Observable } from 'rxjs';
-import { debounceTime, distinctUntilChanged, startWith, tap, map, mergeMap, toArray, filter, mapTo, defaultIfEmpty } from 'rxjs/operators';
+import { MarkerRef, VehiclePoint, MARKER_REF_ORIGINAL_INFO_WINDOW_CONTENT } from './entities/markerRef';
+import { of, from, forkJoin, Observable } from 'rxjs';
+import { debounceTime, distinctUntilChanged, startWith, tap, map, mergeMap, toArray, filter, mapTo } from 'rxjs/operators';
 import { VehicleDetailService } from '../vehicle-detail.service';
 
 @Component({
@@ -25,15 +24,11 @@ import { VehicleDetailService } from '../vehicle-detail.service';
 })
 export class VehicleLocationComponent implements OnInit, OnDestroy {
   isPlatformAdmin = false;
-  filterForm: FormGroup = new FormGroup({
-    businessId: new FormControl(),
-    product: new FormControl(),
-    posId: new FormControl()
-  });
+
+  @Input('vehicle') vehicle: any;
+
   @ViewChild('gmap') gmapElement: any;
 
-  selectedBusiness: { businessName: string, businessId: string, products: string[] };
-  businessQueryFiltered$: Observable<any[]>;
 
   mapTypes = [
     google.maps.MapTypeId.HYBRID,
@@ -44,13 +39,10 @@ export class VehicleLocationComponent implements OnInit, OnDestroy {
 
   map: MapRef;
   bounds: google.maps.LatLngBounds;
-  // markerClusterer: MarkerCluster;
   markers: MarkerRef[] = [];
   selectedMarker: MarkerRef;
 
-  businessVsProducts: any[];
   PLATFORM_ADMIN = 'PLATFORM-ADMIN';
-  productOpstions: string[];
   subscriptions: Subscription[] = [];
 
   constructor(
@@ -68,7 +60,7 @@ export class VehicleLocationComponent implements OnInit, OnDestroy {
 
     this.initMap(); // initialize the map element
   //   this.isPlatformAdmin = this.keycloakService.getUserRoles(true).includes(this.PLATFORM_ADMIN);
-  //   this.initObservables();
+    this.initObservables();
 
   // concat(
   //   // update the [isPLATFORM-ADMIN] variable
@@ -113,7 +105,7 @@ export class VehicleLocationComponent implements OnInit, OnDestroy {
         .pipe(
           tap(i => console.log('ITERANDO LOS ELEMENTOS DE drawPosList', i)),
           map((p) => new MarkerRef(
-            new PosPoint(p._id, p.lastUpdate, p.businessId, p.businessName, p.products, p.pos, p.location),
+            new VehiclePoint(this.vehicle._id, 0, 'BUSINESS_ID', 'BUSINESS_NAME', undefined),
             {
               position: {
                 lat: parseFloat(p.location.coordinates.lat),
@@ -206,74 +198,20 @@ export class VehicleLocationComponent implements OnInit, OnDestroy {
     marker.infoWindow.open(this.map, marker);
   }
 
-  onlyUnique(value, index, self) {
-    return self.indexOf(value) === index;
-  }
-
-  updateAvailableProducts(businessId) {
-    (businessId && businessId !== 'null')
-      ? this.businessVsProducts = this.businessVsProducts.find(e => businessId === businessId).products
-      : this.businessVsProducts = this.businessVsProducts.reduce((acc, item) => { acc.push(...item.products); return acc; }, []);
-  }
-
-  initObservables(){
+   initObservables(){
 
     this.subscriptions.push(
-      this.filterForm.get('businessId').valueChanges
-        .pipe(
-          tap(newSelectedBusinessId => {
-            this.productOpstions =
-              (this.isPlatformAdmin && newSelectedBusinessId === 'null')
-                ? this.businessVsProducts.reduce((acc, item) => [...acc, ...item.products], [])
-                : this.businessVsProducts.find(e => e.businessId === newSelectedBusinessId).products;
-            this.productOpstions = this.productOpstions.filter(this.onlyUnique);
-            if (!this.productOpstions.includes(this.filterForm.get('product').value)) {
-              this.filterForm.get('product').setValue(null);
-            }
-            this.filterForm.get('posId').setValue(null);
-          })
-        )
-        .subscribe(r => { }, error => console.error(), () => { })
-    );
-
-    this.subscriptions.push(
-      this.filterForm.get('businessId').valueChanges
-        .pipe(
-          startWith(null),
-          tap(buId => this.updateAvailableProducts(buId)),
-          tap(result => this.businessVsProducts = result)
-        )
-        .subscribe(() => { }, err => { }, () => { })
-    );
-
-    this.subscriptions.push(
-      // listen the filter changes ...
-      this.filterForm.valueChanges
-        .pipe(
-          debounceTime(500),
-          distinctUntilChanged(),
-          startWith({
-            businessId: null,
-            product: null,
-            posId: null
-          }),
-          map(filters => filters.businessId === 'null' ? { ...filters, businessId: null } : { ...filters }),
-          // mergeMap(filters => this.vehicleDetailService.getPosItems$(filters.businessId, filters.product, filters.posId)),
-          map(r => JSON.parse(JSON.stringify(r))),
-          mergeMap(posList => this.clearMap$().pipe(mapTo(posList))),
-          mergeMap(posList => this.drawPosList$(posList)),
-          // mergeMap(() => this.updateMarkerClusterer$()),
-          mergeMap(() => forkJoin(
-            this.adjustZoomAccordingToTheMarkers$(),
-            of(this.translateService.currentLang)
+      this.vehicleDetailService.listenVehicleLocationUpdates$(this.vehicle._id)
+      .pipe(
+        mergeMap(newLocation => (this.markers.length === 0)
+          ? this.drawPosList$([{ location: { coordinates: { lat: newLocation.lat, long: newLocation.lng } } }])
+          : of(newLocation)
             .pipe(
-              map(language => this.translateService.translations[language].MARKER.INFOWINDOW ),
-              mergeMap( translations => this.updateMarkerInfoWindowContent$(translations) )
+              map(() => this.markers[0].updateData(newLocation.lng, newLocation.lat, 2000, Date.now(), true, true))
             )
-
-          ))
         )
-        .subscribe(() => { }, err => console.error(err), () => { })
+      )
+      .subscribe()
     );
 
     this.subscriptions.push(
@@ -293,21 +231,19 @@ export class VehicleLocationComponent implements OnInit, OnDestroy {
   updateMarkerInfoWindowContent$(translations: any) {
     return from(this.markers)
       .pipe(
-        tap(),
         map((marker) => ({
           marker: marker,
-          infoWindowContent: MarkerRefOriginalInfoWindowContent
+          infoWindowContent: MARKER_REF_ORIGINAL_INFO_WINDOW_CONTENT
             .replace('$$POS_DETAILS$$', translations.POS_DETAILS)
             .replace('$$POS_ID$$', translations.POS_ID)
             // .replace('$$BUSINESS_ID$$', translations.BUSISNESS_ID)
             .replace('$$BUSINESS_NAME$$', translations.BUSINESS_NAME)
             .replace('$$USER_NAME$$', translations.USER_NAME)
             .replace('$$LAST_UPDATE$$', translations.LAST_UPDATE)
-            .replace('{POS_ID}', marker.posPoint._id)
+            .replace('{POS_ID}', marker.vehiclePoint._id)
             // .replace('{BUSINESS_ID}', marker.posPoint.businessId)
-            .replace('{BUSINESS_NAME}', marker.posPoint.businessName)
-            .replace('{USER_NAME}', marker.posPoint.pos.userName)
-            .replace('{LAST_UPDATE}', this.datePipe.transform(new Date(marker.posPoint.lastUpdate), 'dd-MM-yyyy HH:mm'))
+            .replace('{BUSINESS_NAME}', marker.vehiclePoint.businessName)
+            .replace('{LAST_UPDATE}', this.datePipe.transform(new Date(marker.vehiclePoint.lastUpdate), 'dd-MM-yyyy HH:mm'))
         })),
         map(({ marker, infoWindowContent }) => marker.infoWindow.setContent(infoWindowContent))
       );
