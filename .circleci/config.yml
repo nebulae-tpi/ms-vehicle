@@ -153,7 +153,7 @@ jobs:
             mkdir ~/nebulae/backend
             cp ~/nebulae/go/mbinit ~/nebulae/repo/backend/vehicle/
             export DOCKERHUB_IMAGE=vehicle.backend.vehicle
-            export DOCKERHUB_TAG=0.0.3
+            export DOCKERHUB_TAG=0.0.4
             gitChanged backend/vehicle || docker build  -t $DOCKERHUB_NAMESPACE/$DOCKERHUB_IMAGE:$DOCKERHUB_TAG -t $DOCKERHUB_NAMESPACE/$DOCKERHUB_IMAGE:latest ~/nebulae/repo/backend/vehicle/
             gitChanged backend/vehicle || docker login -u $DOCKERHUB_USER -p $DOCKERHUB_PASS
             gitChanged backend/vehicle || docker push $DOCKERHUB_NAMESPACE/$DOCKERHUB_IMAGE:$DOCKERHUB_TAG

@@ -198,6 +198,7 @@ export class VehicleLocationComponent implements OnInit, OnDestroy {
     marker.infoWindow.open(this.map, marker);
   }
   
+  
 
    initObservables(){
 
