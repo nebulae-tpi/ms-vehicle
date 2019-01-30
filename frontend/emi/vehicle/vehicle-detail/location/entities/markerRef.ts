@@ -98,7 +98,7 @@ export class MarkerRef extends google.maps.Marker {
     //   anchor: new google.maps.Point(30, 30),
     //   scaledSize: new google.maps.Size(30, 30)
     // };
-    this.setClickable(true);
+    this.setClickable(false);
     this.setLabel(' ');
     // this.setTitle('D-HUB');
     this.setDraggable(false);

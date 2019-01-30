@@ -18,7 +18,7 @@ export const locale = {
       DETAILS: {
         TABS: {
           GENERAL_INFO: 'Información general',
-          FEATURES: 'Caracteristicas',
+          FEATURES: 'Características',
           LOCATION: 'Ubicación',
           BLOCKS: 'Bloqueos'
         },
@@ -33,9 +33,9 @@ export const locale = {
       BLOCKS: {
         KEY: 'Bloqueo',
         NOTES: 'Notas',
-        START_TIME: 'Inicia',
-        END_TIME: 'Termina',
-        USER: 'Usuario',
+        START_TIME: 'Fecha inicio',
+        END_TIME: 'Fecha de expiración',
+        USER: 'Responsable',
         ACTIONS: 'Acciones'
       },
       FEATURES: {
@@ -82,6 +82,7 @@ export const locale = {
     ERRORS: {
       1: 'Error interno de servidor',
       2: 'Permiso denegado.',
+      21010: 'Esta placa ya está siendo utilizada'
     }
   }
 };

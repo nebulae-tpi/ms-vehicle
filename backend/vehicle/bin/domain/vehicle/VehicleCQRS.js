@@ -1,7 +1,7 @@
 "use strict";
 
 const uuidv4 = require("uuid/v4");
-const { of, interval } = require("rxjs");
+const { of, interval, throwError } = require("rxjs");
 const Event = require("@nebulae/event-store").Event;
 const eventSourcing = require("../../tools/EventSourcing")();
 const VehicleDA = require("../../data/VehicleDA");
@@ -15,7 +15,8 @@ const {
   CustomError,
   DefaultError,
   INTERNAL_SERVER_ERROR_CODE,
-  PERMISSION_DENIED
+  PERMISSION_DENIED,
+  LICENSE_PLATE_ALREADY_USED
 } = require("../../tools/customError");
 
 
@@ -126,15 +127,20 @@ class VehicleCQRS {
       PERMISSION_DENIED,
       ["PLATFORM-ADMIN", "BUSINESS-OWNER"]
     ).pipe(
-      mergeMap(() => eventSourcing.eventStore.emitEvent$(
-        new Event({
-          eventType: "VehicleCreated",
-          eventTypeVersion: 1,
-          aggregateType: "Vehicle",
-          aggregateId: vehicle._id,
-          data: vehicle,
-          user: authToken.preferred_username
-        }))
+      mergeMap(()=> VehicleDA.findVehicleByLicensePlate$(vehicle.generalInfo.licensePlate)),
+      mergeMap( vehicleFound => vehicleFound == null 
+        ? eventSourcing.eventStore.emitEvent$(
+          new Event({
+            eventType: "VehicleCreated",
+            eventTypeVersion: 1,
+            aggregateType: "Vehicle",
+            aggregateId: vehicle._id,
+            data: vehicle,
+            user: authToken.preferred_username
+          }))
+        : throwError(new CustomError('License Plate already used', 'createVehicle',
+          LICENSE_PLATE_ALREADY_USED.code, LICENSE_PLATE_ALREADY_USED.description)
+        )
       ),
       map(() => ({ code: 200, message: `Vehicle with id: ${vehicle._id} has been created` })),
       mergeMap(r => GraphqlResponseTools.buildSuccessResponse$(r)),

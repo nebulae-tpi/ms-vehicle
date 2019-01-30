@@ -176,6 +176,15 @@ class VehicleDA {
 
   }
 
+  /**
+   * Find a vehicle by license plate
+   * @param {string} licensePlate license plate
+   */
+  static findVehicleByLicensePlate$(licensePlate){
+    const collection = mongoDB.db.collection(CollectionName);
+    return defer(() => collection.findOne({'generalInfo.licensePlate': licensePlate }));
+  }
+
 }
 /**
  * @returns {VehicleDA}

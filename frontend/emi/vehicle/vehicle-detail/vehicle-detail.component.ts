@@ -140,7 +140,7 @@ export class VehicleDetailComponent implements OnInit, OnDestroy {
   showSnackBar(message) {
     this.snackBar.open(this.translationLoader.getTranslate().instant(message),
       this.translationLoader.getTranslate().instant('VEHICLE.CLOSE'), {
-        duration: 2000
+        duration: 4000
       });
   }
 

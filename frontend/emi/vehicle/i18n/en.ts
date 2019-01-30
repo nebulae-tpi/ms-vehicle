@@ -34,8 +34,8 @@ export const locale = {
         KEY: 'Block',
         NOTES: 'Notes',
         START_TIME: 'Start Time',
-        END_TIME: 'End Time',
-        USER: 'User',
+        END_TIME: 'Expiration Time',
+        USER: 'Responsible',
         ACTIONS: 'Actions'
       },
       FEATURES: {
@@ -82,6 +82,7 @@ export const locale = {
     ERRORS: {
       1: 'Internal server error',
       2: 'Permission denied',
+      21010: 'License plate already used'
     },
   }
 };

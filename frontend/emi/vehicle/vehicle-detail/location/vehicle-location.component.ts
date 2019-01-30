@@ -209,7 +209,7 @@ export class VehicleLocationComponent implements OnInit, OnDestroy {
           ? this.drawPosList$([{ location: { coordinates: { lat: newLocation.lat, long: newLocation.lng } } }])
           : of(newLocation)
             .pipe(
-              map(() => this.markers[0].updateData(newLocation.lng, newLocation.lat, 2000, Date.now(), true, true))
+              map(() => this.markers[0].updateData(newLocation.lng, newLocation.lat, 4000, Date.now(), true, true))
             )
         )
       )

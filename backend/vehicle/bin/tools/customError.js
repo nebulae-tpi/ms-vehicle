@@ -2,6 +2,7 @@
 // please use the prefix assigned to this micorservice
 const INTERNAL_SERVER_ERROR_CODE = 00001;
 const PERMISSION_DENIED = 00002;
+const LICENSE_PLATE_ALREADY_USED = {code: 21010, description: 'Vehicle license plate already used'};
 
 /**
  * class to emcapsulute diferent errors.
@@ -48,4 +49,5 @@ class CustomError extends Error {
     DefaultError,
     INTERNAL_SERVER_ERROR_CODE,
     PERMISSION_DENIED,
+    LICENSE_PLATE_ALREADY_USED
   } 
