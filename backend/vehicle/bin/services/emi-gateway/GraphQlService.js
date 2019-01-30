@@ -118,7 +118,7 @@ class GraphQlService {
    return of(msg).pipe(mergeMap(
     ({ response, correlationId, replyTo }) =>
       replyTo
-        ? broker.send$(replyTo, "emi-gateway.graphql.Query.response", response, {
+        ? broker.send$(replyTo, "emigateway.graphql.Query.response", response, {
             correlationId
           })
         : of(undefined)
@@ -147,39 +147,39 @@ class GraphQlService {
     return [
       {
         aggregateType: "Vehicle",
-        messageType: "emi-gateway.graphql.query.VehicleVehicles"
+        messageType: "emigateway.graphql.query.VehicleVehicles"
       },
       {
         aggregateType: "Vehicle",
-        messageType: "emi-gateway.graphql.query.VehicleVehiclesSize"
+        messageType: "emigateway.graphql.query.VehicleVehiclesSize"
       },
       {
         aggregateType: "Vehicle",
-        messageType: "emi-gateway.graphql.query.VehicleVehicle"
+        messageType: "emigateway.graphql.query.VehicleVehicle"
       },
       {
         aggregateType: "Vehicle",
-        messageType: "emi-gateway.graphql.mutation.VehicleCreateVehicle"
+        messageType: "emigateway.graphql.mutation.VehicleCreateVehicle"
       },
       {
         aggregateType: "Vehicle",
-        messageType: "emi-gateway.graphql.mutation.VehicleUpdateVehicleGeneralInfo"
+        messageType: "emigateway.graphql.mutation.VehicleUpdateVehicleGeneralInfo"
       },
       {
         aggregateType: "Vehicle",
-        messageType: "emi-gateway.graphql.mutation.VehicleUpdateVehicleState"
+        messageType: "emigateway.graphql.mutation.VehicleUpdateVehicleState"
       },
       {
         aggregateType: "Vehicle",
-        messageType: "emi-gateway.graphql.mutation.vehicleUpdateVehicleFeatures"
+        messageType: "emigateway.graphql.mutation.vehicleUpdateVehicleFeatures"
       },
       {
         aggregateType: "Vehicle",
-        messageType: "emi-gateway.graphql.query.vehicleVehicleBlocks"
+        messageType: "emigateway.graphql.query.vehicleVehicleBlocks"
       },
       {
         aggregateType: "Vehicle",
-        messageType: "emi-gateway.graphql.mutation.vehicleRemoveVehicleBlocking"
+        messageType: "emigateway.graphql.mutation.vehicleRemoveVehicleBlocking"
       }
     ];
   }
@@ -190,39 +190,39 @@ class GraphQlService {
    */
   generateFunctionMap() {    
     return {
-      "emi-gateway.graphql.query.VehicleVehicles": {
+      "emigateway.graphql.query.VehicleVehicles": {
         fn: VehicleCQRS.getVehicleList$,
         obj: VehicleCQRS
       },
-      "emi-gateway.graphql.query.VehicleVehiclesSize": {
+      "emigateway.graphql.query.VehicleVehiclesSize": {
         fn: VehicleCQRS.getVehicleListSize$,
         obj: VehicleCQRS
       },
-      "emi-gateway.graphql.query.VehicleVehicle": {
+      "emigateway.graphql.query.VehicleVehicle": {
         fn: VehicleCQRS.getVehicle$,
         obj: VehicleCQRS
       },
-      "emi-gateway.graphql.mutation.VehicleCreateVehicle": {
+      "emigateway.graphql.mutation.VehicleCreateVehicle": {
         fn: VehicleCQRS.createVehicle$,
         obj: VehicleCQRS
       }, 
-      "emi-gateway.graphql.mutation.VehicleUpdateVehicleGeneralInfo": {
+      "emigateway.graphql.mutation.VehicleUpdateVehicleGeneralInfo": {
         fn: VehicleCQRS.updateVehicleGeneralInfo$,
         obj: VehicleCQRS
       },
-      "emi-gateway.graphql.mutation.VehicleUpdateVehicleState": {
+      "emigateway.graphql.mutation.VehicleUpdateVehicleState": {
         fn: VehicleCQRS.updateVehicleState$,
         obj: VehicleCQRS
       },
-      "emi-gateway.graphql.mutation.vehicleUpdateVehicleFeatures": {
+      "emigateway.graphql.mutation.vehicleUpdateVehicleFeatures": {
         fn: VehicleCQRS.updateVehicleFeatures$,
         obj: VehicleCQRS
       },
-      "emi-gateway.graphql.query.vehicleVehicleBlocks": {
+      "emigateway.graphql.query.vehicleVehicleBlocks": {
         fn: VehicleCQRS.getVehicleBlocks$,
         obj: VehicleCQRS
       },
-      "emi-gateway.graphql.mutation.vehicleRemoveVehicleBlocking": {
+      "emigateway.graphql.mutation.vehicleRemoveVehicleBlocking": {
         fn: VehicleCQRS.removeVehicleBlock$,
         obj: VehicleCQRS
       }

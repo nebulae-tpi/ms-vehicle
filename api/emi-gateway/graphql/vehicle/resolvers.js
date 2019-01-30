@@ -45,7 +45,7 @@ module.exports = {
                         broker
                             .forwardAndGetReply$(
                                 "Vehicle",
-                                "emi-gateway.graphql.query.VehicleVehicles", { root, args, jwt: context.encodedToken },
+                                "emigateway.graphql.query.VehicleVehicles", { root, args, jwt: context.encodedToken },
                                 2000
                             )
                     ),
@@ -65,7 +65,7 @@ module.exports = {
                         broker
                             .forwardAndGetReply$(
                                 "Vehicle",
-                                "emi-gateway.graphql.query.VehicleVehiclesSize", { root, args, jwt: context.encodedToken },
+                                "emigateway.graphql.query.VehicleVehiclesSize", { root, args, jwt: context.encodedToken },
                                 2000
                             )
                     ),
@@ -85,7 +85,7 @@ module.exports = {
                         broker
                             .forwardAndGetReply$(
                                 "Vehicle",
-                                "emi-gateway.graphql.query.VehicleVehicle", { root, args, jwt: context.encodedToken },
+                                "emigateway.graphql.query.VehicleVehicle", { root, args, jwt: context.encodedToken },
                                 2000
                             )
                     ),
@@ -105,7 +105,7 @@ module.exports = {
                         broker
                             .forwardAndGetReply$(
                                 "Vehicle",
-                                "emi-gateway.graphql.query.vehicleVehicleBlocks", { root, args, jwt: context.encodedToken },
+                                "emigateway.graphql.query.vehicleVehicleBlocks", { root, args, jwt: context.encodedToken },
                                 2000
                             )
                     ),
@@ -128,7 +128,7 @@ module.exports = {
                     mergeMap(() =>
                         context.broker.forwardAndGetReply$(
                             "Vehicle",
-                            "emi-gateway.graphql.mutation.VehicleCreateVehicle", { root, args, jwt: context.encodedToken },
+                            "emigateway.graphql.mutation.VehicleCreateVehicle", { root, args, jwt: context.encodedToken },
                             2000
                         )
                     ),
@@ -147,7 +147,7 @@ module.exports = {
                 mergeMap(() =>
                     context.broker.forwardAndGetReply$(
                         "Vehicle",
-                        "emi-gateway.graphql.mutation.VehicleUpdateVehicleGeneralInfo", { root, args, jwt: context.encodedToken },
+                        "emigateway.graphql.mutation.VehicleUpdateVehicleGeneralInfo", { root, args, jwt: context.encodedToken },
                         2000
                     )
                 ),
@@ -166,7 +166,7 @@ module.exports = {
                 mergeMap(() =>
                     context.broker.forwardAndGetReply$(
                         "Vehicle",
-                        "emi-gateway.graphql.mutation.VehicleUpdateVehicleState", { root, args, jwt: context.encodedToken },
+                        "emigateway.graphql.mutation.VehicleUpdateVehicleState", { root, args, jwt: context.encodedToken },
                         2000
                     )
                 ),
@@ -185,7 +185,7 @@ module.exports = {
                 mergeMap(() =>
                     context.broker.forwardAndGetReply$(
                         "Vehicle",
-                        "emi-gateway.graphql.mutation.VehicleAddVehicleBlocking", { root, args, jwt: context.encodedToken },
+                        "emigateway.graphql.mutation.VehicleAddVehicleBlocking", { root, args, jwt: context.encodedToken },
                         2000
                     )
                 ),
@@ -204,7 +204,7 @@ module.exports = {
                 mergeMap(() =>
                     context.broker.forwardAndGetReply$(
                         "Vehicle",
-                        "emi-gateway.graphql.mutation.vehicleRemoveVehicleBlocking", { root, args, jwt: context.encodedToken },
+                        "emigateway.graphql.mutation.vehicleRemoveVehicleBlocking", { root, args, jwt: context.encodedToken },
                         2000
                     )
                 ),
@@ -223,7 +223,7 @@ module.exports = {
                 mergeMap(() =>
                     context.broker.forwardAndGetReply$(
                         "Vehicle",
-                        "emi-gateway.graphql.mutation.vehicleUpdateVehicleFeatures", { root, args, jwt: context.encodedToken },
+                        "emigateway.graphql.mutation.vehicleUpdateVehicleFeatures", { root, args, jwt: context.encodedToken },
                         2000
                     )
                 ),
