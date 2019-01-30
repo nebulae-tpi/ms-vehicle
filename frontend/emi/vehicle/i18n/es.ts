@@ -4,7 +4,7 @@ export const locale = {
     VEHICLE: {
       DETAIL_HEADER_NAME: 'Vehiclo',
       DETAIL_HEADER_NEW: 'Nuevo Vehículo',
-      TITLE: 'Nombre entidad',
+      TITLE: 'Vehículos',
       FILTER: 'Filtros',
       NAME: 'Nombre',
       CREATION_DATE: 'Fecha creación',
@@ -40,10 +40,10 @@ export const locale = {
       },
       FEATURES: {
         FUEL: 'Combustible',
-        CAPACITY: 'Capacidad',
+        CAPACITY: 'Capacidad de pasajeros',
         OTHERS_TITLE: 'Otras características',
         FUEL_TYPES: {
-          GASOLINE: 'Gasonila',
+          GASOLINE: 'Gasolina',
           GAS: 'Gas',
           GASOLINE_AND_GAS: 'Gas y Gasolina',
           DIESEL: 'Diesel'
