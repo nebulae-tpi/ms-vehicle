@@ -13,7 +13,7 @@ spec:
         app: vehicle
     spec:      
       containers:
-      - image: nebulaetpi/vehicle.backend.vehicle:0.0.5
+      - image: nebulaetpi/vehicle.backend.vehicle:0.0.6
         name: vehicle
         volumeMounts:
         - name: google-application-credentials
@@ -55,7 +55,7 @@ spec:
           value: PUBSUB
         # RESET LOCK INITIALIZE BACKED
         - name: LOCKVERSION
-          value: "initial_lock"
+          value: "0.0.1"
         
       volumes:
       - name: google-application-credentials

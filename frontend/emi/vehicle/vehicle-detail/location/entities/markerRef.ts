@@ -18,6 +18,7 @@ export const MARKER_REF_ORIGINAL_INFO_WINDOW_CONTENT = `<html>
   </html>
   `;
 
+  
 
 export class VehiclePoint {
   _id: string;

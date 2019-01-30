@@ -109,7 +109,7 @@ class VehicleCQRS {
     );
   }
 
-    /**
+  /**
   * Create a vehicle
   */
  createVehicle$({ root, args, jwt }, authToken) {
