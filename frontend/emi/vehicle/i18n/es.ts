@@ -46,7 +46,8 @@ export const locale = {
           GASOLINE: 'Gasolina',
           GAS: 'Gas',
           GASOLINE_AND_GAS: 'Gas y Gasolina',
-          DIESEL: 'Diesel'
+          DIESEL: 'Diesel',
+          ELECTRIC: 'Electricidad'
         },
         OTHERS: {
           AC: 'Aire acondicionado',

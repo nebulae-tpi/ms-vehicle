@@ -47,8 +47,8 @@ class VehicleDA {
       query.businessId = filter.businessId;
     }
 
-    if (filter.name) {
-      query["generalInfo.name"] = { $regex: filter.name, $options: "i" };
+    if (filter.licensePlate) {
+      query["generalInfo.licensePlate"] = { $regex: filter.licensePlate, $options: "i" };
     }
 
     if (filter.creationTimestamp) {

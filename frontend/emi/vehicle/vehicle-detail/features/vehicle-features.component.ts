@@ -76,7 +76,7 @@ export class VehicleDetailFeaturesComponent implements OnInit, OnDestroy {
 
   vehicleFeaturesForm: any;
   blockings = `Nikola Tesla Industrial.`.split(' ');
-  fuelTypes = ['GASOLINE', 'GAS', 'GASOLINE_AND_GAS', 'DIESEL'];
+  fuelTypes = ['GASOLINE', 'GAS', 'GASOLINE_AND_GAS', 'DIESEL', 'ELECTRIC'];
 
   constructor(
     private translationLoader: FuseTranslationLoaderService,

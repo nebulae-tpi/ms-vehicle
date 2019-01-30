@@ -86,7 +86,7 @@ input FilterInput {
   "ID of the business"
   businessId: String
   "Name"
-  name: String
+  licensePlate: String
   "State"
   state: Boolean
   "Creator user"
