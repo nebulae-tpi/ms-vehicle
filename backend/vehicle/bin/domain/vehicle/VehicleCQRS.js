@@ -40,7 +40,7 @@ class VehicleCQRS {
       "Vehicle",
       "getVehicle",
       PERMISSION_DENIED,
-      ["PLATFORM-ADMIN"]
+      ["PLATFORM-ADMIN", "BUSINESS-OWNER"]
     ).pipe(
       mergeMap(roles => {
         const isPlatformAdmin = roles["PLATFORM-ADMIN"];
@@ -64,7 +64,7 @@ class VehicleCQRS {
       "Vehicle",
       "getVehicleList",
       PERMISSION_DENIED,
-      ["PLATFORM-ADMIN"]
+      ["PLATFORM-ADMIN", "BUSINESS-OWNER"]
     ).pipe(
       mergeMap(roles => {
         const isPlatformAdmin = roles["PLATFORM-ADMIN"];
@@ -92,7 +92,7 @@ class VehicleCQRS {
       "Vehicle",
       "getVehicleListSize",
       PERMISSION_DENIED,
-      ["PLATFORM-ADMIN"]
+      ["PLATFORM-ADMIN", "BUSINESS-OWNER"]
     ).pipe(
       mergeMap(roles => {
         const isPlatformAdmin = roles["PLATFORM-ADMIN"];
@@ -124,7 +124,7 @@ class VehicleCQRS {
       "Vehicle",
       "createVehicle$",
       PERMISSION_DENIED,
-      ["PLATFORM-ADMIN"]
+      ["PLATFORM-ADMIN", "BUSINESS-OWNER"]
     ).pipe(
       mergeMap(() => eventSourcing.eventStore.emitEvent$(
         new Event({
@@ -158,7 +158,7 @@ class VehicleCQRS {
       "Vehicle",
       "updateVehicleGeneralInfo$",
       PERMISSION_DENIED,
-      ["PLATFORM-ADMIN"]
+      ["PLATFORM-ADMIN", "BUSINESS-OWNER"]
     ).pipe(
       mergeMap(() => eventSourcing.eventStore.emitEvent$(
         new Event({
@@ -194,7 +194,7 @@ class VehicleCQRS {
       "Vehicle",
       "updateVehicleState$",
       PERMISSION_DENIED,
-      ["PLATFORM-ADMIN"]
+      ["PLATFORM-ADMIN", "BUSINESS-OWNER"]
     ).pipe(
       mergeMap(() => eventSourcing.eventStore.emitEvent$(
         new Event({
@@ -229,7 +229,7 @@ class VehicleCQRS {
       "vehicleUpdate",
       "updateVehicleState$",
       PERMISSION_DENIED,
-      ["PLATFORM-ADMIN"]
+      ["PLATFORM-ADMIN", "BUSINESS-OWNER"]
     ).pipe(
       mergeMap(() => eventSourcing.eventStore.emitEvent$(
         new Event({
@@ -256,7 +256,7 @@ class VehicleCQRS {
       "vehicleBlocks",
       "getVehicleBlocks$",
       PERMISSION_DENIED,
-      ["PLATFORM-ADMIN"]
+      ["PLATFORM-ADMIN", "BUSINESS-OWNER"]
     ).pipe(
       // map(() => [{
       //   key: 'PICO_Y_PLACA',
@@ -278,7 +278,7 @@ class VehicleCQRS {
       "vehicleBlocks",
       "getVehicleBlocks$",
       PERMISSION_DENIED,
-      ["PLATFORM-ADMIN"]
+      ["PLATFORM-ADMIN", "BUSINESS-OWNER"]
     ).pipe(
       mergeMap(() => eventSourcing.eventStore.emitEvent$(
         new Event({
