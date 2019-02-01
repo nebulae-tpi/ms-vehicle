@@ -2,7 +2,7 @@ export const locale = {
   lang: 'es',
   data: {
     VEHICLE: {
-      DETAIL_HEADER_NAME: 'Vehiclo',
+      DETAIL_HEADER_NAME: 'Vehículo',
       DETAIL_HEADER_NEW: 'Nuevo Vehículo',
       TITLE: 'Vehículos',
       FILTER: 'Filtros',
@@ -54,7 +54,7 @@ export const locale = {
           TRUNK: 'Baúl',
           ROOF_RACK: 'Parrilla de techo',
           PETS: 'Permite mascotas',
-          BIKE_RACK: 'Porta bicicletas'
+          BIKE_RACK: 'Portabicicletas'
         }
       },
       ACTIVE: 'Activo',
@@ -68,8 +68,8 @@ export const locale = {
       CREATE_TITLE: 'Creación',
       CREATE_MESSAGE: '¿Estás seguro que desea realizar la creación?',
       CANCEL: 'Cancelar',
-      ENTITY_UPDATED: 'Elemento actualizado',
-      ENTITY_CREATED: 'Elemento creado',
+      ENTITY_UPDATED: 'Vehículo actualizado',
+      ENTITY_CREATED: 'Vehículo creado',
       CLOSE: 'Cerrar',
       WAIT_OPERATION: 'Operación en proceso, en caso de no recibir respuesta, verificar si los cambios realizados fueron aplicados exitosamente.',
       SELECT_BUSINESS: 'Debe seleccionar una unidad de negocio antes de realizar la creación.',
