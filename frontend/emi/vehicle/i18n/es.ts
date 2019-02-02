@@ -83,7 +83,7 @@ export const locale = {
     ERRORS: {
       1: 'Error interno de servidor',
       2: 'Permiso denegado.',
-      21010: 'Esta placa ya está siendo utilizada'
+      22010: 'Esta placa ya está siendo utilizada'
     }
   }
 };

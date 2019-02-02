@@ -83,7 +83,7 @@ export const locale = {
     ERRORS: {
       1: 'Internal server error',
       2: 'Permission denied',
-      21010: 'License plate already used'
+      22010: 'License plate already used'
     },
   }
 };
