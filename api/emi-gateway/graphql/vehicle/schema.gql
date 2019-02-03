@@ -82,7 +82,7 @@ type VehicleLocation{
   lng: Float
 }
 
-input FilterInput {
+input VehicleFilterInput {
   "ID of the business"
   businessId: String
   "Name"
@@ -141,9 +141,9 @@ type VehicleVehicleBlock {
 
 type Query {
   "Get Vehicles filtered "
-  VehicleVehicles(filterInput: FilterInput!, paginationInput: PaginationInput!): [VehicleVehicleEntity]
+  VehicleVehicles(filterInput: VehicleFilterInput!, paginationInput: PaginationInput!): [VehicleVehicleEntity]
   "Get the amount of Vehicles filtered "
-  VehicleVehiclesSize(filterInput: FilterInput!): Int!
+  VehicleVehiclesSize(filterInput: VehicleFilterInput!): Int!
   "Get Vehicle by its id"
   VehicleVehicle(id: String!): VehicleVehicleEntity
   "get the Blocks of the related vehicle"

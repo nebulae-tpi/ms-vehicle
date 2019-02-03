@@ -44,7 +44,7 @@ export const VehicleVehicleBlocks = gql`
 `;
 
 export const VehicleVehicles = gql`
-  query VehicleVehicles($filterInput: FilterInput!, $paginationInput: PaginationInput!) {
+  query VehicleVehicles($filterInput: VehicleFilterInput!, $paginationInput: PaginationInput!) {
     VehicleVehicles(filterInput: $filterInput, paginationInput: $paginationInput) {
       _id
       generalInfo {
@@ -63,7 +63,7 @@ export const VehicleVehicles = gql`
 `;
 
 export const VehicleVehiclesSize = gql`
-  query VehicleVehiclesSize($filterInput: FilterInput!) {
+  query VehicleVehiclesSize($filterInput: VehicleFilterInput!) {
     VehicleVehiclesSize(filterInput: $filterInput)
   }
 `;
