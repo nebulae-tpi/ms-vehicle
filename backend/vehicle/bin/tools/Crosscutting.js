@@ -39,6 +39,18 @@ class Crosscutting{
         return `${month}${year}`;
     }
 
+    /**
+     * find the day of year of the given date
+     * @param {number} date date in millis
+     */
+    static getDayOfYear(date = Date.now() ){
+        const now = new Date(new Date(date).toLocaleString('es-CO', { timeZone: 'America/Bogota' }));
+        const start = new Date(now.getFullYear(), 0, 0);
+        const diff = now - start;
+        const oneDay = 1000 * 60 * 60 * 24;
+        return Math.floor( diff / oneDay );
+    }
+
 }
 
 /**

@@ -264,13 +264,6 @@ class VehicleCQRS {
       PERMISSION_DENIED,
       ["PLATFORM-ADMIN", "BUSINESS-OWNER"]
     ).pipe(
-      // map(() => [{
-      //   key: 'PICO_Y_PLACA',
-      //   notes: 'PYP Ambiental',
-      //   startTime: 0,
-      //   endTime: 123456789,
-      //   user: 'juan.ospina'
-      // }]),
       mergeMap(() => VehicleBlocksDA.findBlocksByVehicle$(args.id)),
       mergeMap(r => GraphqlResponseTools.buildSuccessResponse$(r)),
       catchError(err => GraphqlResponseTools.handleError$(err))
@@ -296,7 +289,7 @@ class VehicleCQRS {
           user: authToken.preferred_username
         })
       )),
-      map(() => ({ code: 200, message: `Vehicle with id: ${vehicleUpdate._id} has been updated` })),
+      map(() => ({ code: 200, message: `Vehicle with id: ${args.id} has been updated` })),
       mergeMap(r => GraphqlResponseTools.buildSuccessResponse$(r)),
       catchError(err => GraphqlResponseTools.handleError$(err))
     );

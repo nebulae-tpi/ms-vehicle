@@ -144,8 +144,19 @@ class EventStoreService {
       CleanExpiredBlocks: {
         fn: VehicleES.handleCleanExpiredBlocks$,
         obj: VehicleES
+      },
+      PicoYPlacaBlocksRuleEmitted: {
+        fn: VehicleES.handlePicoYPlacaBlocksRuleEmitted$,
+        obj: VehicleES
+      },
+      VehicleBlockApplied: {
+        fn: VehicleES.handleVehicleBlockApplied$,
+        obj: VehicleES
+      },
+      PicoYPlacaUnblocksRuleEmitted: {
+        fn: VehicleES.handlePicoYPlacaUnblocksRuleEmitted$,
+        obj: VehicleES
       }
-
     };
   }
 
@@ -178,6 +189,19 @@ class EventStoreService {
         aggregateType: "Cronjob",
         eventType: "CleanExpiredBlocks"
       },
+      {
+        aggregateType: "Cronjob",
+        eventType: "PicoYPlacaBlocksRuleEmitted"
+      },
+      {
+        aggregateType: "Vehicle",
+        eventType: "VehicleBlockApplied"
+      },
+      {
+        aggregateType: "Cronjob",
+        eventType: "PicoYPlacaUnblocksRuleEmitted"
+      },
+
 
     ]
   }

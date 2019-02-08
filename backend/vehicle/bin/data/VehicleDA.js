@@ -2,10 +2,12 @@
 
 let mongoDB = undefined;
 //const mongoDB = require('./MongoDB')();
-const CollectionName = "Vehicle";
+const COLLECTION_NAME = "Vehicle";
 const { CustomError } = require("../tools/customError");
-const { map } = require("rxjs/operators");
+const { map, tap } = require("rxjs/operators");
 const { of, Observable, defer } = require("rxjs");
+
+const {ObjectId} = require('mongodb');
 
 class VehicleDA {
   static start$(mongoDbInstance) {
@@ -25,20 +27,23 @@ class VehicleDA {
    * Gets an user by its username
    */
   static getVehicle$(id, businessId) {
-    const collection = mongoDB.db.collection(CollectionName);
+    console.log("getVehicle$", id, businessId);
+    const collection = mongoDB.db.collection(COLLECTION_NAME);
+    // const query = { _id:  ObjectId(id) };
+    const query  = {  _id: id  } ;
 
-    const query = {
-      _id: id      
-    };
     if(businessId){
       query.businessId = businessId;
     }
 
-    return defer(() => collection.findOne(query));
+    return defer(() => collection.findOne(query))
+    .pipe(
+      tap(r => console.log("RESULTADO => ", r))
+    )
   }
 
   static getVehicleList$(filter, pagination) {
-    const collection = mongoDB.db.collection(CollectionName);
+    const collection = mongoDB.db.collection(COLLECTION_NAME);
 
     const query = {
     };
@@ -73,7 +78,7 @@ class VehicleDA {
   }
 
   static getVehicleSize$(filter) {
-    const collection = mongoDB.db.collection(CollectionName);
+    const collection = mongoDB.db.collection(COLLECTION_NAME);
 
     const query = {
     };
@@ -106,7 +111,7 @@ class VehicleDA {
    * @param {*} vehicle vehicle to create
    */
   static createVehicle$(vehicle) {
-    const collection = mongoDB.db.collection(CollectionName);
+    const collection = mongoDB.db.collection(COLLECTION_NAME);
     return defer(() => collection.insertOne(vehicle));
   }
 
@@ -116,7 +121,7 @@ class VehicleDA {
    * @param {*} VehicleGeneralInfo  New general information of the Vehicle
    */
   static updateVehicleGeneralInfo$(id, VehicleGeneralInfo) {
-    const collection = mongoDB.db.collection(CollectionName);
+    const collection = mongoDB.db.collection(COLLECTION_NAME);
 
     return defer(()=>
         collection.findOneAndUpdate(
@@ -138,7 +143,7 @@ class VehicleDA {
    * @param {boolean} newVehicleState boolean that indicates the new Vehicle state
    */
   static updateVehicleState$(id, newVehicleState) {
-    const collection = mongoDB.db.collection(CollectionName);
+    const collection = mongoDB.db.collection(COLLECTION_NAME);
     
     return defer(()=>
         collection.findOneAndUpdate(
@@ -156,7 +161,7 @@ class VehicleDA {
 
   static updateVehicleFeatures$(id, newData) {
     console.log(id, newData);
-    const collection = mongoDB.db.collection(CollectionName);
+    const collection = mongoDB.db.collection(COLLECTION_NAME);
     return defer(() => collection.findOneAndUpdate(
       { _id: id },
       {
@@ -181,8 +186,26 @@ class VehicleDA {
    * @param {string} licensePlate license plate
    */
   static findVehicleByLicensePlate$(licensePlate){
-    const collection = mongoDB.db.collection(CollectionName);
+    const collection = mongoDB.db.collection(COLLECTION_NAME);
     return defer(() => collection.findOne({'generalInfo.licensePlate': licensePlate }));
+  }
+
+
+  /**
+   * Find vehicles that match with params
+   * @param {Array} buIds String array
+   * @param {Array} licensePlateEnding Array with number as string to use in regular expresion
+   */
+  static getVehicleListToAplyPYP_Blocks$(buIds, licensePlateEnding) {
+    const collection = mongoDB.db.collection(COLLECTION_NAME);
+    const query = {};
+    query["$and"] = [
+      { businessId: { $in: buIds } },
+      { "generalInfo.licensePlate": { $regex: `.*(${licensePlateEnding.join("|")})$` } },
+    ];
+
+    const cursor = collection.find(query, { projection: { "generalInfo.licensePlate": 1 } });
+    return mongoDB.extractAllFromMongoCursor$(cursor);
   }
 
 }
