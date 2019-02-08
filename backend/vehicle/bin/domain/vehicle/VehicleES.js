@@ -18,49 +18,7 @@ let instance;
 class VehicleES {
 
     constructor() {
-
-        of({}).pipe(
-          delay(3000),
-          mergeMap(() => interval(2000)),
-          take(1),
-          tap(() => console.log("SIMULANDO EVENTO DEL CRONJOB")),
-          mergeMap(() =>
-            eventSourcing.eventStore.emitEvent$(
-              new Event({
-                eventType: "PicoYPlacaBlocksRuleEmitted",
-                eventTypeVersion: 1,
-                aggregateType: "Cronjob",
-                aggregateId: 1,
-                data: { 
-                    buIds: ["7y6t-3er4-t5y6u7-u7i8", "23we-34er-we23-45rt-67ty"],
-                    licensePlateMap: { 0: " 0  ,1", 1: "2,3", 2: "4,5", 3: "6,7", 4: "8,9" },
-                 },
-                user: "SYSTEM"
-              })
-            )
-          ),
-          delay(5000),
-        //   mergeMap(() =>
-        //     eventSourcing.eventStore.emitEvent$(
-        //       new Event({
-        //         eventType: "PicoYPlacaUnblocksRuleEmitted",
-        //         eventTypeVersion: 1,
-        //         aggregateType: "Cronjob",
-        //         aggregateId: 1,
-        //         data: { 
-        //             buIds: ["7y6t-3er4-t5y6u7-u7i8", "23we-34er-we23-45rt-67ty"],
-        //             licensePlateMap: { 0: " 0  ,1", 1: "2,3", 2: "4,5", 3: "6,7", 4: " 8 ,  9   " },
-        //          },
-        //         user: "SYSTEM"
-        //       })
-        //     )
-        //   )
-
-        )
-
-        .subscribe(() => {}, e => console.log(e), () => {});
         
-
     }
 
 
