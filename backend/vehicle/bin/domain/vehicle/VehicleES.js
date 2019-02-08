@@ -139,7 +139,7 @@ class VehicleES {
 
             mergeMap(vehicle => eventSourcing.eventStore.emitEvent$(
                 new Event({
-                    eventType: "VehicleBlockApplied",
+                    eventType: "VehicleBlockAdded",
                     eventTypeVersion: 1,
                     aggregateType: "Vehicle",
                     aggregateId: vehicle._id,
@@ -158,7 +158,7 @@ class VehicleES {
         )
     }
 
-    handleVehicleBlockApplied$(blockAppliedEvent){       
+    handleVehicleBlockAdded$(blockAppliedEvent){       
         return of({
             vehicleId: blockAppliedEvent.aid,
             user: blockAppliedEvent.user,

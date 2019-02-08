@@ -149,8 +149,8 @@ class EventStoreService {
         fn: VehicleES.handlePicoYPlacaBlocksRuleEmitted$,
         obj: VehicleES
       },
-      VehicleBlockApplied: {
-        fn: VehicleES.handleVehicleBlockApplied$,
+      VehicleBlockAdded: {
+        fn: VehicleES.handleVehicleBlockAdded$,
         obj: VehicleES
       },
       PicoYPlacaUnblocksRuleEmitted: {
@@ -195,7 +195,7 @@ class EventStoreService {
       },
       {
         aggregateType: "Vehicle",
-        eventType: "VehicleBlockApplied"
+        eventType: "VehicleBlockAdded"
       },
       {
         aggregateType: "Cronjob",
