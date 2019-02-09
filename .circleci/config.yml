@@ -237,7 +237,7 @@ workflows:
             - hold
       - build-api:
           context: TPI_PROD
-          mame: build-api-prod
+          name: build-api-prod
           requires:
             - prepare
             - hold
