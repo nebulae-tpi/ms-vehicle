@@ -5,6 +5,9 @@ import { GatewayService } from '../../../api/gateway.service';
 import {
 } from './gql/vehicle';
 
+
 @Injectable()
 export class VehicleService {
+
 }
+

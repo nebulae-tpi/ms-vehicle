@@ -233,6 +233,8 @@ module.exports = {
         },
     },
 
+    
+
     //// SUBSCRIPTIONS ///////
     Subscription: {
         VehicleVehicleUpdatedSubscription: {
