@@ -8,7 +8,7 @@ export const locale = {
       FILTER: 'Filtros',
       NAME: 'Nombre',
       CREATION_DATE: 'Fecha creación',
-      CREATOR_USER: 'Usuario creador',
+      CREATOR_USER: 'Usuario responsable',
       RESET_FILTER: 'Limpiar filtro',
       FILTER_SELECTED_BUSINESS: 'Filtrar por unidad de negocio seleccionada',
       CREATION_TIMESTAMP: 'Creado',
