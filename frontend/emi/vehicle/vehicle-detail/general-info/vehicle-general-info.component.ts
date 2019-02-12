@@ -145,9 +145,9 @@ export class VehicleDetailGeneralInfoComponent implements OnInit, OnDestroy {
       .pipe(
         mergeMap(() => this.VehicleDetailservice.updateVehicleVehicleGeneralInfo$(
           this.vehicle._id, {
-            licensePlate: this.vehicleGeneralInfoForm.getRawValue().licensePlate,
+            licensePlate: this.vehicleGeneralInfoForm.getRawValue().licensePlate.toUpperCase(),
             model: this.vehicleGeneralInfoForm.getRawValue().model,
-            brand: this.vehicleGeneralInfoForm.getRawValue().brand,
+            brand: this.vehicleGeneralInfoForm.getRawValue().brand.toUpperCase(),
             line: this.vehicleGeneralInfoForm.getRawValue().line
           }
         )),
