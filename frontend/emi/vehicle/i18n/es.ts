@@ -11,22 +11,22 @@ export const locale = {
       TITLE: 'Vehículos',
       FILTER: 'Filtros',
       NAME: 'Nombre',
-      CREATION_DATE: 'Fecha creación',
-      CREATOR_USER: 'Usuario creador',
-      RESET_FILTER: 'Limpiar filtro',
-      FILTER_SELECTED_BUSINESS: 'Filtrar por unidad de negocio seleccionada',
+      CREATION_DATE: 'Fecha Creación',
+      CREATOR_USER: 'Usuario Responsable',
+      RESET_FILTER: 'Limpiar Filtro',
+      FILTER_SELECTED_BUSINESS: 'Filtrar Por Unidad De Negocio Seleccionada',
       CREATION_TIMESTAMP: 'Creado',
       LAST_MODIFICATION_TIMESTAMP: 'Modificado',
-      MODIFIER_USER: 'Usuario que modificó',
-      ADD_NEW: 'Agregar nuevo',
+      MODIFIER_USER: 'Responsable',
+      ADD_NEW: 'Agregar Nuevo',
       DETAILS: {
         TABS: {
-          GENERAL_INFO: 'Información general',
+          GENERAL_INFO: 'Información General',
           FEATURES: 'Características',
           LOCATION: 'Ubicación',
           BLOCKS: 'Bloqueos'
         },
-        GENERAL_INFO: 'Información general',
+        GENERAL_INFO: 'Información General',
         ENABLED: 'Activo',
         DISABLED: 'Desactivado',
         LICENSE_PLATE: 'Placa',
@@ -37,15 +37,15 @@ export const locale = {
       BLOCKS: {
         KEY: 'Bloqueo',
         NOTES: 'Notas',
-        START_TIME: 'Fecha inicio',
-        END_TIME: 'Fecha de expiración',
+        START_TIME: 'Fecha Inicio',
+        END_TIME: 'Fecha de Expiración',
         USER: 'Responsable',
         ACTIONS: 'Acciones'
       },
       FEATURES: {
         FUEL: 'Combustible',
-        CAPACITY: 'Capacidad de pasajeros',
-        OTHERS_TITLE: 'Otras características',
+        CAPACITY: 'Capacidad de Pasajeros',
+        OTHERS_TITLE: 'Otras Características',
         FUEL_TYPES: {
           GASOLINE: 'Gasolina',
           GAS: 'Gas',
@@ -54,10 +54,10 @@ export const locale = {
           ELECTRIC: 'Electricidad'
         },
         OTHERS: {
-          AC: 'Aire acondicionado',
+          AC: 'Aire Acondicionado',
           TRUNK: 'Baúl',
-          ROOF_RACK: 'Parrilla de techo',
-          PETS: 'Permite mascotas',
+          ROOF_RACK: 'Parrilla de Techo',
+          PETS: 'Permite Mascotas',
           BIKE_RACK: 'Portabicicletas'
         }
       },
@@ -72,12 +72,12 @@ export const locale = {
       CREATE_TITLE: 'Creación',
       CREATE_MESSAGE: '¿Estás seguro que desea realizar la creación?',
       CANCEL: 'Cancelar',
-      ENTITY_UPDATED: 'Vehículo actualizado',
-      ENTITY_CREATED: 'Vehículo creado',
+      ENTITY_UPDATED: 'Vehículo Actualizado',
+      ENTITY_CREATED: 'Vehículo Areado',
       CLOSE: 'Cerrar',
       WAIT_OPERATION: 'Operación en proceso, en caso de no recibir respuesta, verificar si los cambios realizados fueron aplicados exitosamente.',
       SELECT_BUSINESS: 'Debe seleccionar una unidad de negocio antes de realizar la creación.',
-      ERROR_OPERATION: 'Error realizando operación'
+      ERROR_OPERATION: 'Error Realizando Operación'
     },
     MARKER: {
       INFOWINDOW: {
@@ -85,8 +85,8 @@ export const locale = {
       },
     },
     ERRORS: {
-      1: 'Error interno de servidor',
-      2: 'Permiso denegado.',
+      1: 'Error Interno de Servidor',
+      2: 'Permiso Denegado.',
       22010: 'Esta placa ya está siendo utilizada'
     }
   }

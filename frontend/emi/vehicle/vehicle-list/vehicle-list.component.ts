@@ -260,7 +260,7 @@ export class VehicleListComponent implements OnInit, OnDestroy {
               licensePlate: filterValue.licensePlate,
               creatorUser: filterValue.creatorUser,
               creationTimestamp: filterValue.creationTimestamp
-                ? filterValue.creationTimestamp.valueOf()
+                ? filterValue.creationTimestamp.startOf('day').valueOf()
                 : null
             };
             const paginationInput = {

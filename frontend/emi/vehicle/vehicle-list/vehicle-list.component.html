@@ -34,13 +34,13 @@
 
                             <!-- <mat-form-field>
                                 <input matInput placeholder="{{'VEHICLE.CREATOR_USER' | translate}}" formControlName="creatorUser" id="creatorUser" maxlength="20" />
-                            </mat-form-field>
+                            </mat-form-field> -->
 
                             <mat-form-field>
                                 <input matInput [matDatepicker]="pickerCreationDate" placeholder="{{'VEHICLE.CREATION_DATE' | translate}}" formControlName="creationTimestamp" />
                                 <mat-datepicker-toggle matSuffix [for]="pickerCreationDate"></mat-datepicker-toggle>
-                                <mat-datepicker [twelveHour]="false" type="datetime" #pickerCreationDate></mat-datepicker>
-                            </mat-form-field> -->
+                                <mat-datepicker #pickerCreationDate></mat-datepicker>
+                            </mat-form-field>
 
                             <button fxFlex mat-raised-button mat-button class="mat-accent compose-dialog-button" aria-label="Filter" (click)="resetFilter()">
                       {{ "VEHICLE.RESET_FILTER" | translate }}
@@ -64,15 +64,16 @@
             <!-- CONTENT HEADER -->
             <div class="header" fxLayout="row" fxLayoutAlign="space-between center">
                 <div class="search-wrapper" fxLayout="row" fxLayoutAlign="start center">
-                    <button mat-button class="mat-icon-button sidenav-toggle" fuseMatSidenavToggler="carded-left-sidenav"fxHide.gt-md aria-label="Toggle Sidenav">
-                <mat-icon>menu</mat-icon>
-              </button>
-
+                    <button mat-button class="mat-icon-button sidenav-toggle" fuseMatSidenavToggler="carded-left-sidenav"
+                        fxHide.gt-md aria-label="Toggle Sidenav">
+                        <mat-icon>menu</mat-icon>
+                    </button>
+            
                 </div>
-
+            
                 <button mat-raised-button class="mat-white-bg" (click)="goToDetail()">
-              <span>{{ "VEHICLE.ADD_NEW" | translate }}</span>
-            </button>
+                    <span>{{ "VEHICLE.ADD_NEW" | translate }}</span>
+                </button>
             </div>
             <!-- / CONTENT HEADER -->
 
