@@ -7,14 +7,14 @@ export const locale = {
       TITLE: 'Vehicles',
       FILTER: 'Filter',
       NAME: 'Name',
-      CREATION_DATE: 'Creation date',
-      CREATOR_USER: 'Responsible user',
-      RESET_FILTER: 'Reset filter',
-      FILTER_SELECTED_BUSINESS: 'Filter by selected business unit',
+      CREATION_DATE: 'Creation Date',
+      CREATOR_USER: 'Responsible User',
+      RESET_FILTER: 'Reset Filter',
+      FILTER_SELECTED_BUSINESS: 'Filter by Selected Business Unit',
       CREATION_TIMESTAMP: 'Created',
       LAST_MODIFICATION_TIMESTAMP: 'Modified',
-      MODIFIER_USER: 'User who modified',
-      ADD_NEW: 'Add new',
+      MODIFIER_USER: 'User Who Modified',
+      ADD_NEW: 'Add New',
       DETAILS: {
         TABS: {
           GENERAL_INFO: 'General Info',
@@ -25,7 +25,7 @@ export const locale = {
         GENERAL_INFO: 'General Info',
         ENABLED: 'Enabled',
         DISABLED: 'Disabled',
-        LICENSE_PLATE: 'License plate',
+        LICENSE_PLATE: 'License Plate',
         MODEL: 'Model',
         BRAND: 'Brand',
         LINE: 'Line'
@@ -40,12 +40,12 @@ export const locale = {
       },
       FEATURES: {
         FUEL: 'Fuel',
-        CAPACITY: 'Passengers capacity',
+        CAPACITY: 'Passengers Capacity',
         OTHERS_TITLE: 'Others Features',
         FUEL_TYPES: {
           GASOLINE: 'Gasoline',
           GAS: 'Gas',
-          GASOLINE_AND_GAS: 'Gasoline and Gas',
+          GASOLINE_AND_GAS: 'Gasoline And Gas',
           DIESEL: 'Diesel',
           ELECTRIC: 'Electricity'
         },
@@ -68,12 +68,12 @@ export const locale = {
       CREATE_TITLE: 'Creation',
       CREATE_MESSAGE: '¿Are you sure you want to make the creation?',
       CANCEL: 'Cancel',
-      ENTITY_UPDATED: 'Vehicle updated',
-      ENTITY_CREATED: 'Vehicle created',
+      ENTITY_UPDATED: 'Vehicle Updated',
+      ENTITY_CREATED: 'Vehicle Created',
       CLOSE: 'Close',
       WAIT_OPERATION: 'Operation in process, in case of not receiving an answer, verify if the changes made were applied successfully.',
       SELECT_BUSINESS: 'You must select a business unit before performing the creation.',
-      ERROR_OPERATION: 'Error performing operation'
+      ERROR_OPERATION: 'Error Performing Operation'
     },
     MARKER: {
       INFOWINDOW: {
@@ -81,9 +81,9 @@ export const locale = {
       },
     },
     ERRORS: {
-      1: 'Internal server error',
-      2: 'Permission denied',
-      22010: 'License plate already used'
+      1: 'Internal Server Error',
+      2: 'Permission Denied',
+      22010: 'License Plate Already Used'
     },
   }
 };
