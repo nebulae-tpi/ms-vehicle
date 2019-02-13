@@ -2,6 +2,10 @@ export const locale = {
   lang: 'es',
   data: {
     VEHICLE: {
+      NAME_REQUIRED: 'Placa requerida',
+      BRAND_REQUIRED: 'Marca requerida',
+      MODEL_REQUIRED: 'Módelo requerida',
+      LINE_REQUIRED: 'Línea requerida',
       DETAIL_HEADER_NAME: 'Vehículo',
       DETAIL_HEADER_NEW: 'Nuevo Vehículo',
       TITLE: 'Vehículos',
