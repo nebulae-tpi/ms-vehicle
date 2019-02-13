@@ -93,7 +93,7 @@ class VehicleES {
             ),
             mergeMap(platesKey =>  VehicleDA.getVehicleListToAplyPYP_Blocks$( PicoPlacaCaliBlockJobTriggered.data.buIds, platesKey) ),
             
-            tap(vehicle => console.log("VEHICLE FOUND TO BLOCK BY PYP ==> ", JSON.stringify(vehicle))),
+            tap(vehicle => console.log("VEHICLE FOUND TO BLOCK BY PICO_Y_PLACA ==> ", JSON.stringify(vehicle))),
 
             mergeMap(vehicle => eventSourcing.eventStore.emitEvent$(
                 new Event({
@@ -102,7 +102,7 @@ class VehicleES {
                     aggregateType: "Vehicle",
                     aggregateId: vehicle._id,
                     data: { 
-                        blockKey: "PYP",
+                        blockKey: "PICO_Y_PLACA",
                         businessId: vehicle.businessId,
                         licensePlate: vehicle.generalInfo.licensePlate,
                         notes: "Blocked by CronJob",
@@ -134,7 +134,7 @@ class VehicleES {
         return of(PicoPlacaCaliUnblockJobTriggeredEvt.data)
             .pipe(
                 mergeMap(() => VehicleBlocksDA.getVehicleListToRemovePYP_Blocks$(PicoPlacaCaliUnblockJobTriggeredEvt.data.buIds)),
-                tap(vehicle => console.log("VEHICLE FOUNF TO REMOVE PYP BLOCK ==> ", JSON.stringify(vehicle))),
+                tap(vehicle => console.log("VEHICLE FOUNF TO REMOVE PICO_Y_PLACA BLOCK ==> ", JSON.stringify(vehicle))),
                 mergeMap(vehicle => eventSourcing.eventStore.emitEvent$(
                     new Event({
                         eventType: "VehicleBlockRemoved",
@@ -142,7 +142,7 @@ class VehicleES {
                         aggregateType: "Vehicle",
                         aggregateId: vehicle.vehicleId,
                         data: {
-                            blockKey: "PYP",
+                            blockKey: "PICO_Y_PLACA",
                             licensePlate: vehicle.licensePlate,
                             notes: "Unblocked by CronJob"
                         },

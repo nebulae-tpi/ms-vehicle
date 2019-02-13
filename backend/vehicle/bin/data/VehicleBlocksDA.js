@@ -76,7 +76,7 @@ class VehicleBlocksDA {
     const query = {};
     query["$and"] = [
       { businessId: { $in: buIds } },
-      { key: "PYP" }
+      { key: "PICO_Y_PLACA" }
     ];
     const cursor = collection.find(query, { projection: { _id: 0, licensePlate: 1, vehicleId: 1  } });
     return mongoDB.extractAllFromMongoCursor$(cursor);
