@@ -204,7 +204,7 @@ class VehicleDA {
       { "generalInfo.licensePlate": { $regex: `.*(${licensePlateEnding.join("|")})$` } },
     ];
 
-    const cursor = collection.find(query, { projection: { "generalInfo.licensePlate": 1 } });
+    const cursor = collection.find(query, { projection: { "generalInfo.licensePlate": 1, businessId: 1 } });
     return mongoDB.extractAllFromMongoCursor$(cursor);
   }
 

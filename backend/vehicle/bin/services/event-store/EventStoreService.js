@@ -145,16 +145,16 @@ class EventStoreService {
         fn: VehicleES.handleCleanExpiredBlocks$,
         obj: VehicleES
       },
-      PicoYPlacaBlocksRuleEmitted: {
-        fn: VehicleES.handlePicoYPlacaBlocksRuleEmitted$,
+      PicoPlacaCaliBlockJobTriggered: {
+        fn: VehicleES.handlePicoPlacaCaliBlockJobTriggered$,
         obj: VehicleES
       },
       VehicleBlockAdded: {
         fn: VehicleES.handleVehicleBlockAdded$,
         obj: VehicleES
       },
-      PicoYPlacaUnblocksRuleEmitted: {
-        fn: VehicleES.handlePicoYPlacaUnblocksRuleEmitted$,
+      PicoPlacaCaliUnblockJobTriggered: {
+        fn: VehicleES.handlePicoPlacaCaliUnblockJobTriggered$,
         obj: VehicleES
       }
     };
@@ -191,7 +191,7 @@ class EventStoreService {
       },
       {
         aggregateType: "Cronjob",
-        eventType: "PicoYPlacaBlocksRuleEmitted"
+        eventType: "PicoPlacaCaliBlockJobTriggered"
       },
       {
         aggregateType: "Vehicle",
@@ -199,9 +199,8 @@ class EventStoreService {
       },
       {
         aggregateType: "Cronjob",
-        eventType: "PicoYPlacaUnblocksRuleEmitted"
+        eventType: "PicoPlacaCaliUnblockJobTriggered"
       },
-
 
     ]
   }

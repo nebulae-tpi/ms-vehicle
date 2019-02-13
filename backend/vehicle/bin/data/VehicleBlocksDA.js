@@ -43,12 +43,13 @@ class VehicleBlocksDA {
     return defer(() => collection.deleteMany( { endTime: { $$lte: timestamp } }))
   }
 
-  static insertVehicleBlock$({vehicleId, licensePlate, blockKey, notes = '', endTime = undefined, user} ){
+  static insertVehicleBlock$({vehicleId, businessId, licensePlate, blockKey, notes = '', endTime = undefined, user} ){
     const collection = mongoDB.db.collection(COLLECTION_NAME);
 
     return defer(() =>
       collection.insertOne({
         vehicleId: vehicleId,
+        businessId: businessId,
         licensePlate: licensePlate,
         key: blockKey,
         notes: notes,
@@ -68,6 +69,17 @@ class VehicleBlocksDA {
       })
     )
 
+  }
+
+  static getVehicleListToRemovePYP_Blocks$(buIds){
+    const collection = mongoDB.db.collection(COLLECTION_NAME);
+    const query = {};
+    query["$and"] = [
+      { businessId: { $in: buIds } },
+      { key: "PYP" }
+    ];
+    const cursor = collection.find(query, { projection: { _id: 0, licensePlate: 1, vehicleId: 1  } });
+    return mongoDB.extractAllFromMongoCursor$(cursor);
   }
 
 }

@@ -77,9 +77,9 @@ class VehicleES {
         return VehicleBlocksDA.removeExpiredBlocks$(evt.timestamp);
     }
 
-    handlePicoYPlacaBlocksRuleEmitted$(pypBlocksRuleEmittedEvt){
-        console.log("!!!!!!!!!!!!!!!!!!!!!! pypBlocksRuleEmittedEvt !!!!!!!!!!!!!!!!!!!!!!!");
-        return of(pypBlocksRuleEmittedEvt.data)
+    handlePicoPlacaCaliBlockJobTriggered$(PicoPlacaCaliBlockJobTriggered){
+        console.log("!!!!!!!!!!!!!!!!!!!!!! PicoPlacaCaliBlockJobTriggered !!!!!!!!!!!!!!!!!!!!!!!");
+        return of(PicoPlacaCaliBlockJobTriggered.data)
         .pipe(
             // tap(() => console.log("INSIDE PIPE")),
             mergeMap(({ licensePlateMap }) => of(Crossccutting.getDayOfYear())
@@ -91,9 +91,9 @@ class VehicleES {
                     // tap(dyo => console.log("PLACAS A BLOQUEAR ==> ", dyo)),
                 )
             ),
-            mergeMap(platesKey =>  VehicleDA.getVehicleListToAplyPYP_Blocks$( pypBlocksRuleEmittedEvt.data.buIds, platesKey) ),
+            mergeMap(platesKey =>  VehicleDA.getVehicleListToAplyPYP_Blocks$( PicoPlacaCaliBlockJobTriggered.data.buIds, platesKey) ),
             
-            tap(vehicle => console.log("VEHICLE FOUND ==> ", JSON.stringify(vehicle))),
+            tap(vehicle => console.log("VEHICLE FOUND TO BLOCK BY PYP ==> ", JSON.stringify(vehicle))),
 
             mergeMap(vehicle => eventSourcing.eventStore.emitEvent$(
                 new Event({
@@ -103,6 +103,7 @@ class VehicleES {
                     aggregateId: vehicle._id,
                     data: { 
                         blockKey: "PYP",
+                        businessId: vehicle.businessId,
                         licensePlate: vehicle.generalInfo.licensePlate,
                         notes: "Blocked by CronJob",
                         endTime: undefined                        
@@ -128,37 +129,30 @@ class VehicleES {
         )        
     }
 
-    handlePicoYPlacaUnblocksRuleEmitted$(pypUnblocksRuleEmittedEvt){
-        console.log("handlePicoYPlacaUnblocksRuleEmitted !!!!!!!!!!!!!!!!!!!!!! pypUnblocksRuleEmittedEvt !!!!!!!!!!!!!!!!!!!!!");
-        return of(pypUnblocksRuleEmittedEvt.data)
-        .pipe(
-            mergeMap(({ licensePlateMap }) => of(Crossccutting.getDayOfYear())
-                .pipe(
-                    map(dayOfYear => dayOfYear % 5),
-                    map(dayKey => licensePlateMap[dayKey].split(",").map(e => e.trim())),
-                )
-            ),
-            mergeMap(platesKey =>  VehicleDA.getVehicleListToAplyPYP_Blocks$( pypUnblocksRuleEmittedEvt.data.buIds, platesKey) ),
-            tap(vehicle => console.log("VEHICLE FOUND ==> ", JSON.stringify(vehicle))),
+    handlePicoPlacaCaliUnblockJobTriggered$(PicoPlacaCaliUnblockJobTriggeredEvt){
+        console.log("handlePicoYPlacaUnblocksRuleEmitted !!!!!!!!!!!!!!!!!!!!!! handlePicoPlacaCaliBlockJobTriggered !!!!!!!!!!!!!!!!!!!!!");
+        return of(PicoPlacaCaliUnblockJobTriggeredEvt.data)
+            .pipe(
+                mergeMap(() => VehicleBlocksDA.getVehicleListToRemovePYP_Blocks$(PicoPlacaCaliUnblockJobTriggeredEvt.data.buIds)),
+                tap(vehicle => console.log("VEHICLE FOUNF TO REMOVE PYP BLOCK ==> ", JSON.stringify(vehicle))),
+                mergeMap(vehicle => eventSourcing.eventStore.emitEvent$(
+                    new Event({
+                        eventType: "VehicleBlockRemoved",
+                        eventTypeVersion: 1,
+                        aggregateType: "Vehicle",
+                        aggregateId: vehicle.vehicleId,
+                        data: {
+                            blockKey: "PYP",
+                            licensePlate: vehicle.licensePlate,
+                            notes: "Unblocked by CronJob"
+                        },
+                        user: "SYSTEM"
+                    })
+                )),
+                toArray(),
+                tap(() => console.log("END ==> ")),
 
-            mergeMap(vehicle => eventSourcing.eventStore.emitEvent$(
-                new Event({
-                    eventType: "VehicleBlockRemoved",
-                    eventTypeVersion: 1,
-                    aggregateType: "Vehicle",
-                    aggregateId: vehicle._id,
-                    data: { 
-                        blockKey: "PYP",
-                        licensePlate: vehicle.generalInfo.licensePlate,
-                        notes: "Unblocked by CronJob"        
-                    },
-                    user: "SYSTEM"
-                })
-            )),
-            toArray(),
-            tap(() => console.log("END ==> ")),
-            
-        )
+            )
     }
 
 }
