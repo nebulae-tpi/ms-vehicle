@@ -106,6 +106,7 @@ class VehicleES {
                         businessId: vehicle.businessId,
                         licensePlate: vehicle.generalInfo.licensePlate,
                         notes: "Blocked by CronJob",
+                        startTime: Date.now(),
                         endTime: undefined                        
                     },
                     user: "SYSTEM"
