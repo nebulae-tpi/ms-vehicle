@@ -73,7 +73,7 @@ export const locale = {
       CREATE_MESSAGE: '¿Estás seguro que desea realizar la creación?',
       CANCEL: 'Cancelar',
       ENTITY_UPDATED: 'Vehículo Actualizado',
-      ENTITY_CREATED: 'Vehículo Areado',
+      ENTITY_CREATED: 'Vehículo Creado',
       CLOSE: 'Cerrar',
       WAIT_OPERATION: 'Operación en proceso, en caso de no recibir respuesta, verificar si los cambios realizados fueron aplicados exitosamente.',
       SELECT_BUSINESS: 'Debe seleccionar una unidad de negocio antes de realizar la creación.',
