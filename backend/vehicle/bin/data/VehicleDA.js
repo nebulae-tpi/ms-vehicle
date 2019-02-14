@@ -36,10 +36,7 @@ class VehicleDA {
       query.businessId = businessId;
     }
 
-    return defer(() => collection.findOne(query))
-    .pipe(
-      tap(r => console.log("RESULTADO => ", r))
-    )
+    return defer(() => collection.findOne(query));
   }
 
   static getVehicleList$(filter, pagination) {

@@ -132,9 +132,7 @@ export class VehicleDetailComponent implements OnInit, OnDestroy {
     this.ngUnsubscribe.pipe(
       take(1),
       mergeMap(() => this.VehicleDetailservice.resetOperation$())
-    ).subscribe(val => {
-      // console.log('Reset operation');
-    });
+    ).subscribe(val => {});
   }
 
   showSnackBar(message) {

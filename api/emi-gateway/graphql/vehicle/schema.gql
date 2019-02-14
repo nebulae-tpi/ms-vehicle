@@ -140,7 +140,7 @@ type VehicleVehicleBlock {
 }
 
 type Query {
-  "Get Vehicles filtered "
+  "Get Vehicles filtered"
   VehicleVehicles(filterInput: VehicleFilterInput!, paginationInput: PaginationInput!): [VehicleVehicleEntity]
   "Get the amount of Vehicles filtered "
   VehicleVehiclesSize(filterInput: VehicleFilterInput!): Int!

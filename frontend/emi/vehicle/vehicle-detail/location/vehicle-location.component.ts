@@ -103,7 +103,6 @@ export class VehicleLocationComponent implements OnInit, OnDestroy {
     return posList && posList.length > 0
       ? from(posList)
         .pipe(
-          tap(i => console.log('ITERANDO LOS ELEMENTOS DE drawPosList', i)),
           map((p) => new MarkerRef(
             new VehiclePoint(this.vehicle._id, 0, 'BUSINESS_ID', 'BUSINESS_NAME', undefined),
             {

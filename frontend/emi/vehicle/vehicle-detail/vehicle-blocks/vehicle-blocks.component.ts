@@ -111,9 +111,8 @@ export class VehicleBlocksComponent implements OnInit, OnDestroy {
     this.VehicleDetailservice.getVehicleVehicleBlocks$(this.vehicle._id)
     .pipe(
       map(r => JSON.parse(JSON.stringify(r.data.VehicleVehicleBlocks))),
-      tap((R) => console.log('LA RESPUESTA ES ...', R)),
       tap(blocks =>  this.dataSource.data = blocks)
-    ).subscribe(() => {}, err => console.log(err), () => console.log('COMPLETADO'));
+    ).subscribe(() => {}, err => console.log(err), () => {});
 
     this.vehicleblocksForm = new FormGroup({
       fuel: new FormControl(this.vehicle ? (this.vehicle.blocks || {}).fuel : ''),
@@ -215,15 +214,13 @@ export class VehicleBlocksComponent implements OnInit, OnDestroy {
   }
 
   removeBlock(block){
-    console.log('REMOVING ...', block);
     this.VehicleDetailservice.removeVehicleBlock$(this.vehicle._id, block.key)
     .pipe(
-      tap(r => console.log('RESULTADO DE LA MUTACION', r)),
       tap(() => {
         this.dataSource.data = this.dataSource.data.filter((e: any) => e.key !== block.key);
       })
     )
-    .subscribe(() => {}, err => console.log(err), () => console.log('TERMINADO'));
+    .subscribe(() => {}, err => console.log(err), () => {});
 
   }
 

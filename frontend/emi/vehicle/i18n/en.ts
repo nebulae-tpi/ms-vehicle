@@ -2,6 +2,7 @@ export const locale = {
   lang: 'en',
   data: {
     VEHICLE: {
+      LICENSE_PLATE_ALREADY_USED: 'License Plate Already Used',
       NAME_REQUIRED: 'Name required',
       BRAND_REQUIRED: 'Brand required',
       MODEL_REQUIRED: 'Model required',
@@ -12,7 +13,7 @@ export const locale = {
       FILTER: 'Filter',
       NAME: 'Name',
       CREATION_DATE: 'Creation Date',
-      CREATOR_USER: 'Responsible User',
+      CREATOR_USER: 'Created By',
       RESET_FILTER: 'Reset Filter',
       FILTER_SELECTED_BUSINESS: 'Filter by Selected Business Unit',
       CREATION_TIMESTAMP: 'Created',
@@ -69,6 +70,7 @@ export const locale = {
       UPDATE: 'Save',
       UPDATE_TITLE: 'Update',
       UPDATE_MESSAGE: 'Are you sure you want to make the modification?',
+      UPDATE_LICENSE_PLATE_MESSAGE: 'Are you sure you want to make the modification? If license plate is asigned to some driver that assignment will lose',
       CREATE_TITLE: 'Creation',
       CREATE_MESSAGE: '¿Are you sure you want to make the creation?',
       CANCEL: 'Cancel',

@@ -91,7 +91,7 @@ export class VehicleDetailGeneralInfoComponent implements OnInit, OnDestroy {
 
 
   ngOnInit() {
-    console.log('VEHICULO QUE ENTRA ==> ', this.vehicle);
+    // console.log('VEHICULO QUE ENTRA ==> ', this.vehicle);
     this.vehicleGeneralInfoForm = new FormGroup({
       licensePlate: new FormControl(this.vehicle ? (this.vehicle.generalInfo || {}).licensePlate : ''),
       model: new FormControl(this.vehicle ? (this.vehicle.generalInfo || {}).model : ''),
@@ -116,9 +116,11 @@ export class VehicleDetailGeneralInfoComponent implements OnInit, OnDestroy {
       filter(selectedBusiness => selectedBusiness != null && selectedBusiness.id != null),
       mergeMap(selectedBusiness => this.showConfirmationDialog$('VEHICLE.CREATE_MESSAGE', 'VEHICLE.CREATE_TITLE', {})
         .pipe(
-          mergeMap(ok => {
+          map(() => this.vehicleGeneralInfoForm.getRawValue()),
+          map(generalInfo => ({...generalInfo, licensePlate: generalInfo.licensePlate.trim().toUpperCase() })),
+          mergeMap(rawGeneralInfo => {
             this.vehicle = {
-              generalInfo: this.vehicleGeneralInfoForm.getRawValue(),
+              generalInfo: rawGeneralInfo,
               state: this.vehicleStateForm.getRawValue().state,
               businessId: selectedBusiness.id
             };
@@ -136,12 +138,15 @@ export class VehicleDetailGeneralInfoComponent implements OnInit, OnDestroy {
           this.showSnackBar('VEHICLE.ERROR_OPERATION');
           console.log('Error ==> ', error);
         },
-        () => console.log('COMPLETED')
+        () => {})
       );
   }
 
   updateVehicleGeneralInfo() {
-    this.showConfirmationDialog$('VEHICLE.UPDATE_MESSAGE', 'VEHICLE.UPDATE_TITLE', {})
+
+    const licensePlateChanged = this.vehicleGeneralInfoForm.getRawValue().licensePlate !== this.vehicle.generalInfo.licensePlate;
+
+    this.showConfirmationDialog$(licensePlateChanged ? 'VEHICLE.UPDATE_LICENSE_PLATE_MESSAGE' : 'VEHICLE.UPDATE_MESSAGE', 'VEHICLE.UPDATE_TITLE', {} )
       .pipe(
         mergeMap(() => this.VehicleDetailservice.updateVehicleVehicleGeneralInfo$(
           this.vehicle._id, {
@@ -231,6 +236,9 @@ export class VehicleDetailGeneralInfoComponent implements OnInit, OnDestroy {
 
       if (Array.isArray(response.errors)) {
         response.errors.forEach(error => {
+          if (error.message.code === 22010){
+            this.vehicleGeneralInfoForm.get('licensePlate').setErrors({'plate_already_used': true});
+          }
           if (Array.isArray(error)) {
             error.forEach(errorDetail => {
               this.showMessageSnackbar('ERRORS.' + errorDetail.message.code);

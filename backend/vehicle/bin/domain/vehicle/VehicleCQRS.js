@@ -11,6 +11,7 @@ const MATERIALIZED_VIEW_TOPIC = "materialized-view-updates";
 const GraphqlResponseTools = require('../../tools/GraphqlResponseTools');
 const RoleValidator = require("../../tools/RoleValidator");
 const { take, mergeMap, catchError, map, toArray, tap } = require('rxjs/operators');
+const VehicleHelper = require("./VehicleHelper");
 const {
   CustomError,
   DefaultError,
@@ -166,6 +167,7 @@ class VehicleCQRS {
       PERMISSION_DENIED,
       ["PLATFORM-ADMIN", "BUSINESS-OWNER"]
     ).pipe(
+      mergeMap(() => VehicleHelper.verifyLicencePlateUpdate$(vehicle._id, vehicle.generalInfo.licensePlate)),
       mergeMap(() => eventSourcing.eventStore.emitEvent$(
         new Event({
           eventType: "VehicleGeneralInfoUpdated",

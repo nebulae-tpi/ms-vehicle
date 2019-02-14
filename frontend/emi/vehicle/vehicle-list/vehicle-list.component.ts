@@ -245,7 +245,7 @@ export class VehicleListComponent implements OnInit, OnDestroy {
 
         return this.filterForm.enable({ emitEvent: true });
       })
-    ).subscribe(() => console.log(''), err => console.log(err), () => console.log('COMPLETED'));
+    ).subscribe(() => {}, err => console.log(err), () => {});
   }
 
   /**

@@ -17,6 +17,9 @@
             <mat-error *ngIf="vehicleGeneralInfoForm.hasError('required', ['licensePlate'])">
                 {{'VEHICLE.NAME_REQUIRED' | translate}}
             </mat-error>
+            <mat-error *ngIf="vehicleGeneralInfoForm.hasError('plate_already_used', ['licensePlate'])">
+              {{'VEHICLE.LICENSE_PLATE_ALREADY_USED' | translate}}
+          </mat-error>
         </mat-form-field>
 
         <mat-form-field fxFlex.gt-xs="50" fxFlex="100" fxLayout="column" class="pr-8 pl-8">

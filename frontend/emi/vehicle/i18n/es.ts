@@ -2,6 +2,7 @@ export const locale = {
   lang: 'es',
   data: {
     VEHICLE: {
+      LICENSE_PLATE_ALREADY_USED: 'Esta Placa Ya Está Siendo Usada',
       NAME_REQUIRED: 'Placa requerida',
       BRAND_REQUIRED: 'Marca requerida',
       MODEL_REQUIRED: 'Módelo requerida',
@@ -12,7 +13,7 @@ export const locale = {
       FILTER: 'Filtros',
       NAME: 'Nombre',
       CREATION_DATE: 'Fecha Creación',
-      CREATOR_USER: 'Usuario Responsable',
+      CREATOR_USER: 'Creado Por',
       RESET_FILTER: 'Limpiar Filtro',
       FILTER_SELECTED_BUSINESS: 'Filtrar Por Unidad De Negocio Seleccionada',
       CREATION_TIMESTAMP: 'Creado',
@@ -69,6 +70,7 @@ export const locale = {
       UPDATE: 'Guardar',
       UPDATE_TITLE: 'Actualizar',
       UPDATE_MESSAGE: '¿Estás seguro que desea realizar la modificación?',
+      UPDATE_LICENSE_PLATE_MESSAGE: '¿Estás seguro que desea realizar la modificación? Si la placa está asignada a un conductor esta asignación se perderá',
       CREATE_TITLE: 'Creación',
       CREATE_MESSAGE: '¿Estás seguro que desea realizar la creación?',
       CANCEL: 'Cancelar',
