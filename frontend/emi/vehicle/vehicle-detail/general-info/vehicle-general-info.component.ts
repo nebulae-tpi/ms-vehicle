@@ -131,14 +131,12 @@ export class VehicleDetailGeneralInfoComponent implements OnInit, OnDestroy {
         )),
       takeUntil(this.ngUnsubscribe)
     )
-      .subscribe(result => {
-        this.showSnackBar('VEHICLE.WAIT_OPERATION');
-      },
+      .subscribe(() => this.showSnackBar('VEHICLE.WAIT_OPERATION'),
         error => {
           this.showSnackBar('VEHICLE.ERROR_OPERATION');
           console.log('Error ==> ', error);
         },
-        () => {})
+        () => { }
       );
   }
 
