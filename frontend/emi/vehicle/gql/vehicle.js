@@ -12,6 +12,7 @@ export const VehicleVehicle = gql`
         brand
         line
       }
+      blockings
       features {
         fuel
         capacity
@@ -53,6 +54,7 @@ export const VehicleVehicles = gql`
         brand
         line
       }
+      blockings
       state
       creationTimestamp
       creatorUser

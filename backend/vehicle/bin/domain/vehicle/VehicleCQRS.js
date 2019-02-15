@@ -230,7 +230,7 @@ class VehicleCQRS {
       modificationTimestamp: new Date().getTime()
     };
 
-    console.log(vehicleUpdate);
+    //console.log(vehicleUpdate);
 
     return RoleValidator.checkPermissions$(
       authToken.realm_access.roles,
@@ -257,7 +257,7 @@ class VehicleCQRS {
   }
 
   getVehicleBlocks$({ root, args, jwt }, authToken) { 
-    console.log(args);
+    //console.log(args);
 
     return RoleValidator.checkPermissions$(
       authToken.realm_access.roles,

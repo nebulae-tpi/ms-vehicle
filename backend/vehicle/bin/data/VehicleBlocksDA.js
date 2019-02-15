@@ -22,7 +22,7 @@ class VehicleBlocksDA {
 
 
   static findBlocksByVehicle$(vehicleId) {
-    console.log("findBlocksByVehicle$", vehicleId);
+    //console.log("findBlocksByVehicle$", vehicleId);
     const collection = mongoDB.db.collection(COLLECTION_NAME);
     const query = {
       vehicleId: vehicleId

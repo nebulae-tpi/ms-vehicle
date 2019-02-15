@@ -27,7 +27,7 @@ class VehicleDA {
    * Gets an user by its username
    */
   static getVehicle$(id, businessId) {
-    console.log("getVehicle$", id, businessId);
+    //console.log("getVehicle$", id, businessId);
     const collection = mongoDB.db.collection(COLLECTION_NAME);
     // const query = { _id:  ObjectId(id) };
     const query  = {  _id: id  } ;
@@ -84,8 +84,12 @@ class VehicleDA {
       query.businessId = filter.businessId;
     }
 
-    if (filter.name) {
-      query["generalInfo.name"] = { $regex: filter.name, $options: "i" };
+    // if (filter.name) {
+    //   query["generalInfo.name"] = { $regex: filter.name, $options: "i" };
+    // }
+
+    if (filter.licensePlate) {
+      query["generalInfo.licensePlate"] = { $regex: filter.licensePlate, $options: "i" };
     }
 
     if (filter.creationTimestamp) {
@@ -157,7 +161,7 @@ class VehicleDA {
   }
 
   static updateVehicleFeatures$(id, newData) {
-    console.log(id, newData);
+    // console.log(id, newData);
     const collection = mongoDB.db.collection(COLLECTION_NAME);
     return defer(() => collection.findOneAndUpdate(
       { _id: id },

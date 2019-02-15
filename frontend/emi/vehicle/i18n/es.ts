@@ -18,7 +18,7 @@ export const locale = {
       FILTER_SELECTED_BUSINESS: 'Filtrar Por Unidad De Negocio Seleccionada',
       CREATION_TIMESTAMP: 'Creado',
       LAST_MODIFICATION_TIMESTAMP: 'Modificado',
-      MODIFIER_USER: 'Responsable',
+      MODIFIER_USER: 'Modificado por',
       ADD_NEW: 'Agregar Nuevo',
       DETAILS: {
         TABS: {

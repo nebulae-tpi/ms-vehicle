@@ -64,7 +64,7 @@ export const locale = {
       },
       ACTIVE: 'Active',
       LICENSE_PLATE: 'Plate',
-      BLOCKINGS: 'Blockings',
+      BLOCKINGS: 'Blocks',
       MODEL: 'Model',
       CREATE: 'Create',
       UPDATE: 'Save',

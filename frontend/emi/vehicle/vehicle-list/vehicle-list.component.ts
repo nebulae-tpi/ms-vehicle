@@ -109,9 +109,9 @@ export class VehicleListComponent implements OnInit, OnDestroy {
     'model',
     'state',
     'blockings',
+    'creatorUser',    
+    'modifierUser',    
     'modificationTimestamp',
-    'modifierUser',
-    'creatorUser'
   ];
 
   /////// OTHERS ///////

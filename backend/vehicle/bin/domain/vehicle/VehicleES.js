@@ -73,12 +73,12 @@ class VehicleES {
     }
 
     handleCleanExpiredBlocks$(evt){
-        console.log('############### handleCleanExpiredBlocks$', evt);
+        //console.log('############### handleCleanExpiredBlocks$', evt);
         return VehicleBlocksDA.removeExpiredBlocks$(evt.timestamp);
     }
 
     handlePicoPlacaCaliBlockJobTriggered$(PicoPlacaCaliBlockJobTriggered){
-        console.log("!!!!!!!!!!!!!!!!!!!!!! PicoPlacaCaliBlockJobTriggered !!!!!!!!!!!!!!!!!!!!!!!");
+        //console.log("!!!!!!!!!!!!!!!!!!!!!! PicoPlacaCaliBlockJobTriggered !!!!!!!!!!!!!!!!!!!!!!!");
         return of(PicoPlacaCaliBlockJobTriggered.data)
         .pipe(
             // tap(() => console.log("INSIDE PIPE")),
@@ -93,7 +93,7 @@ class VehicleES {
             ),
             mergeMap(platesKey =>  VehicleDA.getVehicleListToAplyPYP_Blocks$( PicoPlacaCaliBlockJobTriggered.data.buIds, platesKey) ),
             
-            tap(vehicle => console.log("VEHICLE FOUND TO BLOCK BY PICO_Y_PLACA ==> ", JSON.stringify(vehicle))),
+            //tap(vehicle => console.log("VEHICLE FOUND TO BLOCK BY PICO_Y_PLACA ==> ", JSON.stringify(vehicle))),
 
             mergeMap(vehicle => eventSourcing.eventStore.emitEvent$(
                 new Event({
@@ -113,7 +113,7 @@ class VehicleES {
                 })
             )),
             toArray(),
-            tap(() => console.log("END ==> ")),
+            //tap(() => console.log("END ==> ")),
             
         )
     }
@@ -131,11 +131,11 @@ class VehicleES {
     }
 
     handlePicoPlacaCaliUnblockJobTriggered$(PicoPlacaCaliUnblockJobTriggeredEvt){
-        console.log("handlePicoYPlacaUnblocksRuleEmitted !!!!!!!!!!!!!!!!!!!!!! handlePicoPlacaCaliBlockJobTriggered !!!!!!!!!!!!!!!!!!!!!");
+        //console.log("handlePicoYPlacaUnblocksRuleEmitted !!!!!!!!!!!!!!!!!!!!!! handlePicoPlacaCaliBlockJobTriggered !!!!!!!!!!!!!!!!!!!!!");
         return of(PicoPlacaCaliUnblockJobTriggeredEvt.data)
             .pipe(
                 mergeMap(() => VehicleBlocksDA.getVehicleListToRemovePYP_Blocks$(PicoPlacaCaliUnblockJobTriggeredEvt.data.buIds)),
-                tap(vehicle => console.log("VEHICLE FOUNF TO REMOVE PICO_Y_PLACA BLOCK ==> ", JSON.stringify(vehicle))),
+                //tap(vehicle => console.log("VEHICLE FOUNF TO REMOVE PICO_Y_PLACA BLOCK ==> ", JSON.stringify(vehicle))),
                 mergeMap(vehicle => eventSourcing.eventStore.emitEvent$(
                     new Event({
                         eventType: "VehicleBlockRemoved",
@@ -151,7 +151,7 @@ class VehicleES {
                     })
                 )),
                 toArray(),
-                tap(() => console.log("END ==> ")),
+                //tap(() => console.log("END ==> ")),
 
             )
     }
