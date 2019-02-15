@@ -81,9 +81,9 @@ class VehicleCQRS {
         of(vehicle),
         VehicleBlocksDA.findBlocksByVehicle$(vehicle._id)
       )),
-      map(([vehicle, blocks]) => ({ ...vehicle, blockings: blocks.map(block => block.key) }) ),
-      tap(v => console.log("Vehicle", v)),
+      map(([vehicle, blocks]) => ({ ...vehicle, blockings: blocks.map(block => block.key) })),
       toArray(),
+      map(vehiclesList => vehiclesList.sort((a,b) => b.creationTimestamp - a.creationTimestamp )),
       mergeMap(rawResponse => GraphqlResponseTools.buildSuccessResponse$(rawResponse)),
       catchError(err => GraphqlResponseTools.handleError$(err))
     );
