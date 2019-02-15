@@ -116,7 +116,7 @@
                         </mat-header-cell>
                         <mat-cell *cdkCellDef="let vehicle" fxHide fxShow.gt-xs>
                             <mat-icon *ngIf="!vehicle.blockings || vehicle.blockings.length === 0" class="active-icon mat-green-600-bg s-16">check</mat-icon>
-                            <mat-icon *ngIf="vehicle.blockings" class="active-icon mat-red-500-bg s-16">close</mat-icon>
+                            <mat-icon *ngIf="vehicle.blockings && vehicle.blockings.length > 0" class="active-icon mat-red-500-bg s-16">close</mat-icon>
                         </mat-cell>
                     </ng-container>
 
