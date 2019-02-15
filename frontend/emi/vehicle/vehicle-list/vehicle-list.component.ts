@@ -257,7 +257,7 @@ export class VehicleListComponent implements OnInit, OnDestroy {
           ([filterValue, paginator, selectedBusiness]) => {
             const filterInput = {
               businessId: selectedBusiness ? selectedBusiness.id : null,
-              licensePlate: filterValue.licensePlate,
+              licensePlate: filterValue.licensePlate ? filterValue.licensePlate.trim(): null,
               creatorUser: filterValue.creatorUser,
               creationTimestamp: filterValue.creationTimestamp
                 ? filterValue.creationTimestamp.startOf('day').valueOf()

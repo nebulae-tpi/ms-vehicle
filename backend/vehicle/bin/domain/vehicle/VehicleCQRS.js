@@ -1,7 +1,7 @@
 "use strict";
 
 const uuidv4 = require("uuid/v4");
-const { of, interval, throwError } = require("rxjs");
+const { of, interval, throwError, forkJoin } = require("rxjs");
 const Event = require("@nebulae/event-store").Event;
 const eventSourcing = require("../../tools/EventSourcing")();
 const VehicleDA = require("../../data/VehicleDA");
@@ -77,6 +77,12 @@ class VehicleCQRS {
 
         return VehicleDA.getVehicleList$(filterInput, args.paginationInput);
       }),
+      mergeMap(vehicle => forkJoin(
+        of(vehicle),
+        VehicleBlocksDA.findBlocksByVehicle$(vehicle._id)
+      )),
+      map(([vehicle, blocks]) => ({ ...vehicle, blockings: blocks.map(block => block.key) }) ),
+      tap(v => console.log("Vehicle", v)),
       toArray(),
       mergeMap(rawResponse => GraphqlResponseTools.buildSuccessResponse$(rawResponse)),
       catchError(err => GraphqlResponseTools.handleError$(err))
