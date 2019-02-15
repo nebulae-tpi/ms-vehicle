@@ -8,7 +8,7 @@ type CommandResponse {
 enum VehicleFueltType {
   GASOLINE
   GAS
-  GASOLINE_AND_GAS
+  GAS_AND_GASOLINE
   DIESEL
 } 
 

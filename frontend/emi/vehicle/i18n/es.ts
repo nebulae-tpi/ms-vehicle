@@ -50,7 +50,7 @@ export const locale = {
         FUEL_TYPES: {
           GASOLINE: 'Gasolina',
           GAS: 'Gas',
-          GASOLINE_AND_GAS: 'Gas y Gasolina',
+          GAS_AND_GASOLINE: 'Gas y Gasolina',
           DIESEL: 'Diesel',
           ELECTRIC: 'Electricidad'
         },
