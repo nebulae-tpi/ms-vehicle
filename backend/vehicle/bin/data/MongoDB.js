@@ -56,6 +56,9 @@ class MongoDB {
       observer.next('Creating index for vehicle.vehicleBlocks => ({ vehicleId: 1, key: 1 }, { unique: true })  ');
       await this.db.collection('vehicleBlocks').createIndex( { vehicleId: 1,  key: 1 }, { unique: true });
 
+      observer.next('Creating index for vehicle.Vehicle => ({ businessId: 1 })');
+      await this.db.collection('Vehicle').createIndex( { businessId: 1} );
+
       observer.next("All indexes created");
       observer.complete();
     });
