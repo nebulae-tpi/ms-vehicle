@@ -73,15 +73,12 @@ class VehicleES {
     }
 
     handleCleanExpiredBlocks$(evt){
-        //console.log('############### handleCleanExpiredBlocks$', evt);
         return VehicleBlocksDA.removeExpiredBlocks$(evt.timestamp);
     }
 
     handlePicoPlacaCaliBlockJobTriggered$(PicoPlacaCaliBlockJobTriggered){
-        //console.log("!!!!!!!!!!!!!!!!!!!!!! PicoPlacaCaliBlockJobTriggered !!!!!!!!!!!!!!!!!!!!!!!");
         return of(PicoPlacaCaliBlockJobTriggered.data)
         .pipe(
-            // tap(() => console.log("INSIDE PIPE")),
             mergeMap(({ licensePlateMap }) => of(Crossccutting.getDayOfYear())
                 .pipe(
                     // tap(dyo => console.log("DIA DEL AÑO ==> ", dyo)),
@@ -112,9 +109,7 @@ class VehicleES {
                     user: "SYSTEM"
                 })
             )),
-            toArray(),
-            //tap(() => console.log("END ==> ")),
-            
+            toArray()            
         )
     }
 
@@ -151,7 +146,6 @@ class VehicleES {
                     })
                 )),
                 toArray(),
-                //tap(() => console.log("END ==> ")),
 
             )
     }

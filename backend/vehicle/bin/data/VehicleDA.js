@@ -7,8 +7,6 @@ const { CustomError } = require("../tools/customError");
 const { map, tap } = require("rxjs/operators");
 const { of, Observable, defer } = require("rxjs");
 
-const {ObjectId} = require('mongodb');
-
 class VehicleDA {
   static start$(mongoDbInstance) {
     return Observable.create(observer => {
@@ -27,9 +25,7 @@ class VehicleDA {
    * Gets an user by its username
    */
   static getVehicle$(id, businessId) {
-    //console.log("getVehicle$", id, businessId);
     const collection = mongoDB.db.collection(COLLECTION_NAME);
-    // const query = { _id:  ObjectId(id) };
     const query  = {  _id: id  } ;
 
     if(businessId){
@@ -161,7 +157,6 @@ class VehicleDA {
   }
 
   static updateVehicleFeatures$(id, newData) {
-    // console.log(id, newData);
     const collection = mongoDB.db.collection(COLLECTION_NAME);
     return defer(() => collection.findOneAndUpdate(
       { _id: id },

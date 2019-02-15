@@ -150,11 +150,8 @@
 
                     <mat-header-row *cdkHeaderRowDef="displayedColumns"></mat-header-row>
 
-                    <mat-row *cdkRowDef="let row; columns: displayedColumns" class="selectedElement" (click)="selectvehicleRow(row)" [ngClass]="{
-                                  highlight:
-                                  selectedVehicle &&
-                                  selectedVehicle._id == row._id
-                                }" [routerLink]="row._id" matRipple>
+                    <mat-row *cdkRowDef="let row; columns: displayedColumns" class="selectedElement" (click)="selectvehicleRow(row)"
+                        [ngClass]="{ highlight: selectedVehicle && selectedVehicle._id == row._id }" [routerLink]="row._id" matRipple>
                     </mat-row>
                 </mat-table>
                 <mat-paginator #paginator [length]="tableSize" [pageIndex]="tablePage" [pageSize]="tableCount" [pageSizeOptions]="[5, 10, 25, 100]">

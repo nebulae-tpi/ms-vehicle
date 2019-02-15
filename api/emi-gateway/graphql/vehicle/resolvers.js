@@ -232,10 +232,6 @@ module.exports = {
             ).toPromise();
         },
     },
-
-    
-
-
     
 
     //// SUBSCRIPTIONS ///////
