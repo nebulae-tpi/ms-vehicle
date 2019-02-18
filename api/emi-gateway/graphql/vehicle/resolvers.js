@@ -38,14 +38,15 @@ module.exports = {
                 context.authToken.realm_access.roles,
                 'ms-' + 'Vehicle', 'VehicleVehicles',
                 PERMISSION_DENIED_ERROR_CODE,
-                'Permission denied', ["PLATFORM-ADMIN", "BUSINESS-OWNER" ]
+                'Permission denied', ["PLATFORM-ADMIN", "BUSINESS-OWNER", "COORDINATOR" ]
             )
                 .pipe(
                     mergeMap(() =>
                         broker
                             .forwardAndGetReply$(
                                 "Vehicle",
-                                "emigateway.graphql.query.VehicleVehicles", { root, args, jwt: context.encodedToken },
+                                "emigateway.graphql.query.VehicleVehicles",
+                                { root, args, jwt: context.encodedToken },
                                 2000
                             )
                     ),
@@ -56,9 +57,9 @@ module.exports = {
         VehicleVehiclesSize(root, args, context) {
             return RoleValidator.checkPermissions$(
                 context.authToken.realm_access.roles,
-                'ms-' + 'Vehicle', 'VehicleVehiclesSize',
+                'ms-Vehicle', 'VehicleVehiclesSize',
                 PERMISSION_DENIED_ERROR_CODE,
-                'Permission denied', ["PLATFORM-ADMIN", "BUSINESS-OWNER"]
+                'Permission denied', ["PLATFORM-ADMIN", "BUSINESS-OWNER", "COORDINATOR"]
             )
                 .pipe(
                     mergeMap(() =>
@@ -76,9 +77,10 @@ module.exports = {
         VehicleVehicle(root, args, context) {
             return RoleValidator.checkPermissions$(
                 context.authToken.realm_access.roles,
-                'ms-' + 'Vehicle', 'VehicleVehicle',
+                'ms-Vehicle', 'VehicleVehicle',
                 PERMISSION_DENIED_ERROR_CODE,
-                'Permission denied', ["PLATFORM-ADMIN", "BUSINESS-OWNER"]
+                'Permission denied',
+                ["PLATFORM-ADMIN", "BUSINESS-OWNER", "COORDINATOR"]
             )
                 .pipe(
                     mergeMap(() =>
@@ -96,16 +98,18 @@ module.exports = {
         VehicleVehicleBlocks(root, args, context) {
             return RoleValidator.checkPermissions$(
                 context.authToken.realm_access.roles,
-                'ms-' + 'Vehicle', 'VehicleVehicleBlocks',
+                'ms-Vehicle', 'VehicleVehicleBlocks',
                 PERMISSION_DENIED_ERROR_CODE,
-                'Permission denied', ["PLATFORM-ADMIN", "BUSINESS-OWNER"]
+                'Permission denied',
+                ["PLATFORM-ADMIN", "BUSINESS-OWNER", "COORDINATOR"]
             )
                 .pipe(
                     mergeMap(() =>
                         broker
                             .forwardAndGetReply$(
                                 "Vehicle",
-                                "emigateway.graphql.query.vehicleVehicleBlocks", { root, args, jwt: context.encodedToken },
+                                "emigateway.graphql.query.vehicleVehicleBlocks",
+                                { root, args, jwt: context.encodedToken },
                                 2000
                             )
                     ),
@@ -122,13 +126,15 @@ module.exports = {
                 "Vehicle",
                 "VehicleCreateVehicle",
                 PERMISSION_DENIED_ERROR_CODE,
-                "Permission denied", ["PLATFORM-ADMIN", "BUSINESS-OWNER"]
+                "Permission denied",
+                ["PLATFORM-ADMIN", "BUSINESS-OWNER", "COORDINATOR"]
             )
                 .pipe(
                     mergeMap(() =>
                         context.broker.forwardAndGetReply$(
                             "Vehicle",
-                            "emigateway.graphql.mutation.VehicleCreateVehicle", { root, args, jwt: context.encodedToken },
+                            "emigateway.graphql.mutation.VehicleCreateVehicle",
+                            { root, args, jwt: context.encodedToken },
                             2000
                         )
                     ),
@@ -142,12 +148,14 @@ module.exports = {
                 "Vehicle",
                 "VehicleUpdateVehicleGeneralInfo",
                 PERMISSION_DENIED_ERROR_CODE,
-                "Permission denied", ["PLATFORM-ADMIN", "BUSINESS-OWNER"]
+                "Permission denied",
+                ["PLATFORM-ADMIN", "BUSINESS-OWNER", "COORDINATOR"]
             ).pipe(
                 mergeMap(() =>
                     context.broker.forwardAndGetReply$(
                         "Vehicle",
-                        "emigateway.graphql.mutation.VehicleUpdateVehicleGeneralInfo", { root, args, jwt: context.encodedToken },
+                        "emigateway.graphql.mutation.VehicleUpdateVehicleGeneralInfo",
+                        { root, args, jwt: context.encodedToken },
                         2000
                     )
                 ),
@@ -161,12 +169,14 @@ module.exports = {
                 "Vehicle",
                 "VehicleUpdateVehicleState",
                 PERMISSION_DENIED_ERROR_CODE,
-                "Permission denied", ["PLATFORM-ADMIN", "BUSINESS-OWNER"]
+                "Permission denied",
+                ["PLATFORM-ADMIN", "BUSINESS-OWNER", "COORDINATOR"]
             ).pipe(
                 mergeMap(() =>
                     context.broker.forwardAndGetReply$(
                         "Vehicle",
-                        "emigateway.graphql.mutation.VehicleUpdateVehicleState", { root, args, jwt: context.encodedToken },
+                        "emigateway.graphql.mutation.VehicleUpdateVehicleState",
+                        { root, args, jwt: context.encodedToken },
                         2000
                     )
                 ),
@@ -175,17 +185,20 @@ module.exports = {
             ).toPromise();
         },
         VehicleAddVehicleBlocking(root, args, context) {
+            // TODO:  missing resolvers in backend
             return RoleValidator.checkPermissions$(
                 context.authToken.realm_access.roles,
                 "Vehicle",
                 "VehicleAddVehicleBlocking",
                 PERMISSION_DENIED_ERROR_CODE,
-                "Permission denied", ["PLATFORM-ADMIN", "BUSINESS-OWNER"]
+                "Permission denied",
+                ["PLATFORM-ADMIN", "BUSINESS-OWNER", "COORDINATOR"]
             ).pipe(
                 mergeMap(() =>
                     context.broker.forwardAndGetReply$(
                         "Vehicle",
-                        "emigateway.graphql.mutation.VehicleAddVehicleBlocking", { root, args, jwt: context.encodedToken },
+                        "emigateway.graphql.mutation.VehicleAddVehicleBlocking",
+                        { root, args, jwt: context.encodedToken },
                         2000
                     )
                 ),
@@ -199,12 +212,14 @@ module.exports = {
                 "Vehicle",
                 "VehicleRemoveVehicleBlocking",
                 PERMISSION_DENIED_ERROR_CODE,
-                "Permission denied", ["PLATFORM-ADMIN", "BUSINESS-OWNER"]
+                "Permission denied",
+                ["PLATFORM-ADMIN", "BUSINESS-OWNER", "COORDINATOR"]
             ).pipe(
                 mergeMap(() =>
                     context.broker.forwardAndGetReply$(
                         "Vehicle",
-                        "emigateway.graphql.mutation.vehicleRemoveVehicleBlocking", { root, args, jwt: context.encodedToken },
+                        "emigateway.graphql.mutation.vehicleRemoveVehicleBlocking",
+                        { root, args, jwt: context.encodedToken },
                         2000
                     )
                 ),
@@ -218,7 +233,7 @@ module.exports = {
                 "Vehicle",
                 "VehicleUpdateVehicleFeatures",
                 PERMISSION_DENIED_ERROR_CODE,
-                "Permission denied", ["PLATFORM-ADMIN", "BUSINESS-OWNER"]
+                "Permission denied", ["PLATFORM-ADMIN", "BUSINESS-OWNER", "COORDINATOR"]
             ).pipe(
                 mergeMap(() =>
                     context.broker.forwardAndGetReply$(

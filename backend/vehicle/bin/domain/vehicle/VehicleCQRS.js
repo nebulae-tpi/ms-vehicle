@@ -42,7 +42,7 @@ class VehicleCQRS {
       "Vehicle",
       "getVehicle",
       PERMISSION_DENIED,
-      ["PLATFORM-ADMIN", "BUSINESS-OWNER"]
+      ["PLATFORM-ADMIN", "BUSINESS-OWNER", "COORDINATOR"]
     ).pipe(
       mergeMap(roles => {
         const isPlatformAdmin = roles["PLATFORM-ADMIN"];
@@ -66,7 +66,7 @@ class VehicleCQRS {
       "Vehicle",
       "getVehicleList",
       PERMISSION_DENIED,
-      ["PLATFORM-ADMIN", "BUSINESS-OWNER"]
+      ["PLATFORM-ADMIN", "BUSINESS-OWNER", "COORDINATOR"]
     ).pipe(
       mergeMap(roles => {
         const isPlatformAdmin = roles["PLATFORM-ADMIN"];
@@ -100,7 +100,7 @@ class VehicleCQRS {
       "Vehicle",
       "getVehicleListSize",
       PERMISSION_DENIED,
-      ["PLATFORM-ADMIN", "BUSINESS-OWNER"]
+      ["PLATFORM-ADMIN", "BUSINESS-OWNER", "COORDINATOR"]
     ).pipe(
       mergeMap(roles => {
         const isPlatformAdmin = roles["PLATFORM-ADMIN"];
@@ -132,7 +132,7 @@ class VehicleCQRS {
       "Vehicle",
       "createVehicle$",
       PERMISSION_DENIED,
-      ["PLATFORM-ADMIN", "BUSINESS-OWNER"]
+      ["PLATFORM-ADMIN", "BUSINESS-OWNER", "COORDINATOR"]
     ).pipe(
       mergeMap(()=> VehicleDA.findVehicleByLicensePlate$(vehicle.generalInfo.licensePlate)),
       mergeMap( vehicleFound => vehicleFound == null 
@@ -171,7 +171,7 @@ class VehicleCQRS {
       "Vehicle",
       "updateVehicleGeneralInfo$",
       PERMISSION_DENIED,
-      ["PLATFORM-ADMIN", "BUSINESS-OWNER"]
+      ["PLATFORM-ADMIN", "BUSINESS-OWNER", "COORDINATOR"]
     ).pipe(
       mergeMap(() => VehicleHelper.verifyLicencePlateUpdate$(vehicle._id, vehicle.generalInfo.licensePlate)),
       mergeMap(() => eventSourcing.eventStore.emitEvent$(
@@ -208,7 +208,7 @@ class VehicleCQRS {
       "Vehicle",
       "updateVehicleState$",
       PERMISSION_DENIED,
-      ["PLATFORM-ADMIN", "BUSINESS-OWNER"]
+      ["PLATFORM-ADMIN", "BUSINESS-OWNER", "COORDINATOR"]
     ).pipe(
       mergeMap(() => eventSourcing.eventStore.emitEvent$(
         new Event({
@@ -218,8 +218,7 @@ class VehicleCQRS {
           aggregateId: vehicle._id,
           data: vehicle,
           user: authToken.preferred_username
-        })
-      )
+        }))
       ),
       map(() => ({ code: 200, message: `Vehicle with id: ${vehicle._id} has been updated` })),
       mergeMap(r => GraphqlResponseTools.buildSuccessResponse$(r)),
@@ -242,7 +241,7 @@ class VehicleCQRS {
       "vehicleUpdate",
       "updateVehicleState$",
       PERMISSION_DENIED,
-      ["PLATFORM-ADMIN", "BUSINESS-OWNER"]
+      ["PLATFORM-ADMIN", "BUSINESS-OWNER", "COORDINATOR"]
     ).pipe(
       mergeMap(() => eventSourcing.eventStore.emitEvent$(
         new Event({
@@ -261,14 +260,13 @@ class VehicleCQRS {
     );
   }
 
-  getVehicleBlocks$({ root, args, jwt }, authToken) { 
-
+  getVehicleBlocks$({ root, args, jwt }, authToken) {
     return RoleValidator.checkPermissions$(
       authToken.realm_access.roles,
       "vehicleBlocks",
       "getVehicleBlocks$",
       PERMISSION_DENIED,
-      ["PLATFORM-ADMIN", "BUSINESS-OWNER"]
+      ["PLATFORM-ADMIN", "BUSINESS-OWNER", "COORDINATOR"]
     ).pipe(
       mergeMap(() => VehicleBlocksDA.findBlocksByVehicle$(args.id)),
       mergeMap(r => GraphqlResponseTools.buildSuccessResponse$(r)),
@@ -283,7 +281,7 @@ class VehicleCQRS {
       "vehicleBlocks",
       "getVehicleBlocks$",
       PERMISSION_DENIED,
-      ["PLATFORM-ADMIN", "BUSINESS-OWNER"]
+      ["PLATFORM-ADMIN", "BUSINESS-OWNER", "COORDINATOR"]
     ).pipe(
       mergeMap(() => eventSourcing.eventStore.emitEvent$(
         new Event({
