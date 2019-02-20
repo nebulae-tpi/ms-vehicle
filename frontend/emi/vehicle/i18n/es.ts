@@ -33,7 +33,11 @@ export const locale = {
         LICENSE_PLATE: 'Placa',
         MODEL: 'Modelo',
         BRAND: 'Marca',
-        LINE: 'Línea'
+        LINE: 'Línea',
+        CREATED_BY: 'Creado Por:', 
+        CREATED_IN: 'Creado En:',
+        MODIFIED_BY: 'Editado Por:',
+        MODIFIED_IN: 'Editado En:'
       },
       BLOCKS: {
         KEY: 'Bloqueo',

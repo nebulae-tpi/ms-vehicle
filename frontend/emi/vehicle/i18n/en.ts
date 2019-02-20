@@ -33,7 +33,11 @@ export const locale = {
         LICENSE_PLATE: 'License Plate',
         MODEL: 'Model',
         BRAND: 'Brand',
-        LINE: 'Line'
+        LINE: 'Line',
+        CREATED_BY: 'Created By:', 
+        CREATED_IN: 'Created In:',
+        MODIFIED_BY: 'Edited By:',
+        MODIFIED_IN: 'Edited In:'
       },
       BLOCKS: {
         KEY: 'Block',
