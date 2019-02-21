@@ -10,7 +10,7 @@ const broker = require("../../tools/broker/BrokerFactory")();
 const MATERIALIZED_VIEW_TOPIC = "materialized-view-updates";
 const GraphqlResponseTools = require('../../tools/GraphqlResponseTools');
 const RoleValidator = require("../../tools/RoleValidator");
-const { take, mergeMap, catchError, map, toArray, tap } = require('rxjs/operators');
+const { take, mergeMap, catchError, map, toArray, tap, delay } = require('rxjs/operators');
 const VehicleHelper = require("./VehicleHelper");
 const {
   CustomError,
@@ -77,11 +77,7 @@ class VehicleCQRS {
 
         return VehicleDA.getVehicleList$(filterInput, args.paginationInput);
       }),
-      mergeMap(vehicle => forkJoin(
-        of(vehicle),
-        VehicleBlocksDA.findBlocksByVehicle$(vehicle._id)
-      )),
-      map(([vehicle, blocks]) => ({ ...vehicle, blockings: blocks.map(block => block.key) })),
+      map(vehicle => ({ ...vehicle, blockings: vehicle.blocks })),
       toArray(),
       map(vehiclesList => vehiclesList.sort((a,b) => b.creationTimestamp - a.creationTimestamp )),
       mergeMap(rawResponse => GraphqlResponseTools.buildSuccessResponse$(rawResponse)),

@@ -136,21 +136,21 @@ class EventStoreService {
       VehicleFeaturesUpdated: {
         fn: VehicleES.handleVehicleFeaturesUpdated$,
         obj: VehicleES
+      },      
+      CleanExpiredBlocks: {
+        fn: VehicleES.handleCleanExpiredBlocks$,
+        obj: VehicleES
+      },      
+      VehicleBlockAdded: {
+        fn: VehicleES.handleVehicleBlockAdded$,
+        obj: VehicleES
       },
       VehicleBlockRemoved: {
         fn: VehicleES.handleVehicleBlockRemoved$,
         obj: VehicleES
       },
-      CleanExpiredBlocks: {
-        fn: VehicleES.handleCleanExpiredBlocks$,
-        obj: VehicleES
-      },
       PicoPlacaCaliBlockJobTriggered: {
         fn: VehicleES.handlePicoPlacaCaliBlockJobTriggered$,
-        obj: VehicleES
-      },
-      VehicleBlockAdded: {
-        fn: VehicleES.handleVehicleBlockAdded$,
         obj: VehicleES
       },
       PicoPlacaCaliUnblockJobTriggered: {

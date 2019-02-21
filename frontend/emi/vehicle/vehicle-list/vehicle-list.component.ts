@@ -184,8 +184,9 @@ export class VehicleListComponent implements OnInit, OnDestroy {
     // Reactive Filter Form
     this.filterForm = this.formBuilder.group({
       licensePlate: [null],
+      showBlocked: [false],
       creationTimestamp: [null],
-      creatorUser: [null],
+      // creatorUser: [null],
       // modificationDate: [null],
       // modifierUser: [null],
     });
@@ -257,6 +258,7 @@ export class VehicleListComponent implements OnInit, OnDestroy {
           ([filterValue, paginator, selectedBusiness]) => {
             const filterInput = {
               businessId: selectedBusiness ? selectedBusiness.id : null,
+              showBlocked: filterValue.showBlocked,
               licensePlate: filterValue.licensePlate ? filterValue.licensePlate.trim(): null,
               creatorUser: filterValue.creatorUser,
               creationTimestamp: filterValue.creationTimestamp

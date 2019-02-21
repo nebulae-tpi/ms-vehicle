@@ -38,8 +38,11 @@ class VehicleDA {
   static getVehicleList$(filter, pagination) {
     const collection = mongoDB.db.collection(COLLECTION_NAME);
 
-    const query = {
-    };
+    const query = {};
+
+    if(filter.showBlocked){
+      query['blocks'] = { $exists: true, $ne: [] }
+    }
 
     if (filter.businessId) {
       query.businessId = filter.businessId;
@@ -202,6 +205,26 @@ class VehicleDA {
 
     const cursor = collection.find(query, { projection: { "generalInfo.licensePlate": 1, businessId: 1 } });
     return mongoDB.extractAllFromMongoCursor$(cursor);
+  }
+
+  static inserBlock$({vehicleId, businessId, licensePlate, blockKey, notes = '', endTime = undefined, user}){
+    const collection = mongoDB.db.collection(COLLECTION_NAME);
+    return defer(() => collection.updateOne(
+      { _id: vehicleId },
+      {
+        $addToSet: { blocks: blockKey }
+      } 
+    ))
+  }
+
+  static removeBlock$({vehicleId, blockKey}){
+    const collection = mongoDB.db.collection(COLLECTION_NAME);
+    return defer(() => collection.updateOne(
+      { _id: vehicleId },
+      {
+        $pull: { blocks: blockKey }
+      } 
+    ))
   }
 
 }

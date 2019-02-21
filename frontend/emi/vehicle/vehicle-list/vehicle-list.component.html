@@ -14,6 +14,7 @@
                   "VEHICLE.TITLE" | translate }}</span>
                 </div>
 
+
                 <div class="account" fxFlex fxFill fxLayout="row" fxLayoutAlign="space-between end">
                     <span class="mat-title" *fuseIfOnDom [@animate]="{ value: '*', params: { delay: '100ms', x: '-25px' } }">{{
                   "VEHICLE.FILTER" | translate }}
@@ -27,6 +28,8 @@
                 <div class="nav mt-20" fxLayout="column">
                     <form fxLayout="column" fxLayoutAlign="start" fxFlex="100" name="form" [formGroup]="filterForm">
                         <div fxLayout="column" fxLayoutAlign="space-between center" fxFlex="100">
+
+                            <mat-checkbox class="mb-12" formControlName="showBlocked">{{'VEHICLE.VEHICLE_FILTERS.SHOW_BLOCKED' | translate}}</mat-checkbox>
 
                             <mat-form-field>
                                 <input matInput placeholder="{{'VEHICLE.LICENSE_PLATE' | translate}}" formControlName="licensePlate" id="licensePlate" maxlength="20" />
@@ -101,9 +104,9 @@
 
                     <!-- Active Column -->
                     <ng-container cdkColumnDef="state">
-                        <mat-header-cell *cdkHeaderCellDef fxHide fxShow.gt-xs>{{ "VEHICLE.ACTIVE" | translate }}
+                        <mat-header-cell *cdkHeaderCellDef>{{ "VEHICLE.ACTIVE" | translate }}
                         </mat-header-cell>
-                        <mat-cell *cdkCellDef="let vehicle" fxHide fxShow.gt-xs>
+                        <mat-cell *cdkCellDef="let vehicle">
                             <mat-icon *ngIf="vehicle.state" class="active-icon mat-green-600-bg s-16">check</mat-icon>
                             <mat-icon *ngIf="!vehicle.state" class="active-icon mat-red-500-bg s-16">close</mat-icon>
                         </mat-cell>
@@ -111,9 +114,9 @@
 
                     <!-- blockings Column -->
                     <ng-container cdkColumnDef="blockings">
-                        <mat-header-cell *cdkHeaderCellDef fxHide fxShow.gt-xs>{{ "VEHICLE.BLOCKINGS" | translate }}
+                        <mat-header-cell *cdkHeaderCellDef>{{ "VEHICLE.BLOCKINGS" | translate }}
                         </mat-header-cell>
-                        <mat-cell *cdkCellDef="let vehicle" fxHide fxShow.gt-xs>
+                        <mat-cell *cdkCellDef="let vehicle">
                             <mat-icon *ngIf="!vehicle.blockings || vehicle.blockings.length === 0" class="active-icon mat-green-600-bg s-16">check</mat-icon>
                             <mat-icon *ngIf="vehicle.blockings && vehicle.blockings.length > 0" class="active-icon mat-red-500-bg s-16">close</mat-icon>
                         </mat-cell>
@@ -124,7 +127,7 @@
                         <mat-header-cell *cdkHeaderCellDef>{{ "VEHICLE.LAST_MODIFICATION_TIMESTAMP" | translate }}
                         </mat-header-cell>
                         <mat-cell *cdkCellDef="let element">
-                            <p class="text-truncate">
+                            <p>
                                 {{ element.modificationTimestamp | date: "dd/MM/y HH:mm:ss" }}
                             </p>
                         </mat-cell>
@@ -132,25 +135,25 @@
 
                     <!-- Modifier user Column -->
                     <ng-container cdkColumnDef="modifierUser">
-                        <mat-header-cell *cdkHeaderCellDef>{{ "VEHICLE.MODIFIER_USER" | translate }}
+                        <mat-header-cell *cdkHeaderCellDef fxHide fxShow.gt-xs>{{ "VEHICLE.MODIFIER_USER" | translate }}
                         </mat-header-cell>
-                        <mat-cell *cdkCellDef="let element">
-                            <p class="text-truncate">{{ element.modifierUser }}</p>
+                        <mat-cell *cdkCellDef="let element" fxHide fxShow.gt-xs>
+                            <p>{{ element.modifierUser }}</p>
                         </mat-cell>
                     </ng-container>
 
                     <!-- Creator user Column -->
                     <ng-container cdkColumnDef="creatorUser">
-                        <mat-header-cell *cdkHeaderCellDef>{{ "VEHICLE.CREATOR_USER" | translate }}
+                        <mat-header-cell *cdkHeaderCellDef fxHide fxShow.gt-xs>{{ "VEHICLE.CREATOR_USER" | translate }}
                         </mat-header-cell>
-                        <mat-cell *cdkCellDef="let element">
+                        <mat-cell *cdkCellDef="let element" fxHide fxShow.gt-xs>
                             <p class="text-truncate">{{ element.creatorUser }}</p>
                         </mat-cell>
                     </ng-container>
 
                     <mat-header-row *cdkHeaderRowDef="displayedColumns"></mat-header-row>
 
-                    <mat-row *cdkRowDef="let row; columns: displayedColumns" class="selectedElement" (click)="selectvehicleRow(row)"
+                    <mat-row *cdkRowDef="let row; columns: displayedColumns" class="item" (click)="selectvehicleRow(row)"
                         [ngClass]="{ highlight: selectedVehicle && selectedVehicle._id == row._id }" [routerLink]="row._id" matRipple>
                     </mat-row>
                 </mat-table>

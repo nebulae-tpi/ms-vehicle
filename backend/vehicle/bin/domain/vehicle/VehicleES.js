@@ -1,6 +1,6 @@
 'use strict'
 
-const { of, interval } = require("rxjs");
+const { of, interval, forkJoin } = require("rxjs");
 const { tap, mergeMap, catchError, map, mapTo, delay, take, toArray } = require('rxjs/operators');
 const broker = require("../../tools/broker/BrokerFactory")();
 const Event = require("@nebulae/event-store").Event;
@@ -65,12 +65,6 @@ class VehicleES {
 
     }
 
-    handleVehicleBlockRemoved$(evt){
-        return of({vehicleId: evt.aid, blockKey: evt.data.blockKey })
-        .pipe(
-            mergeMap(args => VehicleBlocksDA.removeBlockFromDevice$(args) )
-        )
-    }
 
     handleCleanExpiredBlocks$(evt){
         return VehicleBlocksDA.removeExpiredBlocks$(evt.timestamp);
@@ -113,16 +107,29 @@ class VehicleES {
         )
     }
 
-    handleVehicleBlockAdded$(blockAppliedEvent){       
+    handleVehicleBlockAdded$(blockAppliedEvent){  
         return of({
             vehicleId: blockAppliedEvent.aid,
             user: blockAppliedEvent.user,
             ...blockAppliedEvent.data
         })
         .pipe(
-            mergeMap(blockInfo => VehicleBlocksDA.insertVehicleBlock$(blockInfo) 
-            )
+            mergeMap((blockInfo) => forkJoin(
+                VehicleBlocksDA.insertVehicleBlock$(blockInfo),
+                VehicleDA.inserBlock$(blockInfo)
+            ))
         )        
+    }
+
+    handleVehicleBlockRemoved$(evt){
+        return of({vehicleId: evt.aid, blockKey: evt.data.blockKey })
+        .pipe(
+            mergeMap( args => forkJoin(
+                VehicleBlocksDA.removeBlockFromDevice$(args),
+                VehicleDA.removeBlock$(args)
+            )),
+
+        )
     }
 
     handlePicoPlacaCaliUnblockJobTriggered$(PicoPlacaCaliUnblockJobTriggeredEvt){

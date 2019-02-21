@@ -20,6 +20,9 @@ export const locale = {
       LAST_MODIFICATION_TIMESTAMP: 'Modificado',
       MODIFIER_USER: 'Modificado por',
       ADD_NEW: 'Agregar Nuevo',
+      VEHICLE_FILTERS: {
+        SHOW_BLOCKED: 'Sólo Bloqueados'
+      },
       DETAILS: {
         TABS: {
           GENERAL_INFO: 'Información General',
@@ -37,7 +40,8 @@ export const locale = {
         CREATED_BY: 'Creado Por:', 
         CREATED_IN: 'Creado En:',
         MODIFIED_BY: 'Editado Por:',
-        MODIFIED_IN: 'Editado En:'
+        MODIFIED_IN: 'Editado En:',
+        NO_HAVE_BLOCKS: 'Este Vehículo No Está Bloqueado'
       },
       BLOCKS: {
         KEY: 'Bloqueo',

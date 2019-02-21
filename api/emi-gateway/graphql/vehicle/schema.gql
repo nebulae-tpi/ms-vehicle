@@ -85,7 +85,9 @@ type VehicleLocation{
 input VehicleFilterInput {
   "ID of the business"
   businessId: String
-  "Name"
+  "Show only blocked"
+  showBlocked: Boolean
+  "License place"
   licensePlate: String
   "State"
   state: Boolean

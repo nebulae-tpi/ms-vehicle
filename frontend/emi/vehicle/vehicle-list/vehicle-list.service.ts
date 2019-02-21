@@ -36,6 +36,7 @@ export class VehicleListService {
    * @returns {Observable} Observable with the vehicle list
    */
   getvehicleList$(filterInput, paginatorInput){
+    console.log('getvehicleList$ ==> ', filterInput);
     return this.gateway.apollo.query<any>({
       query: VehicleVehicles,
       variables: {
