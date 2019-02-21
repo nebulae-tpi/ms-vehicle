@@ -165,7 +165,6 @@ export class VehicleListComponent implements OnInit, OnDestroy {
    */
   listenFilterFormChanges$() {
     return this.filterForm.valueChanges.pipe(
-      debounceTime(500),
       distinctUntilChanged()
     );
   }
@@ -257,13 +256,15 @@ export class VehicleListComponent implements OnInit, OnDestroy {
    */
   refreshTableSubscription() {
     combineLatest(this.VehicleListservice.filter$, this.VehicleListservice.paginator$, this.toolbarService.onSelectedBusiness$)
-      .pipe( debounceTime(500), filter(([filterValue, paginator, selectedBusiness]) => filterValue != null && paginator != null), map(
+      .pipe(
+        debounceTime(500),
+        filter(([filterValue, paginator, selectedBusiness]) => filterValue != null && paginator != null), map(
           ([filterValue, paginator, selectedBusiness]) => {
             const filterInput = {
               businessId: selectedBusiness ? selectedBusiness.id : null,
               showBlocked: filterValue.showBlocked,
               showInactive: filterValue.showInactive,
-              licensePlate: filterValue.licensePlate ? filterValue.licensePlate.trim(): null,
+              licensePlate: filterValue.licensePlate ? filterValue.licensePlate.trim() : null,
               creatorUser: filterValue.creatorUser,
               creationTimestamp: filterValue.creationTimestamp
                 ? filterValue.creationTimestamp.startOf('day').valueOf()
@@ -282,7 +283,7 @@ export class VehicleListComponent implements OnInit, OnDestroy {
             this.getvehicleList$(filterInput, paginationInput),
             this.getvehicleSize$(filterInput)
           )
-        ), takeUntil(this.ngUnsubscribe) )
+        ), takeUntil(this.ngUnsubscribe))
       .subscribe(([list, size]) => {
         this.dataSource.data = list;
         this.tableSize = size;
