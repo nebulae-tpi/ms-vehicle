@@ -165,7 +165,6 @@ export class VehicleListComponent implements OnInit, OnDestroy {
    */
   listenFilterFormChanges$() {
     return this.filterForm.valueChanges.pipe(
-      debounceTime(500),
       distinctUntilChanged()
     );
   }
@@ -184,8 +183,10 @@ export class VehicleListComponent implements OnInit, OnDestroy {
     // Reactive Filter Form
     this.filterForm = this.formBuilder.group({
       licensePlate: [null],
+      showBlocked: [false],
+      showInactive: [false],
       creationTimestamp: [null],
-      creatorUser: [null],
+      // creatorUser: [null],
       // modificationDate: [null],
       // modifierUser: [null],
     });
@@ -232,6 +233,8 @@ export class VehicleListComponent implements OnInit, OnDestroy {
       map(([filterValue, paginator]) => {
         if (filterValue) {
           this.filterForm.patchValue({
+            showBlocked: filterValue.showBlocked,
+            showInactive: filterValue.showInactive,            
             licensePlate: filterValue.licensePlate,
             creationTimestamp: filterValue.creationTimestamp,
             creatorUser: filterValue.creatorUser
@@ -253,11 +256,15 @@ export class VehicleListComponent implements OnInit, OnDestroy {
    */
   refreshTableSubscription() {
     combineLatest(this.VehicleListservice.filter$, this.VehicleListservice.paginator$, this.toolbarService.onSelectedBusiness$)
-      .pipe( debounceTime(500), filter(([filterValue, paginator, selectedBusiness]) => filterValue != null && paginator != null), map(
+      .pipe(
+        debounceTime(500),
+        filter(([filterValue, paginator, selectedBusiness]) => filterValue != null && paginator != null), map(
           ([filterValue, paginator, selectedBusiness]) => {
             const filterInput = {
               businessId: selectedBusiness ? selectedBusiness.id : null,
-              licensePlate: filterValue.licensePlate ? filterValue.licensePlate.trim(): null,
+              showBlocked: filterValue.showBlocked,
+              showInactive: filterValue.showInactive,
+              licensePlate: filterValue.licensePlate ? filterValue.licensePlate.trim() : null,
               creatorUser: filterValue.creatorUser,
               creationTimestamp: filterValue.creationTimestamp
                 ? filterValue.creationTimestamp.startOf('day').valueOf()
@@ -276,7 +283,7 @@ export class VehicleListComponent implements OnInit, OnDestroy {
             this.getvehicleList$(filterInput, paginationInput),
             this.getvehicleSize$(filterInput)
           )
-        ), takeUntil(this.ngUnsubscribe) )
+        ), takeUntil(this.ngUnsubscribe))
       .subscribe(([list, size]) => {
         this.dataSource.data = list;
         this.tableSize = size;
@@ -320,7 +327,7 @@ export class VehicleListComponent implements OnInit, OnDestroy {
     this.filterForm.reset();
     this.paginator.pageIndex = 0;
     this.tablePage = 0;
-    this.tableCount = 10;
+    this.tableCount = 25;
   }
 
   /**

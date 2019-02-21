@@ -92,6 +92,8 @@ export class VehicleBlocksComponent implements OnInit, OnDestroy {
     'actions'
   ];
 
+  blocks = [];
+
   constructor(
     private translationLoader: FuseTranslationLoaderService,
     private translate: TranslateService,
@@ -111,7 +113,10 @@ export class VehicleBlocksComponent implements OnInit, OnDestroy {
     this.VehicleDetailservice.getVehicleVehicleBlocks$(this.vehicle._id)
     .pipe(
       map(r => JSON.parse(JSON.stringify(r.data.VehicleVehicleBlocks))),
-      tap(blocks =>  this.dataSource.data = blocks)
+      tap(blocks =>  {
+        this.blocks = blocks;
+        this.dataSource.data = blocks;
+      })
     ).subscribe(() => {}, err => console.log(err), () => {});
 
     this.vehicleblocksForm = new FormGroup({

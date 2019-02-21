@@ -20,6 +20,10 @@ export const locale = {
       LAST_MODIFICATION_TIMESTAMP: 'Modificado',
       MODIFIER_USER: 'Modificado por',
       ADD_NEW: 'Agregar Nuevo',
+      VEHICLE_FILTERS: {
+        SHOW_BLOCKED: 'Bloqueados',
+        SHOW_INACTIVE: 'Inactivos'
+      },
       DETAILS: {
         TABS: {
           GENERAL_INFO: 'Información General',
@@ -33,7 +37,12 @@ export const locale = {
         LICENSE_PLATE: 'Placa',
         MODEL: 'Modelo',
         BRAND: 'Marca',
-        LINE: 'Línea'
+        LINE: 'Línea',
+        CREATED_BY: 'Creado Por:', 
+        CREATED_IN: 'Creado En:',
+        MODIFIED_BY: 'Editado Por:',
+        MODIFIED_IN: 'Editado En:',
+        NO_HAVE_BLOCKS: 'Este Vehículo No Está Bloqueado'
       },
       BLOCKS: {
         KEY: 'Bloqueo',

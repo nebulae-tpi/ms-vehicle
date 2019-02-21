@@ -10,7 +10,11 @@
 
   </div> -->
 
-  <mat-table fxFlex="100" id="entity-table" class="blocks-table" #table [dataSource]="dataSource" fusePerfectScrollbar>
+  <div *ngIf="blocks.length == 0" style="font-size: 18px" fxFlex="100" fxLayoutAlign="center center" class="mr-12">
+      <p> {{ 'VEHICLE.DETAILS.NO_HAVE_BLOCKS' | translate }} </p>
+  </div>
+
+  <mat-table *ngIf="blocks.length > 0" fxFlex="100" id="entity-table" class="blocks-table" #table [dataSource]="dataSource" fusePerfectScrollbar>
 
       <!-- BLOCK KEY COLUMN -->
       <ng-container cdkColumnDef="key">
@@ -85,6 +89,6 @@
                   }" [routerLink]="row._id" matRipple>
       </mat-row>
   </mat-table>
-  <mat-paginator fxFlex="100" #paginator [length]="tableSize" [pageIndex]="tablePage" [pageSize]="tableCount" [pageSizeOptions]="[5, 10, 25, 100]">
+  <mat-paginator *ngIf="blocks.length > 0" fxFlex="100" #paginator [length]="tableSize" [pageIndex]="tablePage" [pageSize]="tableCount" [pageSizeOptions]="[5, 10, 25, 100]">
   </mat-paginator>
 </div>

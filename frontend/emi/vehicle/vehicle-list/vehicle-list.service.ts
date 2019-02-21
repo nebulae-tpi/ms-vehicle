@@ -18,7 +18,7 @@ export class VehicleListService {
 
   private _paginatorSubject$ = new BehaviorSubject({
     pagination: {
-      page: 0, count: 10, sort: -1
+      page: 0, count: 25, sort: -1
     },
   });
 
@@ -36,6 +36,7 @@ export class VehicleListService {
    * @returns {Observable} Observable with the vehicle list
    */
   getvehicleList$(filterInput, paginatorInput){
+    console.log('getvehicleList$ ==> ', filterInput);
     return this.gateway.apollo.query<any>({
       query: VehicleVehicles,
       variables: {

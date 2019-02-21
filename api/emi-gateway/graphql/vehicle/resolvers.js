@@ -32,6 +32,7 @@ module.exports = {
 
     //// QUERY ///////
 
+
     Query: {
         VehicleVehicles(root, args, context) {
             return RoleValidator.checkPermissions$(
