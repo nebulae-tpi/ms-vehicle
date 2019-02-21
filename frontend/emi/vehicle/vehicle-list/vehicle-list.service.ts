@@ -18,7 +18,7 @@ export class VehicleListService {
 
   private _paginatorSubject$ = new BehaviorSubject({
     pagination: {
-      page: 0, count: 10, sort: -1
+      page: 0, count: 25, sort: -1
     },
   });
 

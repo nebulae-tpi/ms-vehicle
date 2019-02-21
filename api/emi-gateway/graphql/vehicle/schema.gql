@@ -87,6 +87,8 @@ input VehicleFilterInput {
   businessId: String
   "Show only blocked"
   showBlocked: Boolean
+  "Show only blocked"
+  showInactive: Boolean
   "License place"
   licensePlate: String
   "State"

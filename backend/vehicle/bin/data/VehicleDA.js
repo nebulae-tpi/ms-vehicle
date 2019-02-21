@@ -40,9 +40,9 @@ class VehicleDA {
 
     const query = {};
 
-    if(filter.showBlocked){
-      query['blocks'] = { $exists: true, $ne: [] }
-    }
+    if(filter.showBlocked){ query.blocks = { $exists: true, $ne: [] } }
+
+    if(filter.showInactive){ query.state = false }
 
     if (filter.businessId) {
       query.businessId = filter.businessId;
@@ -76,8 +76,10 @@ class VehicleDA {
   static getVehicleSize$(filter) {
     const collection = mongoDB.db.collection(COLLECTION_NAME);
 
-    const query = {
-    };
+    const query = {};
+
+    if(filter.showBlocked){ query.blocks = { $exists: true, $ne: [] } }
+    if(filter.showInactive){ query.state = false }
 
     if (filter.businessId) {
       query.businessId = filter.businessId;

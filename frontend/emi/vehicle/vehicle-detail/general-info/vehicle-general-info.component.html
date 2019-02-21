@@ -12,26 +12,28 @@
             </form>
         </div>
 
-        <mat-form-field fxFlex.gt-xs="50" fxFlex="100" fxLayout="column" class="pr-8 pl-8">
+        <mat-form-field *ngIf="vehicle && vehicle.creatorUser" fxFlex.gt-xs="50" fxFlex="100" fxLayout="column" class="pr-8 pl-8">
             <input readonly matInput placeholder="{{'VEHICLE.DETAILS.CREATED_BY' | translate}}" value="{{ vehicle.creatorUser }}">
         </mat-form-field>
 
-        <mat-form-field fxFlex.gt-xs="50" fxFlex="100" fxLayout="column" class="pr-8 pl-8">
+        <mat-form-field *ngIf="vehicle && vehicle.creationTimestamp" fxFlex.gt-xs="50" fxFlex="100" fxLayout="column" class="pr-8 pl-8">
             <input readonly matInput placeholder="{{'VEHICLE.DETAILS.CREATED_IN' | translate}}"
                 value="{{ vehicle.creationTimestamp | date: 'dd/MM/y HH:mm:ss' }}">
         </mat-form-field>
 
-        <mat-form-field fxFlex.gt-xs="50" fxFlex="100" fxLayout="column" class="pr-8 pl-8">
+        <mat-form-field *ngIf="vehicle && vehicle.modifierUser" fxFlex.gt-xs="50" fxFlex="100" fxLayout="column" class="pr-8 pl-8">
             <input readonly matInput placeholder="{{'VEHICLE.DETAILS.MODIFIED_BY' | translate}}" value="{{ vehicle.modifierUser }}">
         </mat-form-field>
 
-        <mat-form-field fxFlex.gt-xs="50" fxFlex="100" fxLayout="column" class="pr-8 pl-8">
+        <mat-form-field *ngIf="vehicle && vehicle.modificationTimestamp" fxFlex.gt-xs="50" fxFlex="100" fxLayout="column" class="pr-8 pl-8">
             <input readonly matInput placeholder="{{'VEHICLE.DETAILS.MODIFIED_IN' | translate}}"
             value="{{ vehicle.modificationTimestamp | date: 'dd/MM/y HH:mm:ss' }}">
         </mat-form-field>
 
+        <mat-divider *ngIf="vehicle && vehicle.creatorUser " fxFlex="100" class="mb-12" ></mat-divider>
+
         <mat-form-field fxFlex.gt-xs="50" fxFlex="100" fxLayout="column" class="pr-8 pl-8">
-            <input required matInput name="licensePlate" formControlName="licensePlate" maxlength="15" placeholder="{{'VEHICLE.DETAILS.LICENSE_PLATE' | translate}}">
+            <input required matInput name="licensePlate" formControlName="licensePlate" maxlength="6" placeholder="{{'VEHICLE.DETAILS.LICENSE_PLATE' | translate}}">
             <mat-error *ngIf="vehicleGeneralInfoForm.hasError('required', ['licensePlate'])">
                 {{'VEHICLE.NAME_REQUIRED' | translate}}
             </mat-error>

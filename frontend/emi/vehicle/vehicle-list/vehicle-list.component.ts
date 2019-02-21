@@ -185,6 +185,7 @@ export class VehicleListComponent implements OnInit, OnDestroy {
     this.filterForm = this.formBuilder.group({
       licensePlate: [null],
       showBlocked: [false],
+      showInactive: [false],
       creationTimestamp: [null],
       // creatorUser: [null],
       // modificationDate: [null],
@@ -233,6 +234,8 @@ export class VehicleListComponent implements OnInit, OnDestroy {
       map(([filterValue, paginator]) => {
         if (filterValue) {
           this.filterForm.patchValue({
+            showBlocked: filterValue.showBlocked,
+            showInactive: filterValue.showInactive,            
             licensePlate: filterValue.licensePlate,
             creationTimestamp: filterValue.creationTimestamp,
             creatorUser: filterValue.creatorUser
@@ -259,6 +262,7 @@ export class VehicleListComponent implements OnInit, OnDestroy {
             const filterInput = {
               businessId: selectedBusiness ? selectedBusiness.id : null,
               showBlocked: filterValue.showBlocked,
+              showInactive: filterValue.showInactive,
               licensePlate: filterValue.licensePlate ? filterValue.licensePlate.trim(): null,
               creatorUser: filterValue.creatorUser,
               creationTimestamp: filterValue.creationTimestamp
@@ -322,7 +326,7 @@ export class VehicleListComponent implements OnInit, OnDestroy {
     this.filterForm.reset();
     this.paginator.pageIndex = 0;
     this.tablePage = 0;
-    this.tableCount = 10;
+    this.tableCount = 25;
   }
 
   /**

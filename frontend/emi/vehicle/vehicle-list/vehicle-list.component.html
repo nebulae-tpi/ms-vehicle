@@ -27,12 +27,14 @@
             <div class="content" fusePerfectScrollbar *fuseIfOnDom [@animate]="{ value: '*', params: { y: '50px' } }">
                 <div class="nav mt-20" fxLayout="column">
                     <form fxLayout="column" fxLayoutAlign="start" fxFlex="100" name="form" [formGroup]="filterForm">
-                        <div fxLayout="column" fxLayoutAlign="space-between center" fxFlex="100">
+                        <div fxLayout="column" class="pl-20" fxLayoutAlign="space-between start" fxFlex="100">
 
                             <mat-checkbox class="mb-12" formControlName="showBlocked">{{'VEHICLE.VEHICLE_FILTERS.SHOW_BLOCKED' | translate}}</mat-checkbox>
+                            <mat-checkbox class="mb-12" formControlName="showInactive">{{'VEHICLE.VEHICLE_FILTERS.SHOW_INACTIVE' | translate}}</mat-checkbox>
 
                             <mat-form-field>
-                                <input matInput placeholder="{{'VEHICLE.LICENSE_PLATE' | translate}}" formControlName="licensePlate" id="licensePlate" maxlength="20" />
+                                <input matInput placeholder="{{'VEHICLE.LICENSE_PLATE' | translate}}" formControlName="licensePlate"
+                                id="licensePlate" maxlength="6" />
                             </mat-form-field>
 
                             <!-- <mat-form-field>

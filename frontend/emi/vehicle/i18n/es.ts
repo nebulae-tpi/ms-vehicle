@@ -21,7 +21,8 @@ export const locale = {
       MODIFIER_USER: 'Modificado por',
       ADD_NEW: 'Agregar Nuevo',
       VEHICLE_FILTERS: {
-        SHOW_BLOCKED: 'Sólo Bloqueados'
+        SHOW_BLOCKED: 'Bloqueados',
+        SHOW_INACTIVE: 'Inactivos'
       },
       DETAILS: {
         TABS: {
