@@ -14,8 +14,6 @@ const Rx = require('rxjs');
 
 
 
-
-
 const start = () => {
     Rx.concat(
         eventSourcing.eventStore.start$(),

@@ -328,6 +328,7 @@ export class VehicleListComponent implements OnInit, OnDestroy {
     this.paginator.pageIndex = 0;
     this.tablePage = 0;
     this.tableCount = 25;
+    this.paginator.pageSize = 25;
   }
 
   /**
