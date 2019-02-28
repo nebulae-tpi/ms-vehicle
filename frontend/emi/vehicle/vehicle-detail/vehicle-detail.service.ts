@@ -19,7 +19,6 @@ import {
 export class VehicleDetailService {
 
   lastOperation = null;
-
   vehicle = null;
 
   constructor(private gateway: GatewayService) {
