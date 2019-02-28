@@ -25,6 +25,7 @@ export const locale = {
         SHOW_BLOCKED: 'Bloqueados',
         SHOW_INACTIVE: 'Inactivos'
       },
+      BLOCK_DETAILS: 'Detalles de Bloqueo',
       CREATE_BLOCK: 'Crear Bloqueo',
       REMOVE_BLOCK_TITLE: 'Eliminar Bloqueo',
       REMOVE_BLOCK_MSG: 'Estás seguro que deseas retirar el bloqueo?',
