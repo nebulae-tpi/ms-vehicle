@@ -27,10 +27,10 @@
 
       <!-- BLOCK KEY COLUMN -->
       <ng-container cdkColumnDef="key">
-        <mat-header-cell *cdkHeaderCellDef fxLayoutAlign="center center">{{ "VEHICLE.BLOCKS.KEY" | translate }}
+        <mat-header-cell *cdkHeaderCellDef fxLayoutAlign="start center">{{ "VEHICLE.BLOCKS.KEY" | translate }}
         </mat-header-cell>
-        <mat-cell *cdkCellDef="let block" fxLayoutAlign="center center">
-            <p fxFlex="100" > {{ 'VEHICLE.BLOCKS.TYPES.' + block.key | translate }}</p>
+        <mat-cell *cdkCellDef="let block">
+            <p> {{ 'VEHICLE.BLOCKS.TYPES.' + block.key | translate }}</p>
         </mat-cell>
     </ng-container>
 
@@ -47,18 +47,18 @@
 
       <!-- START_TIME BLOCK COLUMN -->
       <ng-container cdkColumnDef="startTime">
-        <mat-header-cell *cdkHeaderCellDef fxHide fxShow.gt-xs fxLayoutAlign="center center">{{ "VEHICLE.BLOCKS.START_TIME" | translate }}
+        <mat-header-cell *cdkHeaderCellDef fxHide fxShow.gt-xs fxLayoutAlign="start center">{{ "VEHICLE.BLOCKS.START_TIME" | translate }}
         </mat-header-cell>
-        <mat-cell *cdkCellDef="let block" fxHide fxShow.gt-xs fxLayoutAlign="center center">
+        <mat-cell *cdkCellDef="let block" fxHide fxShow.gt-xs>
             <p> {{ block.startTime | date: "dd/MM/y HH:mm:ss"  }} </p>
         </mat-cell>
     </ng-container>
 
       <!-- END_TIME BLOCK COLUMN -->
       <ng-container cdkColumnDef="endTime">
-        <mat-header-cell *cdkHeaderCellDef fxLayoutAlign="center center">{{ "VEHICLE.BLOCKS.END_TIME" | translate }}
+        <mat-header-cell *cdkHeaderCellDef fxLayoutAlign="start center">{{ "VEHICLE.BLOCKS.END_TIME" | translate }}
         </mat-header-cell>
-        <mat-cell *cdkCellDef="let block" fxLayoutAlign="center center">
+        <mat-cell *cdkCellDef="let block">
             <p  *ngIf="block.endTime" class="pl-8" > {{ block.endTime | date: "dd/MM/y HH:mm:ss" }} </p>
             <p  *ngIf="!block.endTime" class="pl-8" > {{ 'undefined' | translate }} </p>
         </mat-cell>
@@ -66,19 +66,19 @@
 
      <!-- RESPONSIBLE USER COLUMN -->
     <ng-container cdkColumnDef="user">
-      <mat-header-cell *cdkHeaderCellDef fxLayoutAlign="center center" fxHide fxShow.gt-sm>
+      <mat-header-cell *cdkHeaderCellDef fxLayoutAlign="start center" fxHide fxShow.gt-sm>
         {{ "VEHICLE.BLOCKS.USER" | translate }}
       </mat-header-cell>
-      <mat-cell *cdkCellDef="let block" fxLayoutAlign="center center" fxHide fxShow.gt-sm>
-        <p style="text-align: center" >{{ block.user }}</p>
+      <mat-cell *cdkCellDef="let block" fxHide fxShow.gt-sm>
+        <p>{{ block.user }}</p>
       </mat-cell>
     </ng-container>
 
       <!-- REMOVE BLOCK COLUMN -->
       <ng-container cdkColumnDef="actions">
-        <mat-header-cell *cdkHeaderCellDef fxFlex="20"  fxLayoutAlign="center center">{{ "VEHICLE.BLOCKS.ACTIONS" | translate }}
+        <mat-header-cell *cdkHeaderCellDef fxFlex="23" fxFlex.gt-xs="15"  fxLayoutAlign="center center">{{ "VEHICLE.BLOCKS.ACTIONS" | translate }}
         </mat-header-cell>
-        <mat-cell *cdkCellDef="let block" (click)="$event.stopPropagation()" fxLayoutAlign="center center" fxFlex="20">
+        <mat-cell *cdkCellDef="let block" (click)="$event.stopPropagation()" fxLayoutAlign="center center" fxFlex="23" fxFlex.gt-xs="15">
           <button mat-icon-button (click)="removeBlock(block)">
             <mat-icon>delete</mat-icon>
           </button>
@@ -92,6 +92,6 @@
       <mat-row *cdkRowDef="let row; columns: displayedColumns" class="item" (click)="showBlockInfo(row)" matRipple>
       </mat-row>
   </mat-table>
-  <mat-paginator *ngIf="dataSource.data && dataSource.data.length > 0" fxFlex="100" #paginator [length]="tableSize" [pageIndex]="tablePage" [pageSize]="tableCount" [pageSizeOptions]="[5, 10, 25, 100]">
-  </mat-paginator>
+  <!-- <mat-paginator *ngIf="dataSource.data && dataSource.data.length > 0" fxFlex="100" #paginator [length]="tableSize" [pageIndex]="tablePage" [pageSize]="tableCount" [pageSizeOptions]="[5, 10, 25, 100]">
+  </mat-paginator> -->
 </div>
