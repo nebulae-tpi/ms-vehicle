@@ -1,0 +1,92 @@
+<div fxFlex="100" fxLayout="row wrap" >
+
+    <h1 *ngIf="mode == 'NEW'" fxFlex="100" mat-dialog-title>{{ 'VEHICLE.CREATE_BLOCK' | translate }}</h1>
+    <h1 *ngIf="mode == 'VIEW'" fxFlex="100" mat-dialog-title>{{ 'VEHICLE.BLOCK_DETAILS' | translate }}</h1>
+
+    <!-- <mat-dialog-content fxFlex="100"> -->
+      <form *ngIf="mode == 'NEW'" name="manualBlockForm" [formGroup]="manualBlockForm" fxFlex="100" fxLayout="row wrap"
+        fxLayoutAlign="start center">
+
+        <!-- BLOCK TYPE -->
+        <mat-form-field fxFlex.gt-xs="50" fxFlex="100" class="pr-8 pl-8">
+          <mat-select name="block" formControlName="block" placeholder="{{'VEHICLE.BLOCK_TYPE' | translate}}">
+            <mat-option *ngFor="let block of blockTypes" [value]="block">
+              {{ 'VEHICLE.BLOCKS.TYPES.'+ block.key | translate }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="manualBlockForm.hasError('blockExist', ['block'])">
+              {{'VEHICLE.DETAILS.BLOCK_EXIST' | translate }}
+            </mat-error>
+        </mat-form-field>
+        <!-- BLOCK TYPE -->
+
+        <!-- BLOCK DURATION -->
+        <mat-form-field *ngIf="manualBlockForm.controls['block'].value" fxFlex.gt-xs="50" fxFlex="100" class="p-8">
+          <input matInput readonly placeholder="{{'VEHICLE.BLOCK_DURATION' | translate}}"
+            value="{{ manualBlockForm.controls['block'].value.duration ? (manualBlockForm.controls['block'].value.duration / 3600000 ) + ' H'  : 'undefined' | translate }}">
+        </mat-form-field>
+        <!-- BLOCK DURATION -->
+
+        <!-- BLOCK COMMENTS -->
+        <mat-form-field fxFlex="100" class="p-8">
+          <textarea maxlength="500" minlength="50" rows="5" name="comment" formControlName="comment" matInput
+            placeholder="{{'VEHICLE.BLOCK_COMMENTS' | translate}}"></textarea>
+          <mat-error *ngIf="manualBlockForm.hasError('required', ['comment'])">
+            {{'VEHICLE.DETAILS.BLOCK_COMMENT_REQUIRED' | translate}}
+          </mat-error>
+          <mat-error *ngIf="manualBlockForm.hasError('minlength', ['comment'])">
+            {{'VEHICLE.DETAILS.BLOCK_COMMENT_MIN_LENGTH_ERROR' | translate}}
+          </mat-error>
+          <mat-error *ngIf="manualBlockForm.hasError('maxlength', ['comment'])">
+            {{'VEHICLE.DETAILS.BLOCK_COMMENT_MAX_LENGTH_ERROR' | translate}}
+          </mat-error>
+        </mat-form-field>
+        <!-- BLOCK COMMENTS -->
+
+      </form>
+    <!-- </mat-dialog-content> -->
+    <div *ngIf="mode == 'VIEW' && block" fxFlex="100" fxLayout="row wrap" fxLayoutAlign="center center">
+
+      <!-- BLOCK TYPE -->
+      <mat-form-field fxFlex.gt-xs="50" fxFlex="100" class="p-8">
+        <input fxHide fxShow.gt-sm matInput readonly placeholder="{{'VEHICLE.BLOCK_TYPE' | translate}}"
+          value="{{ 'VEHICLE.BLOCKS.TYPES.' + block.key | translate }}">
+        <textarea  fxShow fxHide.gt-sm readonly matInput placeholder="{{'VEHICLE.BLOCK_TYPE' | translate}}"
+          [value]="'VEHICLE.BLOCKS.TYPES.' + block.key | translate">
+        </textarea>
+      </mat-form-field>
+      <!-- BLOCK TYPE -->
+
+      <!-- RESPONSIBLE USER -->
+      <mat-form-field fxFlex.gt-xs="50" fxFlex="100" class="p-8">
+        <input matInput readonly placeholder="{{'VEHICLE.BLOCK_RESPONSIBLE_USER' | translate}}" value="{{ block.user }}">
+      </mat-form-field>
+      <!-- RESPONSIBLE USER -->
+
+      <!-- START TIME -->
+      <mat-form-field fxFlex.gt-xs="50" fxFlex="100" class="p-8">
+        <input matInput readonly placeholder="{{'VEHICLE.BLOCK_START_TIME' | translate}}" value="{{ block.startTime | date: 'dd/MM/y HH:mm:ss' }}">
+      </mat-form-field>
+      <!-- START TIME -->
+
+      <!-- END TIME -->
+      <mat-form-field fxFlex.gt-xs="50" fxFlex="100" class="p-8">
+          <input *ngIf="block.endTime" matInput readonly placeholder="{{'VEHICLE.BLOCK_END_TIME' | translate}}" value="{{ block.endTime | date: 'dd/MM/y HH:mm:ss' }}">
+          <input *ngIf="!block.endTime" matInput readonly placeholder="{{'VEHICLE.BLOCK_END_TIME' | translate}}" value="{{ 'undefined' | translate }}">
+      </mat-form-field>
+      <!-- END TIME -->
+
+      <!-- BLOCK COMMENTS -->
+      <mat-form-field fxFlex.gt-xs="100" fxFlex="100" class="p-8">
+        <textarea rows="5" readonly matInput placeholder="{{'VEHICLE.BLOCK_COMMENTS' | translate}}" [value]="block.notes" ></textarea>
+      </mat-form-field>
+      <!-- BLOCK COMMENTS -->
+    </div>
+
+    <mat-dialog-actions fxFlex="100">
+      <button *ngIf="mode == 'NEW'" mat-raised-button [disabled]="!manualBlockForm.valid" (click)="pushButton(true)">Ok</button>
+      <button mat-raised-button mat-dialog-close color="warn" (click)="pushButton(false)">{{'VEHICLE.CANCEL' | translate}}</button>
+    </mat-dialog-actions>
+
+</div>
+

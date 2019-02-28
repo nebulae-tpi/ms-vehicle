@@ -97,6 +97,15 @@ export const removeVehicleBlocking = gql `
   }
 `;
 
+export const InsertVehicleBlock = gql `
+  mutation VehicleInsertVehicleBlock($id: ID!, $input: VehicleVehicleBlockInput!){
+    VehicleInsertVehicleBlock(id: $id, input: $input){
+      code
+      message
+    }
+  }
+`;
+
 
 export const VehicleUpdateVehicleFeatures = gql `
   mutation VehicleUpdateVehicleFeatures($id: ID!, $input: VehicleFeaturesInput!){
@@ -132,6 +141,19 @@ export const VehicleVehicleUpdatedSubscription = gql`
       creatorUser
       modificationTimestamp
       modifierUser
+    }
+  }
+`;
+
+export const VehicleVehicleBlockAddedSubscription = gql`
+  subscription VehicleVehicleBlockAddedSubscription($vehicleId: String!){
+    VehicleVehicleBlockAddedSubscription(vehicleId: $vehicleId){
+      key
+      notes
+      vehicleId
+      startTime
+      endTime
+      user
     }
   }
 `;

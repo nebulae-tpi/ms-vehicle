@@ -1,6 +1,7 @@
 export const locale = {
   lang: 'es',
   data: {
+    undefined: 'Indefinido',
     VEHICLE: {
       LICENSE_PLATE_ALREADY_USED: 'Esta Placa Ya Está Siendo Usada',
       NAME_REQUIRED: 'Placa requerida',
@@ -24,7 +25,20 @@ export const locale = {
         SHOW_BLOCKED: 'Bloqueados',
         SHOW_INACTIVE: 'Inactivos'
       },
+      CREATE_BLOCK: 'Crear Bloqueo',
+      REMOVE_BLOCK_TITLE: 'Eliminar Bloqueo',
+      REMOVE_BLOCK_MSG: 'Estás seguro que deseas retirar el bloqueo?',
+      BLOCK_TYPE: 'Tipo de Bloqueo',
+      BLOCK_DURATION: 'Duración de bloqueo',
+      BLOCK_COMMENTS: 'Comentarios',
+      BLOCK_RESPONSIBLE_USER: 'Responsable',
+      BLOCK_START_TIME: 'Fecha de emisión',
+      BLOCK_END_TIME: 'Fecha de Expiración',
       DETAILS: {
+        BLOCK_COMMENT_REQUIRED: 'Comentario requerido',
+        BLOCK_COMMENT_MIN_LENGTH_ERROR: 'Se requieren al menos 50 caracteres',
+        BLOCK_COMMENT_MAX_LENGTH_ERROR: 'Comenterio demasiado largo',
+        BLOCK_EXIST: 'El vehículo ya posee un bloqueo de este tipo',
         TABS: {
           GENERAL_INFO: 'Información General',
           FEATURES: 'Características',
@@ -38,7 +52,7 @@ export const locale = {
         MODEL: 'Modelo',
         BRAND: 'Marca',
         LINE: 'Línea',
-        CREATED_BY: 'Creado Por:', 
+        CREATED_BY: 'Creado Por:',
         CREATED_IN: 'Creado En:',
         MODIFIED_BY: 'Editado Por:',
         MODIFIED_IN: 'Editado En:',
@@ -50,7 +64,10 @@ export const locale = {
         START_TIME: 'Fecha Inicio',
         END_TIME: 'Fecha de Expiración',
         USER: 'Responsable',
-        ACTIONS: 'Acciones'
+        ACTIONS: 'Acciones',
+        TYPES: {
+          EXPIRED_MEMBERSHIP: 'Falta de pago',
+        },
       },
       FEATURES: {
         FUEL: 'Combustible',

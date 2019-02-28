@@ -10,85 +10,88 @@
 
   </div> -->
 
-  <div *ngIf="blocks.length == 0" style="font-size: 18px" fxFlex="100" fxLayoutAlign="center center" class="mr-12">
+  <div *ngIf="dataSource.data && dataSource.data.length == 0" style="font-size: 18px" fxFlex="100" fxLayoutAlign="space-around center" class="mr-12" fxLayout="row wrap">
       <p> {{ 'VEHICLE.DETAILS.NO_HAVE_BLOCKS' | translate }} </p>
+      <button *ngIf="userRoles.includes('DISCIPLINARY-COMMITTEE') || userRoles.includes('PLATFORM-ADMIN') || userRoles.includes('BUSINESS-OWNER')" class="m-8" mat-raised-button (click)="createBlock()">
+        {{'VEHICLE.CREATE_BLOCK' | translate}}
+      </button>
+  </div>
+  <div *ngIf="dataSource.data && dataSource.data.length > 0 && ( userRoles.includes('DISCIPLINARY-COMMITTEE') || userRoles.includes('PLATFORM-ADMIN') || userRoles.includes('BUSINESS-OWNER') ) "
+    fxLayoutAlign="end end" fxFlex="100">
+    <button class="m-8" mat-raised-button (click)="createBlock()">
+      {{'VEHICLE.CREATE_BLOCK' | translate}}
+    </button>
   </div>
 
-  <mat-table *ngIf="blocks.length > 0" fxFlex="100" id="entity-table" class="blocks-table" #table [dataSource]="dataSource" fusePerfectScrollbar>
+  <mat-table *ngIf="dataSource.data && dataSource.data.length > 0" fxFlex="100" id="entity-table" class="blocks-table" #table [dataSource]="dataSource" fusePerfectScrollbar>
 
       <!-- BLOCK KEY COLUMN -->
       <ng-container cdkColumnDef="key">
-          <mat-header-cell *cdkHeaderCellDef fxLayoutAlign="center center">{{ "VEHICLE.BLOCKS.KEY" | translate }}
-          </mat-header-cell>
-          <mat-cell *cdkCellDef="let block" fxLayoutAlign="center center">
-              <p class="text-truncate">
-                  {{ block.key }}
-              </p>
-          </mat-cell>
-      </ng-container>
+        <mat-header-cell *cdkHeaderCellDef fxLayoutAlign="center center">{{ "VEHICLE.BLOCKS.KEY" | translate }}
+        </mat-header-cell>
+        <mat-cell *cdkCellDef="let block" fxLayoutAlign="center center">
+            <p fxFlex="100" > {{ 'VEHICLE.BLOCKS.TYPES.' + block.key | translate }}</p>
+        </mat-cell>
+    </ng-container>
 
       <!-- BLOCK NOTES COLUMN -->
-      <ng-container cdkColumnDef="notes">
+      <!-- <ng-container cdkColumnDef="notes">
           <mat-header-cell *cdkHeaderCellDef fxLayoutAlign="center center" >{{ "VEHICLE.BLOCKS.NOTES" | translate }}
           </mat-header-cell>
           <mat-cell *cdkCellDef="let block" fxLayoutAlign="center center" >
-              <p class="text-truncate">
+              <p >
                   {{ block.notes }}
               </p>
           </mat-cell>
-      </ng-container>
+      </ng-container> -->
 
       <!-- START_TIME BLOCK COLUMN -->
       <ng-container cdkColumnDef="startTime">
-          <mat-header-cell *cdkHeaderCellDef fxHide fxShow.gt-xs fxLayoutAlign="center center">{{ "VEHICLE.BLOCKS.START_TIME" | translate }}
-          </mat-header-cell>
-          <mat-cell *cdkCellDef="let block" fxHide fxShow.gt-xs fxLayoutAlign="center center">
-              <p class="text-truncate">
-                  {{ block.startTime | date }}
-              </p>
-          </mat-cell>
-      </ng-container>
+        <mat-header-cell *cdkHeaderCellDef fxHide fxShow.gt-xs fxLayoutAlign="center center">{{ "VEHICLE.BLOCKS.START_TIME" | translate }}
+        </mat-header-cell>
+        <mat-cell *cdkCellDef="let block" fxHide fxShow.gt-xs fxLayoutAlign="center center">
+            <p> {{ block.startTime | date: "dd/MM/y HH:mm:ss"  }} </p>
+        </mat-cell>
+    </ng-container>
 
       <!-- END_TIME BLOCK COLUMN -->
       <ng-container cdkColumnDef="endTime">
-          <mat-header-cell *cdkHeaderCellDef fxHide fxShow.gt-xs fxLayoutAlign="center center">{{ "VEHICLE.BLOCKS.END_TIME" | translate }}
-          </mat-header-cell>
-          <mat-cell *cdkCellDef="let block" fxHide fxShow.gt-xs fxLayoutAlign="center center">
-              <p class="text-truncate"> {{ block.endTime | date }} </p>
-          </mat-cell>
-      </ng-container>
+        <mat-header-cell *cdkHeaderCellDef fxLayoutAlign="center center">{{ "VEHICLE.BLOCKS.END_TIME" | translate }}
+        </mat-header-cell>
+        <mat-cell *cdkCellDef="let block" fxLayoutAlign="center center">
+            <p  *ngIf="block.endTime" class="pl-8" > {{ block.endTime | date: "dd/MM/y HH:mm:ss" }} </p>
+            <p  *ngIf="!block.endTime" class="pl-8" > {{ 'undefined' | translate }} </p>
+        </mat-cell>
+    </ng-container>
+
+     <!-- RESPONSIBLE USER COLUMN -->
+    <ng-container cdkColumnDef="user">
+      <mat-header-cell *cdkHeaderCellDef fxLayoutAlign="center center" fxHide fxShow.gt-sm>
+        {{ "VEHICLE.BLOCKS.USER" | translate }}
+      </mat-header-cell>
+      <mat-cell *cdkCellDef="let block" fxLayoutAlign="center center" fxHide fxShow.gt-sm>
+        <p style="text-align: center" >{{ block.user }}</p>
+      </mat-cell>
+    </ng-container>
 
       <!-- REMOVE BLOCK COLUMN -->
       <ng-container cdkColumnDef="actions">
-          <mat-header-cell *cdkHeaderCellDef fxHide fxShow.gt-xs fxLayoutAlign="center center">{{ "VEHICLE.BLOCKS.ACTIONS" | translate }}
-          </mat-header-cell>
-          <mat-cell *cdkCellDef="let block" fxHide fxShow.gt-xs fxLayoutAlign="center center">
-            <button mat-icon-button (click)="removeBlock(block)">
-              <mat-icon>delete</mat-icon>
-            </button>
-          </mat-cell>
-      </ng-container>
+        <mat-header-cell *cdkHeaderCellDef fxFlex="20"  fxLayoutAlign="center center">{{ "VEHICLE.BLOCKS.ACTIONS" | translate }}
+        </mat-header-cell>
+        <mat-cell *cdkCellDef="let block" (click)="$event.stopPropagation()" fxLayoutAlign="center center" fxFlex="20">
+          <button mat-icon-button (click)="removeBlock(block)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </mat-cell>
+    </ng-container>
 
 
-
-      <!-- Creator user Column -->
-      <ng-container cdkColumnDef="user">
-          <mat-header-cell *cdkHeaderCellDef fxLayoutAlign="center center">{{ "VEHICLE.BLOCKS.USER" | translate }}
-          </mat-header-cell>
-          <mat-cell *cdkCellDef="let block" fxLayoutAlign="center center">
-              <p class="text-truncate">{{ block.user }}</p>
-          </mat-cell>
-      </ng-container>
 
       <mat-header-row *cdkHeaderRowDef="displayedColumns"></mat-header-row>
 
-      <mat-row *cdkRowDef="let row; columns: displayedColumns" class="selectedElement" [ngClass]="{
-                    highlight:
-                    selectedVehicle &&
-                    selectedVehicle._id == row._id
-                  }" [routerLink]="row._id" matRipple>
+      <mat-row *cdkRowDef="let row; columns: displayedColumns" class="item" (click)="showBlockInfo(row)" matRipple>
       </mat-row>
   </mat-table>
-  <mat-paginator *ngIf="blocks.length > 0" fxFlex="100" #paginator [length]="tableSize" [pageIndex]="tablePage" [pageSize]="tableCount" [pageSizeOptions]="[5, 10, 25, 100]">
+  <mat-paginator *ngIf="dataSource.data && dataSource.data.length > 0" fxFlex="100" #paginator [length]="tableSize" [pageIndex]="tablePage" [pageSize]="tableCount" [pageSizeOptions]="[5, 10, 25, 100]">
   </mat-paginator>
 </div>

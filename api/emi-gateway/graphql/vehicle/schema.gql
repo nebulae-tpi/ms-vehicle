@@ -143,6 +143,13 @@ type VehicleVehicleBlock {
   user: String
 }
 
+input VehicleVehicleBlockInput {
+  key: String
+  notes: String
+  startTime: BigInt
+  endTime: BigInt
+}
+
 type Query {
   "Get Vehicles filtered"
   VehicleVehicles(filterInput: VehicleFilterInput!, paginationInput: PaginationInput!): [VehicleVehicleEntity]
@@ -164,6 +171,8 @@ type Mutation {
   VehicleAddVehicleBlocking(id: ID!, blocking: String!): CommandResponse
   VehicleRemoveVehicleBlocking(id: ID!, blockKey: String!): CommandResponse
   VehicleUpdateVehicleFeatures(id: ID!, input: VehicleFeaturesInput!): CommandResponse
+  "Insert one vehicle block"
+  VehicleInsertVehicleBlock(id: ID!, input: VehicleVehicleBlockInput!): CommandResponse
 }
 
 type Subscription {
@@ -171,5 +180,7 @@ type Subscription {
   VehicleVehicleUpdatedSubscription: VehicleVehicleEntity
   "This events is triggered when a Vehicle report new location update"
   VehicleLocationUpdatedSubscription: VehicleLocation
+  "Vehicle Block added"
+  VehicleVehicleBlockAddedSubscription(vehicleId: String!): VehicleVehicleBlock
 
 }

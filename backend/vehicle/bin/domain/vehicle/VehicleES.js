@@ -107,16 +107,20 @@ class VehicleES {
         )
     }
 
-    handleVehicleBlockAdded$(blockAppliedEvent){  
+    handleVehicleBlockAdded$({ aid, user, data }){
+        console.log("handleVehicleBlockAdded ==> ", aid, user, data);
         return of({
-            vehicleId: blockAppliedEvent.aid,
-            user: blockAppliedEvent.user,
-            ...blockAppliedEvent.data
+            vehicleId: aid,
+            user: user,
+            ...data
         })
         .pipe(
             mergeMap((blockInfo) => forkJoin(
                 VehicleBlocksDA.insertVehicleBlock$(blockInfo),
-                VehicleDA.inserBlock$(blockInfo)
+                VehicleDA.inserBlock$(blockInfo),
+                broker.send$(MATERIALIZED_VIEW_TOPIC, 'VehicleBlockAdded',
+                    { ...blockInfo, key: blockInfo.blockKey }
+                )
             ))
         )        
     }

@@ -13,7 +13,8 @@
   .item {
       position: relative;
       cursor: pointer;
-      height: 84px;
+      min-height: 40px;
+      max-height: 80px;
   }
 
   .mat-cell {

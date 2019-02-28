@@ -207,28 +207,7 @@ module.exports = {
                 catchError(err => handleError$(err, "addBlocking")),
                 mergeMap(response => getResponseFromBackEnd$(response))
             ).toPromise();
-        },
-        VehicleRemoveVehicleBlocking(root, args, context) {
-            return RoleValidator.checkPermissions$(
-                context.authToken.realm_access.roles,
-                "Vehicle",
-                "VehicleRemoveVehicleBlocking",
-                PERMISSION_DENIED_ERROR_CODE,
-                "Permission denied",
-                ["PLATFORM-ADMIN", "BUSINESS-OWNER", "COORDINATOR"]
-            ).pipe(
-                mergeMap(() =>
-                    context.broker.forwardAndGetReply$(
-                        "Vehicle",
-                        "emigateway.graphql.mutation.vehicleRemoveVehicleBlocking",
-                        { root, args, jwt: context.encodedToken },
-                        2000
-                    )
-                ),
-                catchError(err => handleError$(err, "removeBlocking")),
-                mergeMap(response => getResponseFromBackEnd$(response))
-            ).toPromise();
-        },
+        },        
         VehicleUpdateVehicleFeatures(root, args, context) {
             return RoleValidator.checkPermissions$(
                 context.authToken.realm_access.roles,
@@ -247,6 +226,49 @@ module.exports = {
                 catchError(err => handleError$(err, "updateFeatures")),
                 mergeMap(response => getResponseFromBackEnd$(response))
             ).toPromise();
+        },
+        VehicleRemoveVehicleBlocking(root, args, context) {
+            return RoleValidator.checkPermissions$(
+                context.authToken.realm_access.roles,
+                "Vehicle",
+                "VehicleRemoveVehicleBlocking",
+                PERMISSION_DENIED_ERROR_CODE,
+                "Permission denied",
+                ["PLATFORM-ADMIN", "BUSINESS-OWNER", "DISCIPLINARY-COMMITTEE"]
+            ).pipe(
+                mergeMap(() =>
+                    context.broker.forwardAndGetReply$(
+                        "Vehicle",
+                        "emigateway.graphql.mutation.vehicleRemoveVehicleBlocking",
+                        { root, args, jwt: context.encodedToken },
+                        2000
+                    )
+                ),
+                catchError(err => handleError$(err, "removeBlocking")),
+                mergeMap(response => getResponseFromBackEnd$(response))
+            ).toPromise();
+        },
+        VehicleInsertVehicleBlock(root, args, context) {
+            return RoleValidator.checkPermissions$(
+                context.authToken.realm_access.roles,
+                'ms-Vehicle', 'VehicleInsertVehicleBlock',
+                PERMISSION_DENIED_ERROR_CODE,
+                'Permission denied',
+                ["PLATFORM-ADMIN", "BUSINESS-OWNER", "DISCIPLINARY-COMMITTEE"]
+            )
+                .pipe(
+                    mergeMap(() =>
+                        broker
+                            .forwardAndGetReply$(
+                                "Vehicle",
+                                "emigateway.graphql.mutation.vehicleAddVehicleBlock",
+                                { root, args, jwt: context.encodedToken },
+                                2000
+                            )
+                    ),
+                    catchError(err => handleError$(err, "VehicleVehicle")),
+                    mergeMap(response => getResponseFromBackEnd$(response))
+                ).toPromise();
         },
     },
         
@@ -274,6 +296,16 @@ module.exports = {
                 }
             )
         },
+        VehicleVehicleBlockAddedSubscription: {
+            subscribe: withFilter(
+                (payload, variables, context, info) => {
+                    return pubsub.asyncIterator("VehicleVehicleBlockAddedSubscription");
+                },
+                (payload, variables, context, info) => {
+                    return variables.vehicleId == payload.VehicleVehicleBlockAddedSubscription.vehicleId;
+                }
+            )
+        }
     }
     
 };
@@ -291,6 +323,10 @@ const eventDescriptors = [{
         backendEventName: 'VehicleLocationUpdated',
         gqlSubscriptionName: 'VehicleLocationUpdatedSubscription'
     },
+    {
+        backendEventName: 'VehicleBlockAdded',
+        gqlSubscriptionName: 'VehicleVehicleBlockAddedSubscription',
+    }
 ];
 
 

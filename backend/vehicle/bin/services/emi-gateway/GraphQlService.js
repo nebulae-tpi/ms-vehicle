@@ -180,6 +180,10 @@ class GraphQlService {
       {
         aggregateType: "Vehicle",
         messageType: "emigateway.graphql.mutation.vehicleRemoveVehicleBlocking"
+      },
+      {
+        aggregateType: "Vehicle",
+        messageType: "emigateway.graphql.mutation.vehicleAddVehicleBlock"
       }
     ];
   }
@@ -224,6 +228,10 @@ class GraphQlService {
       },
       "emigateway.graphql.mutation.vehicleRemoveVehicleBlocking": {
         fn: VehicleCQRS.removeVehicleBlock$,
+        obj: VehicleCQRS
+      },
+      "emigateway.graphql.mutation.vehicleAddVehicleBlock": {
+        fn: VehicleCQRS.addVehicleBlock$,
         obj: VehicleCQRS
       }
     };

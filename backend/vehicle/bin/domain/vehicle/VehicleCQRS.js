@@ -277,7 +277,7 @@ class VehicleCQRS {
       "vehicleBlocks",
       "getVehicleBlocks$",
       PERMISSION_DENIED,
-      ["PLATFORM-ADMIN", "BUSINESS-OWNER", "COORDINATOR"]
+      ["PLATFORM-ADMIN", "BUSINESS-OWNER", "COORDINATOR", "DISCIPLINARY-COMMITTEE"]
     ).pipe(
       mergeMap(() => eventSourcing.eventStore.emitEvent$(
         new Event({
@@ -286,6 +286,37 @@ class VehicleCQRS {
           aggregateType: "Vehicle",
           aggregateId: args.id,
           data: { blockKey: args.blockKey},
+          user: authToken.preferred_username
+        })
+      )),
+      map(() => ({ code: 200, message: `Vehicle with id: ${args.id} has been updated` })),
+      mergeMap(r => GraphqlResponseTools.buildSuccessResponse$(r)),
+      catchError(err => GraphqlResponseTools.handleError$(err))
+    );
+
+  }
+
+  addVehicleBlock$({ root, args, jwt }, authToken) {
+    console.log("addVehicleBlock$ ==> ", args);
+    return RoleValidator.checkPermissions$(
+      authToken.realm_access.roles,
+      "vehicleBlocks",
+      "getVehicleBlocks$",
+      PERMISSION_DENIED,
+      ["PLATFORM-ADMIN", "BUSINESS-OWNER", "COORDINATOR", "DISCIPLINARY-COMMITTEE"]
+    ).pipe(
+      mergeMap(() => eventSourcing.eventStore.emitEvent$(
+        new Event({
+          eventType: "VehicleBlockAdded",
+          eventTypeVersion: 1,
+          aggregateType: "Vehicle",
+          aggregateId: args.id,
+          data: {
+            blockKey: args.input.key,
+            startTime: args.input.startTime,
+            endTime: args.input.endTime,
+            notes: args.input.notes
+          },
           user: authToken.preferred_username
         })
       )),

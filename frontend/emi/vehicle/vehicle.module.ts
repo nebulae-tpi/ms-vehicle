@@ -15,6 +15,7 @@ import { DialogComponent } from './dialog/dialog.component';
 import { VehicleDetailFeaturesComponent } from './vehicle-detail/features/vehicle-features.component';
 import { VehicleLocationComponent } from './vehicle-detail/location/vehicle-location.component';
 import { VehicleBlocksComponent } from './vehicle-detail/vehicle-blocks/vehicle-blocks.component';
+import { ManualBlockDialogComponent } from './vehicle-detail/vehicle-blocks/manual-block/manual-block.component';
 
 const routes: Routes = [
   {
@@ -44,9 +45,10 @@ const routes: Routes = [
     VehicleDetailGeneralInfoComponent,
     VehicleDetailFeaturesComponent,
     VehicleLocationComponent,
-    VehicleBlocksComponent
+    VehicleBlocksComponent,
+    ManualBlockDialogComponent
   ],
-  entryComponents: [DialogComponent],
+  entryComponents: [DialogComponent, ManualBlockDialogComponent],
   providers: [ VehicleService, VehicleListService, VehicleDetailService, DatePipe]
 })
 

@@ -1,6 +1,7 @@
 export const locale = {
   lang: 'en',
   data: {
+    undefined: 'Undefined',
     VEHICLE: {
       LICENSE_PLATE_ALREADY_USED: 'License Plate Already Used',
       NAME_REQUIRED: 'Name required',
@@ -24,7 +25,20 @@ export const locale = {
         SHOW_BLOCKED: 'Blocked',
         SHOW_INACTIVE: 'Inactive'
       },
+      CREATE_BLOCK: 'Create a Block',
+      REMOVE_BLOCK_TITLE: 'Remove Block',
+      REMOVE_BLOCK_MSG: 'Are you sure you want to remove the block?',
+      BLOCK_TYPE: 'Block Type',
+      BLOCK_DURATION: 'Block Duration',
+      BLOCK_COMMENTS: 'Comments',
+      BLOCK_RESPONSIBLE_USER: 'Responsible',
+      BLOCK_START_TIME: 'Start Time',
+      BLOCK_END_TIME: 'Start Time',
       DETAILS: {
+        BLOCK_COMMENT_REQUIRED: 'Comments field required',
+        BLOCK_COMMENT_MIN_LENGTH_ERROR: 'Comments require at least 50 caracters',
+        BLOCK_COMMENT_MAX_LENGTH_ERROR: 'Very long comment',
+        BLOCK_EXIST: 'Vehicle already have this block type',
         TABS: {
           GENERAL_INFO: 'General Info',
           FEATURES: 'Features',
@@ -38,7 +52,7 @@ export const locale = {
         MODEL: 'Model',
         BRAND: 'Brand',
         LINE: 'Line',
-        CREATED_BY: 'Created By:', 
+        CREATED_BY: 'Created By:',
         CREATED_IN: 'Created In:',
         MODIFIED_BY: 'Edited By:',
         MODIFIED_IN: 'Edited In:',
@@ -50,7 +64,10 @@ export const locale = {
         START_TIME: 'Start Time',
         END_TIME: 'Expiration Time',
         USER: 'Responsible',
-        ACTIONS: 'Actions'
+        ACTIONS: 'Actions',
+        TYPES: {
+          EXPIRED_MEMBERSHIP: 'Expired Membership',
+        },
       },
       FEATURES: {
         FUEL: 'Fuel',

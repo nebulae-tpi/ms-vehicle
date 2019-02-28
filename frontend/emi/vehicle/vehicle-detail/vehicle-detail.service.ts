@@ -10,7 +10,9 @@ import {
   VehicleVehicleUpdatedSubscription,
   VehicleUpdateVehicleFeatures,
   VehicleVehicleBlocks,
-  removeVehicleBlocking
+  removeVehicleBlocking,
+  InsertVehicleBlock,
+  VehicleVehicleBlockAddedSubscription
 } from '../gql/vehicle.js';
 
 @Injectable()
@@ -128,6 +130,20 @@ export class VehicleDetailService {
       });
   }
 
+    /**
+ * Event triggered when a business is created, updated or deleted.
+ */
+listenVehicleBlockAdded$(vehicleId: string): Observable<any> {
+  return this.gateway.apollo
+  .subscribe({
+    query: VehicleVehicleBlockAddedSubscription,
+    variables: {
+      vehicleId: vehicleId
+    }
+  });
+}
+
+
 
   getVehicleVehicle$(entityId: string) {
     return this.gateway.apollo.query<any>({
@@ -150,6 +166,35 @@ export class VehicleDetailService {
       fetchPolicy: 'network-only',
       errorPolicy: 'all'
     });
+  }
+
+  removeDriverBlock$(id: String, blockKey: string) {
+    return this.gateway.apollo
+      .mutate<any>({
+        mutation: removeVehicleBlocking,
+        variables: {
+          id: id,
+          blockKey: blockKey
+        },
+        errorPolicy: 'all'
+      });
+  }
+
+      /**
+   * Insert a block to the driver
+   * @param id driver id
+   * @param blockInput object
+   */
+  insertVehicleBlock$(id: String, blockInput: any) {
+    return this.gateway.apollo
+      .mutate<any>({
+        mutation: InsertVehicleBlock,
+        variables: {
+          id: id,
+          input: blockInput
+        },
+        errorPolicy: 'all'
+      });
   }
 
 

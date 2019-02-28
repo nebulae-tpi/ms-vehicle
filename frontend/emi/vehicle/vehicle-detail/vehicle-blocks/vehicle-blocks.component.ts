@@ -56,6 +56,7 @@ import { KeycloakService } from 'keycloak-angular';
 import { VehicleDetailService } from '../vehicle-detail.service';
 import { DialogComponent } from '../../dialog/dialog.component';
 import { ToolbarService } from '../../../../toolbar/toolbar.service';
+import { ManualBlockDialogComponent } from './manual-block/manual-block.component';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -85,14 +86,13 @@ export class VehicleBlocksComponent implements OnInit, OnDestroy {
   // Columns to show in the table
   displayedColumns = [
     'key',
-    'notes',
     'startTime',
     'endTime',
     'user',
     'actions'
   ];
 
-  blocks = [];
+  userRoles = [];
 
   constructor(
     private translationLoader: FuseTranslationLoaderService,
@@ -103,26 +103,40 @@ export class VehicleBlocksComponent implements OnInit, OnDestroy {
     private activatedRouter: ActivatedRoute,
     private VehicleDetailservice: VehicleDetailService,
     private dialog: MatDialog,
-    private toolbarService: ToolbarService
+    private toolbarService: ToolbarService,
+    private keycloakService: KeycloakService
   ) {
       this.translationLoader.loadTranslations(english, spanish);
   }
 
 
   ngOnInit() {
+
+    this.userRoles = this.keycloakService.getUserRoles();
+    console.log(this.userRoles);
+
     this.VehicleDetailservice.getVehicleVehicleBlocks$(this.vehicle._id)
     .pipe(
       map(r => JSON.parse(JSON.stringify(r.data.VehicleVehicleBlocks))),
       tap(blocks =>  {
-        this.blocks = blocks;
         this.dataSource.data = blocks;
       })
     ).subscribe(() => {}, err => console.log(err), () => {});
 
-    this.vehicleblocksForm = new FormGroup({
-      fuel: new FormControl(this.vehicle ? (this.vehicle.blocks || {}).fuel : ''),
-      capacity: new FormControl(this.vehicle ? (this.vehicle.blocks || {}).capacity : '')
-    });
+    // this.vehicleblocksForm = new FormGroup({
+    //   fuel: new FormControl(this.vehicle ? (this.vehicle.blocks || {}).fuel : ''),
+    //   capacity: new FormControl(this.vehicle ? (this.vehicle.blocks || {}).capacity : '')
+    // });
+
+    this.VehicleDetailservice.listenVehicleBlockAdded$(this.vehicle._id)
+      .pipe(
+        map(res => res.data.VehicleVehicleBlockAddedSubscription),
+        tap(r => console.log(' listenVehicleBlockAdded SUSBCRIPTION ==> ', r)),
+        tap(r => this.dataSource.data = [...this.dataSource.data, r] ),
+        takeUntil(this.ngUnsubscribe)
+      )
+      .subscribe(OK => console.log(OK), err => console.log(err), () => console.log('COMPLETED'));
+
   }
 
 
@@ -218,19 +232,63 @@ export class VehicleBlocksComponent implements OnInit, OnDestroy {
     this.ngUnsubscribe.complete();
   }
 
-  removeBlock(block){
-    this.VehicleDetailservice.removeVehicleBlock$(this.vehicle._id, block.key)
-    .pipe(
-      tap(() => {
-        this.dataSource.data = this.dataSource.data.filter((e: any) => e.key !== block.key);
-      })
-    )
-    .subscribe(() => {}, err => console.log(err), () => {});
-
+  removeBlock(block) {
+    this.showConfirmationDialog$('VEHICLE.REMOVE_BLOCK_MSG', 'VEHICLE.REMOVE_BLOCK_TITLE')
+      .pipe(
+        filter(response => response),
+        mergeMap(() => this.VehicleDetailservice.removeDriverBlock$(this.vehicle._id, block.key)),
+        mergeMap(res => this.graphQlAlarmsErrorHandler$(res)),
+        tap(response => {
+          if (!response.errors) {
+            this.dataSource.data = this.dataSource.data.filter((e: any) => e.key !== block.key);
+          }
+        }),
+        takeUntil(this.ngUnsubscribe)
+      )
+      .subscribe(() => { }, err => console.log(err), () => {} );
   }
 
-  insertBlock(){
-    console.log('####### INSERTANDO UN BLOQUEO');
+  createBlock(){
+    return this.dialog
+      // Opens confirm dialog
+      .open(ManualBlockDialogComponent, {
+        width: '70%',
+        height: '80%',
+        data: {
+          mode: 'NEW',
+          forbidddenBlockKeys: this.dataSource.data.map((e: any) => e.key )
+        }
+      })
+      .afterClosed()
+      .pipe(
+        filter(okButton => okButton),
+        tap(response => console.log('DIALOG RESPONSE ===>', response)),
+        mergeMap(r => this.VehicleDetailservice.insertVehicleBlock$(this.vehicle._id, r)),
+        mergeMap(r => this.graphQlAlarmsErrorHandler$(r)),
+        takeUntil(this.ngUnsubscribe)
+      )
+      .subscribe();
+  }
+
+  showBlockInfo(block: any) {
+    console.log('SHOW BLOCK INFO', block);
+    return this.dialog
+      .open(ManualBlockDialogComponent, {
+        width: '70%',
+        height: '80%',
+        data: {
+          mode: 'VIEW',
+          block: block
+        }
+      })
+      .afterClosed()
+      .pipe(
+        filter(okButton => okButton),
+        tap(response => console.log('DIALOG RESPONSE ===>', response)),
+        takeUntil(this.ngUnsubscribe)
+      )
+      .subscribe();
+
   }
 
 }
