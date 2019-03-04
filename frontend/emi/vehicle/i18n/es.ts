@@ -37,7 +37,7 @@ export const locale = {
       BLOCK_END_TIME: 'Fecha de Expiración',
       DETAILS: {
         BLOCK_COMMENT_REQUIRED: 'Comentario requerido',
-        BLOCK_COMMENT_MIN_LENGTH_ERROR: 'Se requieren al menos 50 caracteres',
+        BLOCK_COMMENT_MIN_LENGTH_ERROR: 'Se requieren al menos 10 caracteres',
         BLOCK_COMMENT_MAX_LENGTH_ERROR: 'Comenterio demasiado largo',
         BLOCK_EXIST: 'El vehículo ya posee un bloqueo de este tipo',
         TABS: {
@@ -68,6 +68,7 @@ export const locale = {
         ACTIONS: 'Acciones',
         TYPES: {
           EXPIRED_MEMBERSHIP: 'Falta de pago',
+          OTHERS: 'Otros'
         },
       },
       FEATURES: {

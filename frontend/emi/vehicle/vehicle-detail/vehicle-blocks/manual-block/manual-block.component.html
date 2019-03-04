@@ -29,7 +29,8 @@
 
         <!-- BLOCK COMMENTS -->
         <mat-form-field fxFlex="100" class="p-8">
-          <textarea maxlength="500" minlength="50" rows="5" name="comment" formControlName="comment" matInput
+          <textarea [required]="manualBlockForm.controls['block'].value && manualBlockForm.controls['block'].value.key != 'EXPIRED_MEMBERSHIP'"
+            maxlength="500" minlength="10" rows="5" name="comment" formControlName="comment" matInput
             placeholder="{{'VEHICLE.BLOCK_COMMENTS' | translate}}"></textarea>
           <mat-error *ngIf="manualBlockForm.hasError('required', ['comment'])">
             {{'VEHICLE.DETAILS.BLOCK_COMMENT_REQUIRED' | translate}}
@@ -77,7 +78,7 @@
       <!-- END TIME -->
 
       <!-- BLOCK COMMENTS -->
-      <mat-form-field fxFlex.gt-xs="100" fxFlex="100" class="p-8">
+      <mat-form-field *ngIf="block.notes && block.notes != ''" fxFlex.gt-xs="100" fxFlex="100" class="p-8">
         <textarea rows="5" readonly matInput placeholder="{{'VEHICLE.BLOCK_COMMENTS' | translate}}" [value]="block.notes" ></textarea>
       </mat-form-field>
       <!-- BLOCK COMMENTS -->

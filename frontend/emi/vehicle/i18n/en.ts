@@ -37,7 +37,7 @@ export const locale = {
       BLOCK_END_TIME: 'Start Time',
       DETAILS: {
         BLOCK_COMMENT_REQUIRED: 'Comments field required',
-        BLOCK_COMMENT_MIN_LENGTH_ERROR: 'Comments require at least 50 caracters',
+        BLOCK_COMMENT_MIN_LENGTH_ERROR: 'Comments require at least 10 caracters',
         BLOCK_COMMENT_MAX_LENGTH_ERROR: 'Very long comment',
         BLOCK_EXIST: 'Vehicle already have this block type',
         TABS: {
@@ -68,6 +68,7 @@ export const locale = {
         ACTIONS: 'Actions',
         TYPES: {
           EXPIRED_MEMBERSHIP: 'Expired Membership',
+          OTHERS: 'Others'
         },
       },
       FEATURES: {

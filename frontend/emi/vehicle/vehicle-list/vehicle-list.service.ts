@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Observable, BehaviorSubject } from "rxjs";
+import { Observable, BehaviorSubject } from 'rxjs';
 import {
   startWith
-} from "rxjs/operators";
+} from 'rxjs/operators';
 import { GatewayService } from '../../../../api/gateway.service';
 import {
   VehicleVehicles,
@@ -36,15 +36,14 @@ export class VehicleListService {
    * @returns {Observable} Observable with the vehicle list
    */
   getvehicleList$(filterInput, paginatorInput){
-    console.log('getvehicleList$ ==> ', filterInput);
     return this.gateway.apollo.query<any>({
       query: VehicleVehicles,
       variables: {
         filterInput: filterInput,
         paginationInput: paginatorInput
       },
-      fetchPolicy: "network-only",
-      errorPolicy: "all"
+      fetchPolicy: 'network-only',
+      errorPolicy: 'all'
     });
   }
 
@@ -59,8 +58,8 @@ export class VehicleListService {
       variables: {
         filterInput: filterInput
       },
-      fetchPolicy: "network-only",
-      errorPolicy: "all"
+      fetchPolicy: 'network-only',
+      errorPolicy: 'all'
     });
   }
 
@@ -71,7 +70,7 @@ export class VehicleListService {
    * @returns {Observable<any>}
    */
   get filter$(): Observable<any> {
-    return this._filterSubject$.asObservable()
+    return this._filterSubject$.asObservable();
   }
 
   /**

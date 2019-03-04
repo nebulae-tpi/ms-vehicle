@@ -109,8 +109,8 @@ export class VehicleListComponent implements OnInit, OnDestroy {
     'model',
     'state',
     'blockings',
-    'creatorUser',    
-    'modifierUser',    
+    'creatorUser',
+    'modifierUser',
     'modificationTimestamp',
   ];
 
@@ -201,7 +201,18 @@ export class VehicleListComponent implements OnInit, OnDestroy {
     this.listenFilterFormChanges$()
       .pipe(
         takeUntil(this.ngUnsubscribe),
-        tap( filterData =>  this.VehicleListservice.updateFilterData(filterData)) // --
+        tap( filterData =>  this.VehicleListservice.updateFilterData(filterData)), // --
+        // tap(() => console.log('FILTER UPDATED')),
+        // mergeMap(() => this.VehicleListservice.paginator$),
+        // tap(({ pagination }) => {
+        //   console.log('=======> ', pagination);
+        //   this.VehicleListservice.updatePaginatorData({
+        //     pagination: {
+        //       page: 0, count: pagination.page, sort: -1
+        //     }
+        //   });
+        // })
+
       )
       .subscribe();
   }
@@ -234,7 +245,7 @@ export class VehicleListComponent implements OnInit, OnDestroy {
         if (filterValue) {
           this.filterForm.patchValue({
             showBlocked: filterValue.showBlocked,
-            showInactive: filterValue.showInactive,            
+            showInactive: filterValue.showInactive,
             licensePlate: filterValue.licensePlate,
             creationTimestamp: filterValue.creationTimestamp,
             creatorUser: filterValue.creatorUser
@@ -311,7 +322,7 @@ export class VehicleListComponent implements OnInit, OnDestroy {
     return this.VehicleListservice.getvehicleSize$(filterInput)
     .pipe(
       mergeMap(resp => this.graphQlAlarmsErrorHandler$(resp)),
-      map(resp => resp.data.VehicleVehiclesSize)
+      map(resp => (resp.data && resp.data.VehicleVehiclesSize ) ? resp.data.VehicleVehiclesSize : 0)
     );
   }
 

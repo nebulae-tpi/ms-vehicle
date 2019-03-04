@@ -3,42 +3,28 @@ import {
   Component,
   OnInit,
   OnDestroy,
-  ViewChild,
-  ElementRef,
   Input
 } from '@angular/core';
 
 import {
-  FormBuilder,
   FormGroup,
   FormControl,
-  Validators
 } from '@angular/forms';
 
-import { Router, ActivatedRoute } from '@angular/router';
 
 ////////// RXJS ///////////
 import {
-  map,
   mergeMap,
-  switchMap,
-  toArray,
   filter,
   tap,
   takeUntil,
-  startWith,
-  debounceTime,
-  distinctUntilChanged,
   take
 } from 'rxjs/operators';
 
-import { Subject, fromEvent, of, forkJoin, Observable, concat, combineLatest } from 'rxjs';
+import { Subject, of } from 'rxjs';
 
 //////////// ANGULAR MATERIAL ///////////
 import {
-  MatPaginator,
-  MatSort,
-  MatTableDataSource,
   MatSnackBar,
   MatDialog
 } from '@angular/material';
@@ -52,7 +38,6 @@ import { locale as spanish } from '../../i18n/es';
 import { FuseTranslationLoaderService } from '../../../../../core/services/translation-loader.service';
 
 //////////// Others ////////////
-import { KeycloakService } from 'keycloak-angular';
 import { VehicleDetailService } from '../vehicle-detail.service';
 import { DialogComponent } from '../../dialog/dialog.component';
 import { ToolbarService } from '../../../../toolbar/toolbar.service';
@@ -77,10 +62,7 @@ export class VehicleDetailGeneralInfoComponent implements OnInit, OnDestroy {
   constructor(
     private translationLoader: FuseTranslationLoaderService,
     private translate: TranslateService,
-    private formBuilder: FormBuilder,
     public snackBar: MatSnackBar,
-    private router: Router,
-    private activatedRouter: ActivatedRoute,
     private VehicleDetailservice: VehicleDetailService,
     private dialog: MatDialog,
     private toolbarService: ToolbarService
@@ -91,7 +73,6 @@ export class VehicleDetailGeneralInfoComponent implements OnInit, OnDestroy {
 
 
   ngOnInit() {
-    console.log('VEHICLE ==> ', this.vehicle )
     this.vehicleGeneralInfoForm = new FormGroup({
       licensePlate: new FormControl(this.vehicle ? (this.vehicle.generalInfo || {}).licensePlate : ''),
       model: new FormControl(this.vehicle ? (this.vehicle.generalInfo || {}).model : ''),
@@ -120,7 +101,10 @@ export class VehicleDetailGeneralInfoComponent implements OnInit, OnDestroy {
             this.vehicle = {
               generalInfo: {
                 ...this.vehicleGeneralInfoForm.getRawValue(),
-                licensePlate: this.vehicleGeneralInfoForm.getRawValue().licensePlate.trim().toUpperCase()
+                licensePlate: this.vehicleGeneralInfoForm.getRawValue().licensePlate.trim().toUpperCase(),
+                brand: this.vehicleGeneralInfoForm.getRawValue().brand.trim().toUpperCase(),
+                line: this.vehicleGeneralInfoForm.getRawValue().line.trim().toUpperCase()
+
               },
               state: this.vehicleStateForm.getRawValue().state,
               businessId: selectedBusiness.id
@@ -132,7 +116,7 @@ export class VehicleDetailGeneralInfoComponent implements OnInit, OnDestroy {
         )),
       takeUntil(this.ngUnsubscribe)
     )
-      .subscribe(result => {
+      .subscribe(() => {
         this.showSnackBar('VEHICLE.WAIT_OPERATION');
       },
         error => {
@@ -150,8 +134,8 @@ export class VehicleDetailGeneralInfoComponent implements OnInit, OnDestroy {
           this.vehicle._id, {
             licensePlate: this.vehicleGeneralInfoForm.getRawValue().licensePlate.trim().toUpperCase(),
             model: this.vehicleGeneralInfoForm.getRawValue().model,
-            brand: this.vehicleGeneralInfoForm.getRawValue().brand.toUpperCase(),
-            line: this.vehicleGeneralInfoForm.getRawValue().line
+            brand: this.vehicleGeneralInfoForm.getRawValue().brand.trim().toUpperCase(),
+            line: this.vehicleGeneralInfoForm.getRawValue().line.trim().toUpperCase()
           }
         )),
         mergeMap(resp => this.graphQlAlarmsErrorHandler$(resp)),

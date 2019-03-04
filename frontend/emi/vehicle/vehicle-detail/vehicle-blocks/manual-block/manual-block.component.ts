@@ -23,6 +23,7 @@ export class ManualBlockDialogComponent implements OnInit {
   manualBlockForm: any;
   blockTypes = [
     { key: 'EXPIRED_MEMBERSHIP', duration: undefined },
+    { key: 'OTHERS', duration: undefined },
   ];
   forbidddenBlockKeys = [];
   mode: string;
@@ -42,7 +43,7 @@ export class ManualBlockDialogComponent implements OnInit {
     this.manualBlockForm = new FormGroup({
       block: new FormControl(null, [Validators.required, this.validateBlock.bind(this) ]),
       duration: new FormControl(0),
-      comment: new FormControl('', [Validators.required]),
+      comment: new FormControl(''),
     });
   }
 
