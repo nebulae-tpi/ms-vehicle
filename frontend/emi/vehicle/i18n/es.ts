@@ -68,7 +68,7 @@ export const locale = {
         ACTIONS: 'Acciones',
         TYPES: {
           EXPIRED_MEMBERSHIP: 'Falta de pago',
-          OTHERS: 'Otros'
+          OTHER: 'Otro'
         },
       },
       FEATURES: {
