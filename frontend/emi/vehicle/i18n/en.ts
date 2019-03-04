@@ -57,7 +57,7 @@ export const locale = {
         CREATED_IN: 'Created In:',
         MODIFIED_BY: 'Edited By:',
         MODIFIED_IN: 'Edited In:',
-        NO_HAVE_BLOCKS: 'This Vehicle Is Not Blocked'
+        NO_HAVE_BLOCKS: 'Vehicle without blocks'
       },
       BLOCKS: {
         KEY: 'Block',
