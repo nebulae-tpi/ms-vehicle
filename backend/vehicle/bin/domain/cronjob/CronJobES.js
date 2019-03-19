@@ -27,7 +27,6 @@ class CronJobES {
   }
 
   handlePeriodicFiveMinutes$() {
-    console.log("------- handlePeriodicFiveMinutes$ ----------");
     return forkJoin(
       this.searchExpiredBlocksToRemove$()
     )
@@ -36,7 +35,6 @@ class CronJobES {
   searchExpiredBlocksToRemove$(){
     return VehicleBlocksDA.findAllExpiredBlocks$(Date.now())
     .pipe(
-      tap(block => console.log('BLOCK TO REMOVE ==>', JSON.stringify(block), '\n')),
       mergeMap(block => this.generateEventStoreEvent$('VehicleBlockRemoved', 1, 'Vehicle', block.vehicleId, {
         blockKey: block.key
       }, 'SYSTEM')),
