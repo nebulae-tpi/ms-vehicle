@@ -2,6 +2,7 @@
 const { of, from, concat } = require("rxjs");
 const eventSourcing = require("../../tools/EventSourcing")();
 const { VehicleES } = require("../../domain/vehicle");
+const { CronJobES } = require("../../domain/cronjob");
 const { map, switchMap, filter, mergeMap, concatMap } = require('rxjs/operators');
 /**
  * Singleton instance
@@ -136,11 +137,7 @@ class EventStoreService {
       VehicleFeaturesUpdated: {
         fn: VehicleES.handleVehicleFeaturesUpdated$,
         obj: VehicleES
-      },      
-      CleanExpiredBlocks: {
-        fn: VehicleES.handleCleanExpiredBlocks$,
-        obj: VehicleES
-      },      
+      },          
       VehicleBlockAdded: {
         fn: VehicleES.handleVehicleBlockAdded$,
         obj: VehicleES
@@ -156,7 +153,12 @@ class EventStoreService {
       PicoPlacaCaliUnblockJobTriggered: {
         fn: VehicleES.handlePicoPlacaCaliUnblockJobTriggered$,
         obj: VehicleES
-      }
+      },
+      // cronjob
+      PeriodicFiveMinutes: {
+        fn: CronJobES.handlePeriodicFiveMinutes$,
+        obj: CronJobES
+      },
     };
   }
 
@@ -187,10 +189,6 @@ class EventStoreService {
       },
       {
         aggregateType: "Cronjob",
-        eventType: "CleanExpiredBlocks"
-      },
-      {
-        aggregateType: "Cronjob",
         eventType: "PicoPlacaCaliBlockJobTriggered"
       },
       {
@@ -201,7 +199,9 @@ class EventStoreService {
         aggregateType: "Cronjob",
         eventType: "PicoPlacaCaliUnblockJobTriggered"
       },
-
+      
+      // cronjob
+      { aggregateType: "Cronjob", eventType: "PeriodicFiveMinutes" },
     ]
   }
 }

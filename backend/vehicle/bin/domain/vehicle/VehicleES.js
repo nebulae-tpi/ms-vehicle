@@ -66,10 +66,6 @@ class VehicleES {
     }
 
 
-    handleCleanExpiredBlocks$(evt){
-        return VehicleBlocksDA.removeExpiredBlocks$(evt.timestamp);
-    }
-
     handlePicoPlacaCaliBlockJobTriggered$(PicoPlacaCaliBlockJobTriggered){
         return of(PicoPlacaCaliBlockJobTriggered.data)
         .pipe(
@@ -129,7 +125,7 @@ class VehicleES {
         return of({vehicleId: evt.aid, blockKey: evt.data.blockKey })
         .pipe(
             mergeMap( args => forkJoin(
-                VehicleBlocksDA.removeBlockFromDevice$(args),
+                VehicleBlocksDA.removeBlock$(args),
                 VehicleDA.removeBlock$(args)
             )),
 

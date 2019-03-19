@@ -32,14 +32,15 @@ class VehicleBlocksDA {
     )
   }
 
-  static removeBlockFromDevice$({vehicleId, blockKey}){
+  static removeBlock$({vehicleId, blockKey}){
     const collection = mongoDB.db.collection(COLLECTION_NAME);
     return defer(() => collection.deleteMany({vehicleId: vehicleId, key: blockKey}))
   }
 
-  static removeExpiredBlocks$(timestamp){
+  static findAllExpiredBlocks$(timestamp){
     const collection = mongoDB.db.collection(COLLECTION_NAME);
-    return defer(() => collection.deleteMany( { endTime: { $$lte: timestamp } }))
+    const query = { endTime: { $lte: timestamp } };
+    return mongoDB.extractAllFromMongoCursor$(collection.find(query));
   }
 
   static insertVehicleBlock$({vehicleId, businessId, licensePlate, blockKey, notes = '', endTime = undefined, user} ){
