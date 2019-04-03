@@ -122,6 +122,7 @@ class EventStoreService {
 
   generateFunctionMap() {
     return {
+      // Vehicle
       VehicleCreated: {
         fn: VehicleES.handleVehicleCreated$,
         obj: VehicleES
@@ -154,9 +155,17 @@ class EventStoreService {
         fn: VehicleES.handlePicoPlacaCaliUnblockJobTriggered$,
         obj: VehicleES
       },
+      VehicleSubscriptionPaid: {
+        fn: VehicleES.handleVehicleSubscriptionPaid$,
+        obj: VehicleES
+      },
       // cronjob
       PeriodicFiveMinutes: {
         fn: CronJobES.handlePeriodicFiveMinutes$,
+        obj: CronJobES
+      },
+      PeriodicFifteenMinutes: {
+        fn: CronJobES.handlePeriodicFifteenMinutes$,
         obj: CronJobES
       },
     };
@@ -202,6 +211,7 @@ class EventStoreService {
       
       // cronjob
       { aggregateType: "Cronjob", eventType: "PeriodicFiveMinutes" },
+      { aggregateType: "Cronjob", eventType: "PeriodicFifteenMinutes" },
     ]
   }
 }

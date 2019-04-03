@@ -229,6 +229,20 @@ class VehicleDA {
     ))
   }
 
+  static updateVehicleMembership$(licensePlate, membership){
+    const collection = mongoDB.db.collection(COLLECTION_NAME);
+    return defer( () => collection.updateOne(
+      {'generalInfo.licensePlate': licensePlate},
+      { $set: { membership: membership } }
+      ))
+  }
+
+  static getExpiredSubscriptions$(timestamp){
+    const collection = mongoDB.db.collection(COLLECTION_NAME);
+    const query = { 'membership.expirationTime': { $lte: timestamp } };    
+    return mongoDB.extractAllFromMongoCursor$(collection.find(query));
+  }
+
 }
 /**
  * @returns {VehicleDA}

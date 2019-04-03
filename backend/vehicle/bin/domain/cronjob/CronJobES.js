@@ -1,11 +1,12 @@
 "use strict";
 
 const { of, forkJoin } = require("rxjs");
-const { mergeMap, delay, tap } = require("rxjs/operators");
+const { mergeMap, delay, tap, toArray } = require("rxjs/operators");
 const Event = require("@nebulae/event-store").Event;
 const eventSourcing = require("../../tools/EventSourcing")();
 const MATERIALIZED_VIEW_TOPIC = "emi-gateway-materialized-view-updates";
 const VehicleBlocksDA = require('../../data/VehicleBlocksDA');
+const VehicleDA = require('../../data/VehicleDA');
 
 /**
  * Singleton instance
@@ -18,7 +19,7 @@ class CronJobES {
     // of({})
     // .pipe(
     //   delay(3000),
-    //   mergeMap( () => this.generateEventStoreEvent$('PeriodicFiveMinutes', 1, 'Cronjob', 1, {})),
+    //   mergeMap( () => this.generateEventStoreEvent$('PeriodicFifteenMinutes', 1, 'Cronjob', 1, {})),
     //   mergeMap(event => eventSourcing.eventStore.emitEvent$(event)),
     //   tap(x => console.log('ENVIADO'))
     // )
@@ -30,6 +31,29 @@ class CronJobES {
     return forkJoin(
       this.searchExpiredBlocksToRemove$()
     )
+  }
+
+  handlePeriodicFifteenMinutes$(){
+    return forkJoin(
+      this.searchExpiredSubscriptions$()
+    )
+  }
+  
+  
+  searchExpiredSubscriptions$() {
+    return VehicleDA.getExpiredSubscriptions$(Date.now())
+      .pipe(
+        mergeMap(vehicle => this.generateEventStoreEvent$("VehicleBlockAdded", 1, "Vehicle", vehicle._id,
+          {
+            blockKey: 'MEMBERSHIP',
+            startTime: Date.now(),
+            notes: 'Blocked by System CronJob'
+          },
+          "SYSTEM")
+        ),
+        mergeMap(event => eventSourcing.eventStore.emitEvent$(event)),
+        toArray(),
+      )
   }
 
   searchExpiredBlocksToRemove$(){

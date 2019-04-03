@@ -157,6 +157,33 @@ class VehicleES {
             )
     }
 
+    handleVehicleSubscriptionPaid$({aid, data, user}){
+        const millisInDay = 1000 * 60 * 60 * 24;
+        return VehicleDA.findVehicleByLicensePlate$(data.licensePlate)
+        .pipe(
+            mergeMap(vehicle => forkJoin(
+                of(vehicle.membership)
+                    .pipe(
+                        mergeMap(vehicleMembership => {
+                            return of({
+                                status: 'ACTIVE',
+                                expirationTime: !vehicleMembership || vehicleMembership.expirationTime < Date.now()
+                                    ? Date.now() + (data.daysPaid * millisInDay)
+                                    : vehicleMembership.expirationTime + (data.daysPaid * millisInDay)
+                            });
+                        }),
+                        mergeMap(vehicleMembership => VehicleDA.updateVehicleMembership$(data.licensePlate, vehicleMembership))
+
+                    ),
+                VehicleBlocksDA.removeBlock$({vehicleId: vehicle._id, blockKey: "MEMBERSHIP"})
+            )),
+            
+            // Remove blocks by subscription
+
+            
+        );
+    }
+
 }
 
 
