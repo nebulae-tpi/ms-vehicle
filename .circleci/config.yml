@@ -231,6 +231,11 @@ jobs:
               (ls ~/nebulae/api/DOCKERHUB_GENERATED_IMAGE_DIGEST && echo docker image DIGEST to set $(< ~/nebulae/api/DOCKERHUB_GENERATED_IMAGE_DIGEST) ) || echo api not found
               (ls ~/nebulae/api/DOCKERHUB_GENERATED_IMAGE_DIGEST && kubectl set image deployment/api-emi-gateway api-emi-gateway=$(< ~/nebulae/api/DOCKERHUB_GENERATED_IMAGE_DIGEST) ) || echo api not found
         - run:
+            name: Deploy driver-gateway API
+            command: |
+              (ls ~/nebulae/api-driver/DRIVER_DOCKERHUB_GENERATED_IMAGE_DIGEST && echo docker image DIGEST to set $(< ~/nebulae/api-driver/DRIVER_DOCKERHUB_GENERATED_IMAGE_DIGEST) ) || echo api not found
+              (ls ~/nebulae/api-driver/DRIVER_DOCKERHUB_GENERATED_IMAGE_DIGEST && kubectl set image deployment/api-driver-gateway api-driver-gateway=$(< ~/nebulae/api-driver/DRIVER_DOCKERHUB_GENERATED_IMAGE_DIGEST) ) || echo api not found      
+        - run:
             name: Deploy BackEnds 
             command: |
               for xi in $(ls ~/nebulae/repo/deployment/gke/*.y*ml); do sed -i s/DOCKERHUB/$DOCKERHUB_NAMESPACE/ $xi ; done
