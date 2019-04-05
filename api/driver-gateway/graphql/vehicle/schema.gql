@@ -1,0 +1,4 @@
+type Query {
+  "Get Vehicle membership time expiration"
+  VehicleMembershipExpiration: BigInt @requireAuth
+}

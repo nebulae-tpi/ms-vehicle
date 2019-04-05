@@ -1,0 +1,8 @@
+[
+    {
+        "name": "vehicle",
+        "type": "graphql",        
+        "src": "api/driver-gateway/graphql/vehicle",
+        "preBuildCommands": []
+    }
+]
