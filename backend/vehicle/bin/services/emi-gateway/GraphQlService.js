@@ -184,6 +184,11 @@ class GraphQlService {
       {
         aggregateType: "Vehicle",
         messageType: "emigateway.graphql.mutation.vehicleAddVehicleBlock"
+      },
+      // DRIVER GATEWAY
+      {
+        aggregateType: "Vehicle",
+        messageType: "drivergateway.graphql.query.vehicleMembershipExpiration"
       }
     ];
   }
@@ -233,7 +238,12 @@ class GraphQlService {
       "emigateway.graphql.mutation.vehicleAddVehicleBlock": {
         fn: VehicleCQRS.addVehicleBlock$,
         obj: VehicleCQRS
-      }
+      },
+      // DRIVER GATEWAY
+      "drivergateway.graphql.query.vehicleMembershipExpiration": {
+        fn: VehicleCQRS.vehicleMembershipExpiration$,
+        obj: VehicleCQRS
+      },
     };
   }
 }

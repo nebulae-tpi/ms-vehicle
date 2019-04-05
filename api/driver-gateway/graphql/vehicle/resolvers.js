@@ -26,6 +26,7 @@ function getResponseFromBackEnd$(response) {
   );
 }
 
+
 module.exports = {
   //// QUERY ///////
 
@@ -33,28 +34,23 @@ module.exports = {
     VehicleMembershipExpiration(root, args, context) {
       return RoleValidator.checkPermissions$(
         context.authToken.realm_access.roles,
-        'ms-' + 'Vehicle',
-        'VehicleMembershipExpiration',
+        "ms-" + "Vehicle",
+        "VehicleMembershipExpiration",
         PERMISSION_DENIED_ERROR_CODE,
-        'Permission denied',
-        ['DRIVER']
+        "Permission denied",
+        ["DRIVER"]
       )
-          .pipe(
-            map(() => {
-                return new Date().getTime();
-              })
-            /*
+        .pipe(
           mergeMap(() =>
             broker.forwardAndGetReply$(
-              'Vehicle',
-              'emigateway.graphql.query.VehicleMembershipExpiration',
+              "Vehicle",
+              "drivergateway.graphql.query.vehicleMembershipExpiration",
               { root, args, jwt: context.encodedToken },
               2000
             )
           ),
-          catchError(err => handleError$(err, 'VehicleMembershipExpiration')),
-            mergeMap(response => getResponseFromBackEnd$(response))
-          */
+          catchError(err => handleError$(err, "VehicleVehicles")),
+          mergeMap(response => getResponseFromBackEnd$(response))
         )
         .toPromise();
     }

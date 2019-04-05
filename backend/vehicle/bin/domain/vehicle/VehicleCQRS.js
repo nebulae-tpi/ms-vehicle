@@ -327,8 +327,31 @@ class VehicleCQRS {
 
   }
 
-  
+  vehicleMembershipExpiration$({ root, args, jwt }, authToken) {
+    console.log("vehicleMembershipExpiration$ ==> ", args);
+    return RoleValidator.checkPermissions$(
+      authToken.realm_access.roles,
+      "vehicleBlocks",
+      "getVehicleBlocks$",
+      PERMISSION_DENIED,
+      ["DRIVER"]
+    ).pipe(
+      mergeMap(roles => {
+        if (!authToken.driverId) {
+          return this.createCustomError$(
+            DRIVER_ID_NO_FOUND_IN_TOKEN,
+            'vehicleMembershipExpiration'
+          );
+        }
+        return of(roles);
+      }),
+      mergeMap(() => VehicleDA.findVehicleByLicensePlate$(args.licensePlate)),
+      map(v => (v && v.membership && v.membership.expirationTime) ? v.membership.expirationTime : null ),
+      mergeMap(r => GraphqlResponseTools.buildSuccessResponse$(r)),
+      catchError(err => GraphqlResponseTools.handleError$(err))
+    );
 
+  }
 
   //#endregion
 
