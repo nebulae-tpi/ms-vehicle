@@ -157,7 +157,7 @@ class VehicleES {
             )
     }
 
-    handleVehicleSubscriptionPaid$({aid, data, user}){
+    handleVehicleSubscriptionPaid$({aid, data, user, timestamp}){
         const millisInDay = 1000 * 60 * 60 * 24;
         return VehicleDA.findVehicleByLicensePlate$(data.licensePlate)
         .pipe(
@@ -167,8 +167,8 @@ class VehicleES {
                         mergeMap(vehicleMembership => {
                             return of({
                                 status: 'ACTIVE',
-                                expirationTime: !vehicleMembership || vehicleMembership.expirationTime < Date.now()
-                                    ? Date.now() + (data.daysPaid * millisInDay)
+                                expirationTime: !vehicleMembership || vehicleMembership.expirationTime < timestamp
+                                    ? timestamp + (data.daysPaid * millisInDay)
                                     : vehicleMembership.expirationTime + (data.daysPaid * millisInDay)
                             });
                         }),
