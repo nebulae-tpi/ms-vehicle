@@ -1,8 +1,8 @@
 [
     {
-        "name": "wallet",
+        "name": "vehicle",
         "type": "graphql",        
-        "src": "api/driver-gateway/graphql/wallet",
+        "src": "api/driver-gateway/graphql/vehicle",
         "preBuildCommands": []
     }
 ]
