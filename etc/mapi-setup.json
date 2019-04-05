@@ -4,5 +4,11 @@
         "type": "graphql",        
         "src": "api/emi-gateway/graphql/vehicle",
         "preBuildCommands": []
+    },
+    {
+        "name": "vehicle",
+        "type": "graphql",        
+        "src": "api/driver-gateway/graphql/vehicle",
+        "preBuildCommands": []
     }
 ]
