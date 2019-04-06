@@ -43,15 +43,16 @@ class CronJobES {
   searchExpiredSubscriptions$() {
     return VehicleDA.getExpiredSubscriptions$(Date.now())
       .pipe(
+        tap(v => console.log("BLOCK BY SUBSCRIPTION  ==> ", v.generalInfo.licensePlate )),
         mergeMap(vehicle => forkJoin(
           this.generateEventStoreEvent$("VehicleBlockAdded", 1, "Vehicle", vehicle._id,
             {
-              blockKey: 'MEMBERSHIP',
+              blockKey: 'SUBSCRIPTION',
               startTime: Date.now(),
               notes: 'Blocked by System CronJob'
             },
             "SYSTEM"),
-            mergeMap(vehicle => VehicleDA.updateVehicleMembership$(vehicle.generalInfo.licensePlate, { ...vehicle.membership, status: 'INCTIVE',}))
+            mergeMap(vehicle => VehicleDA.updateVehicleMembership$(vehicle.generalInfo.licensePlate, { ...vehicle.subscription, status: 'INCTIVE',}))
         )),
         mergeMap(([event, a]) => eventSourcing.eventStore.emitEvent$(event)),
         toArray(),

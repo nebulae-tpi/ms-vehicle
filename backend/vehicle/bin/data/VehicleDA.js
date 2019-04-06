@@ -229,18 +229,21 @@ class VehicleDA {
     ))
   }
 
-  static updateVehicleMembership$(licensePlate, membership){
-    console.log("updateVehicleMembership$", licensePlate, membership);
+  static updateVehicleMembership$(licensePlate, subscription){
+    console.log("updateVehicleMembership$", licensePlate, subscription);
     const collection = mongoDB.db.collection(COLLECTION_NAME);
     return defer( () => collection.updateOne(
       {'generalInfo.licensePlate': licensePlate},
-      { $set: { membership: membership } }
+      { $set: { subscription: subscription } }
       ))
   }
 
   static getExpiredSubscriptions$(timestamp){
     const collection = mongoDB.db.collection(COLLECTION_NAME);
-    const query = { 'membership.expirationTime': { $lte: timestamp } };    
+    const query = { $or:[
+      { 'subscription.expirationTime': { $lte: timestamp } },
+      { subscription: { $exists: false }  }
+    ] };    
     return mongoDB.extractAllFromMongoCursor$(collection.find(query));
   }
 

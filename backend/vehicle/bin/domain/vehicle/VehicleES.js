@@ -163,7 +163,7 @@ class VehicleES {
         return VehicleDA.findVehicleByLicensePlate$(data.licensePlate)
         .pipe(
             mergeMap(vehicle => forkJoin(
-                of(vehicle.membership)
+                of(vehicle.subscription)
                     .pipe(
                         mergeMap(vehicleMembership => {
                             return of({
@@ -174,14 +174,18 @@ class VehicleES {
                             });
                         }),
                         mergeMap(vehicleMembership => VehicleDA.updateVehicleMembership$(data.licensePlate, vehicleMembership))
-
                     ),
-                VehicleBlocksDA.removeBlock$({vehicleId: vehicle._id, blockKey: "MEMBERSHIP"})
-            )),
-            
-            // Remove blocks by subscription
-
-            
+                eventSourcing.eventStore.emitEvent$(
+                    new Event({
+                      eventType: "VehicleBlockRemoved",
+                      eventTypeVersion: 1,
+                      aggregateType: "Vehicle",
+                      aggregateId: vehicle._id,
+                      data: { blockKey: "SUBSCRIPTION" },
+                      user: user
+                    })
+                  )
+            )),            
         );
     }
 
