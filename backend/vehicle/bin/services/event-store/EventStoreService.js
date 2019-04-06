@@ -205,6 +205,10 @@ class EventStoreService {
         eventType: "VehicleBlockAdded"
       },
       {
+        aggregateType: "Vehicle",
+        eventType: "VehicleSubscriptionPaid"
+      },
+      {
         aggregateType: "Cronjob",
         eventType: "PicoPlacaCaliUnblockJobTriggered"
       },

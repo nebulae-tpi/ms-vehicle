@@ -158,6 +158,7 @@ class VehicleES {
     }
 
     handleVehicleSubscriptionPaid$({aid, data, user, timestamp}){
+        console.log("handleVehicleSubscriptionPaid", data);        
         const millisInDay = 1000 * 60 * 60 * 24;
         return VehicleDA.findVehicleByLicensePlate$(data.licensePlate)
         .pipe(

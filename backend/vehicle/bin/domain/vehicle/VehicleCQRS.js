@@ -346,7 +346,8 @@ class VehicleCQRS {
         return of(roles);
       }),
       mergeMap(() => VehicleDA.findVehicleByLicensePlate$(args.licensePlate)),
-      map(v => (v && v.membership && v.membership.expirationTime) ? v.membership.expirationTime : null ),
+      tap(vf => console.log("VEHICLE FOUND  ==> ", vf)),
+      map(v => (v && v.membership && v.membership.expirationTime) ? v.membership.expirationTime : null),
       mergeMap(r => GraphqlResponseTools.buildSuccessResponse$(r)),
       catchError(err => GraphqlResponseTools.handleError$(err))
     );

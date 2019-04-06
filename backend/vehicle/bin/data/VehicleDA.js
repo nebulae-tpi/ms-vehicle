@@ -230,6 +230,7 @@ class VehicleDA {
   }
 
   static updateVehicleMembership$(licensePlate, membership){
+    console.log("updateVehicleMembership$", licensePlate, membership);
     const collection = mongoDB.db.collection(COLLECTION_NAME);
     return defer( () => collection.updateOne(
       {'generalInfo.licensePlate': licensePlate},
