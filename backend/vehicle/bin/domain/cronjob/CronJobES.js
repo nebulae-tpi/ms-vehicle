@@ -52,7 +52,10 @@ class CronJobES {
               notes: 'Blocked by System CronJob'
             },
             "SYSTEM"),
-            mergeMap(vehicle => VehicleDA.updateVehicleMembership$(vehicle.generalInfo.licensePlate, { ...vehicle.subscription, status: 'INCTIVE',}))
+
+            VehicleDA.updateVehicleMembership$(vehicle.generalInfo.licensePlate, vehicle.subscription ? 
+              { ...vehicle.subscription, status: 'INCTIVE'} : { expirationTime: 0, status: 'INCTIVE' }
+              )
         )),
         mergeMap(([event, a]) => eventSourcing.eventStore.emitEvent$(event)),
         toArray(),
