@@ -240,10 +240,18 @@ class VehicleDA {
 
   static getExpiredSubscriptions$(timestamp){
     const collection = mongoDB.db.collection(COLLECTION_NAME);
-    const query = { $or:[
-      { 'subscription.expirationTime': { $lte: timestamp } },
-      { subscription: { $exists: false }  }
-    ] };    
+    const query = {
+      $or: [
+        {
+          $and: [
+            { subscription: { $exists: true } },
+            { "subscription.status": "ACTIVE" },
+            { "subscription.expirationTime": { $lte: timestamp } }
+          ]
+        },
+        { subscription: { $exists: false } }
+      ]
+    };    
     return mongoDB.extractAllFromMongoCursor$(collection.find(query));
   }
 
