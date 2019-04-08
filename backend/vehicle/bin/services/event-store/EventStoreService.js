@@ -164,10 +164,10 @@ class EventStoreService {
         fn: CronJobES.handlePeriodicFiveMinutes$,
         obj: CronJobES
       },
-      PeriodicFifteenMinutes: {
-        fn: CronJobES.handlePeriodicFifteenMinutes$,
-        obj: CronJobES
-      },
+      // PeriodicFifteenMinutes: {
+      //   fn: CronJobES.handlePeriodicFifteenMinutes$,
+      //   obj: CronJobES
+      // },
     };
   }
 
@@ -215,7 +215,7 @@ class EventStoreService {
       
       // cronjob
       { aggregateType: "Cronjob", eventType: "PeriodicFiveMinutes" },
-      { aggregateType: "Cronjob", eventType: "PeriodicFifteenMinutes" },
+      // { aggregateType: "Cronjob", eventType: "PeriodicFifteenMinutes" },
     ]
   }
 }
