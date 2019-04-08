@@ -39,7 +39,7 @@
                 "path": "vehicle",
                 "loadChildren": "./main/content/vehicle/vehicle.module#VehicleModule",
                 "priority": 1000,
-                "roles" : ["PLATFORM-ADMIN", "BUSINESS-OWNER", "COORDINATOR"],
+                "roles" : ["PLATFORM-ADMIN", "BUSINESS-OWNER", "COORDINATOR", "OPERATION-SUPERVISOR"],
                 "default" : false
             }            
         ],
