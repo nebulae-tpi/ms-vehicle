@@ -211,7 +211,7 @@ module.exports = {
                 "Vehicle",
                 "VehicleUpdateVehicleFeatures",
                 PERMISSION_DENIED_ERROR_CODE,
-                "Permission denied", ["PLATFORM-ADMIN", "BUSINESS-OWNER", "COORDINATOR", "OPERATION-SUPERVISOR"]
+                "Permission denied", ["PLATFORM-ADMIN", "BUSINESS-OWNER", "COORDINATOR", "OPERATION-SUPERVISOR" ]
             ).pipe(
                 mergeMap(() =>
                     context.broker.forwardAndGetReply$(
