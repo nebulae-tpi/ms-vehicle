@@ -30,6 +30,7 @@ function getResponseFromBackEnd$(response) {
 module.exports = {
   //// QUERY ///////
 
+
   Query: {
     VehicleMembershipExpiration(root, args, context) {
       return RoleValidator.checkPermissions$(
