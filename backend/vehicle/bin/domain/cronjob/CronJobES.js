@@ -16,14 +16,14 @@ let instance;
 class CronJobES {
   constructor() {
     
-    // of({})
-    // .pipe(
-    //   delay(3000),
-    //   mergeMap( () => this.generateEventStoreEvent$('PeriodicFifteenMinutes', 1, 'Cronjob', 1, {})),
-    //   mergeMap(event => eventSourcing.eventStore.emitEvent$(event)),
-    //   tap(x => console.log('ENVIADO'))
-    // )
-    // .subscribe()
+    of({})
+    .pipe(
+      delay(3000),
+      mergeMap( () => this.generateEventStoreEvent$('PeriodicFifteenMinutes', 1, 'Cronjob', 1, {})),
+      mergeMap(event => eventSourcing.eventStore.emitEvent$(event)),
+      tap(x => console.log('ENVIADO'))
+    )
+    .subscribe()
 
   }
 
@@ -44,7 +44,13 @@ class CronJobES {
     return VehicleDA.getExpiredSubscriptions$(Date.now())
       .pipe(
         tap(v => console.log("BLOCK BY SUBSCRIPTION  ==> ", v.generalInfo.licensePlate )),
-        mergeMap(vehicle => forkJoin(
+        mergeMap(v => forkJoin(
+          of(v),
+          VehicleBlocksDA.findByPlateAndKey$(v.generalInfo.licensePlate, 'SUBSCRIPTION_EXPIRED'),          
+        )),
+        mergeMap(([vehicle, blockExists]) => blockExists 
+          ? of([null, null])
+          : forkJoin(
           this.generateEventStoreEvent$("VehicleBlockAdded", 1, "Vehicle", vehicle._id,
             {
               blockKey: 'SUBSCRIPTION_EXPIRED',
@@ -52,12 +58,12 @@ class CronJobES {
               notes: 'Blocked by System CronJob'
             },
             "SYSTEM"),
-
-            VehicleDA.updateVehicleMembership$(vehicle.generalInfo.licensePlate, vehicle.subscription ? 
-              { ...vehicle.subscription, status: 'INCTIVE'} : { expirationTime: 0, status: 'INCTIVE' }
-              )
-        )),
-        mergeMap(([event, a]) => eventSourcing.eventStore.emitEvent$(event)),
+            VehicleDA.updateVehicleMembership$(vehicle.generalInfo.licensePlate, vehicle.subscription 
+                ? { ...vehicle.subscription, status: 'INCTIVE'} : { expirationTime: 0, status: 'INCTIVE' }
+            )
+          )
+        ),
+        mergeMap(([event, a]) => event ? eventSourcing.eventStore.emitEvent$(event) : of({})),
         toArray(),
       )
   }

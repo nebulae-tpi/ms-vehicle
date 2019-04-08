@@ -82,6 +82,11 @@ class VehicleBlocksDA {
     return mongoDB.extractAllFromMongoCursor$(cursor);
   }
 
+  static findByPlateAndKey$(licensePlate, blockKey){
+    const collection = mongoDB.db.collection(COLLECTION_NAME);
+    return defer(() => collection.findOne({ licensePlate: licensePlate, key: blockKey }));
+  }
+
 }
 /**
  * @returns {VehicleDA}
