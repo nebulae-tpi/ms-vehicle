@@ -181,7 +181,7 @@ class VehicleES {
                       eventTypeVersion: 1,
                       aggregateType: "Vehicle",
                       aggregateId: vehicle._id,
-                      data: { blockKey: "SUBSCRIPTION" },
+                      data: { blockKey: "SUBSCRIPTION_EXPIRED" },
                       user: user
                     })
                   )
