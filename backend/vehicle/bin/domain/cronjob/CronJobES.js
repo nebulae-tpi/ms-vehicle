@@ -59,7 +59,7 @@ class CronJobES {
             },
             "SYSTEM"),
             VehicleDA.updateVehicleMembership$(vehicle.generalInfo.licensePlate, vehicle.subscription 
-                ? { ...vehicle.subscription, status: 'INCTIVE'} : { expirationTime: 0, status: 'INCTIVE' }
+                ? { ...vehicle.subscription, status: 'INACTIVE'} : { expirationTime: 0, status: 'INACTIVE' }
             )
           )
         ),
