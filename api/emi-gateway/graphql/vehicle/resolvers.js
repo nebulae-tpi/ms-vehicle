@@ -37,7 +37,7 @@ module.exports = {
                 context.authToken.realm_access.roles,
                 'ms-' + 'Vehicle', 'VehicleVehicles',
                 PERMISSION_DENIED_ERROR_CODE,
-                'Permission denied', ["PLATFORM-ADMIN", "BUSINESS-OWNER", "COORDINATOR" ]
+                'Permission denied', ["PLATFORM-ADMIN", "BUSINESS-OWNER", "COORDINATOR", "OPERATION-SUPERVISOR" ]
             )
                 .pipe(
                     mergeMap(() =>
@@ -58,7 +58,7 @@ module.exports = {
                 context.authToken.realm_access.roles,
                 'ms-Vehicle', 'VehicleVehiclesSize',
                 PERMISSION_DENIED_ERROR_CODE,
-                'Permission denied', ["PLATFORM-ADMIN", "BUSINESS-OWNER", "COORDINATOR"]
+                'Permission denied', ["PLATFORM-ADMIN", "BUSINESS-OWNER", "COORDINATOR", "OPERATION-SUPERVISOR"]
             )
                 .pipe(
                     mergeMap(() =>
@@ -79,7 +79,7 @@ module.exports = {
                 'ms-Vehicle', 'VehicleVehicle',
                 PERMISSION_DENIED_ERROR_CODE,
                 'Permission denied',
-                ["PLATFORM-ADMIN", "BUSINESS-OWNER", "COORDINATOR"]
+                ["PLATFORM-ADMIN", "BUSINESS-OWNER", "COORDINATOR", "OPERATION-SUPERVISOR"]
             )
                 .pipe(
                     mergeMap(() =>
@@ -100,7 +100,7 @@ module.exports = {
                 'ms-Vehicle', 'VehicleVehicleBlocks',
                 PERMISSION_DENIED_ERROR_CODE,
                 'Permission denied',
-                ["PLATFORM-ADMIN", "BUSINESS-OWNER", "COORDINATOR"]
+                ["PLATFORM-ADMIN", "BUSINESS-OWNER", "COORDINATOR", "OPERATION-SUPERVISOR"]
             )
                 .pipe(
                     mergeMap(() =>
@@ -126,7 +126,7 @@ module.exports = {
                 "VehicleCreateVehicle",
                 PERMISSION_DENIED_ERROR_CODE,
                 "Permission denied",
-                ["PLATFORM-ADMIN", "BUSINESS-OWNER", "COORDINATOR"]
+                ["PLATFORM-ADMIN", "BUSINESS-OWNER", "COORDINATOR", "OPERATION-SUPERVISOR"]
             )
                 .pipe(
                     mergeMap(() =>
@@ -148,7 +148,7 @@ module.exports = {
                 "VehicleUpdateVehicleGeneralInfo",
                 PERMISSION_DENIED_ERROR_CODE,
                 "Permission denied",
-                ["PLATFORM-ADMIN", "BUSINESS-OWNER", "COORDINATOR"]
+                ["PLATFORM-ADMIN", "BUSINESS-OWNER", "COORDINATOR", "OPERATION-SUPERVISOR"]
             ).pipe(
                 mergeMap(() =>
                     context.broker.forwardAndGetReply$(
@@ -169,7 +169,7 @@ module.exports = {
                 "VehicleUpdateVehicleState",
                 PERMISSION_DENIED_ERROR_CODE,
                 "Permission denied",
-                ["PLATFORM-ADMIN", "BUSINESS-OWNER", "COORDINATOR"]
+                ["PLATFORM-ADMIN", "BUSINESS-OWNER", "COORDINATOR", "OPERATION-SUPERVISOR"]
             ).pipe(
                 mergeMap(() =>
                     context.broker.forwardAndGetReply$(
@@ -191,7 +191,7 @@ module.exports = {
                 "VehicleAddVehicleBlocking",
                 PERMISSION_DENIED_ERROR_CODE,
                 "Permission denied",
-                ["PLATFORM-ADMIN", "BUSINESS-OWNER", "COORDINATOR"]
+                ["PLATFORM-ADMIN", "BUSINESS-OWNER", "COORDINATOR", "OPERATION-SUPERVISOR"]
             ).pipe(
                 mergeMap(() =>
                     context.broker.forwardAndGetReply$(
@@ -211,7 +211,7 @@ module.exports = {
                 "Vehicle",
                 "VehicleUpdateVehicleFeatures",
                 PERMISSION_DENIED_ERROR_CODE,
-                "Permission denied", ["PLATFORM-ADMIN", "BUSINESS-OWNER", "COORDINATOR"]
+                "Permission denied", ["PLATFORM-ADMIN", "BUSINESS-OWNER", "COORDINATOR", "OPERATION-SUPERVISOR"]
             ).pipe(
                 mergeMap(() =>
                     context.broker.forwardAndGetReply$(
