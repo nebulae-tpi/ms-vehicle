@@ -47,7 +47,7 @@ class CronJobES {
         mergeMap(vehicle => forkJoin(
           this.generateEventStoreEvent$("VehicleBlockAdded", 1, "Vehicle", vehicle._id,
             {
-              blockKey: 'SUBSCRIPTION',
+              blockKey: 'SUBSCRIPTION_EXPIRED',
               startTime: Date.now(),
               notes: 'Blocked by System CronJob'
             },
