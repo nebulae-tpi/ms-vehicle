@@ -162,7 +162,6 @@ class VehicleES {
         const millisInDay = 1000 * 60 * 60 * 24;
         return VehicleDA.findVehicleByLicensePlate$(data.licensePlate)
         .pipe(
-            filter(vehicle => vehicle.subscription),
             mergeMap(vehicle => forkJoin(
                 of(vehicle.subscription)
                     .pipe(
