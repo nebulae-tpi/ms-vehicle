@@ -328,7 +328,7 @@ class VehicleCQRS {
   }
 
   vehicleMembershipExpiration$({ root, args, jwt }, authToken) {
-    console.log("vehicleMembershipExpiration$ ==> ", args);
+    // console.log("vehicleMembershipExpiration$ ==> ", args);
     return RoleValidator.checkPermissions$(
       authToken.realm_access.roles,
       "vehicleBlocks",
@@ -346,7 +346,7 @@ class VehicleCQRS {
         return of(roles);
       }),
       mergeMap(() => VehicleDA.findVehicleByLicensePlate$(args.licensePlate)),
-      tap(vf => console.log("VEHICLE FOUND  ==> ", vf)),
+      // tap(vf => console.log("VEHICLE FOUND  ==> ", vf)),
       map(v => (v && v.subscription && v.subscription.expirationTime) ? v.subscription.expirationTime : null),
       mergeMap(r => GraphqlResponseTools.buildSuccessResponse$(r)),
       catchError(err => GraphqlResponseTools.handleError$(err))
