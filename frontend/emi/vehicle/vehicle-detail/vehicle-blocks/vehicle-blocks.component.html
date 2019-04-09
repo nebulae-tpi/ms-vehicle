@@ -79,7 +79,7 @@
         <mat-header-cell *cdkHeaderCellDef fxFlex="23" fxFlex.gt-xs="15"  fxLayoutAlign="center center">{{ "VEHICLE.BLOCKS.ACTIONS" | translate }}
         </mat-header-cell>
         <mat-cell *cdkCellDef="let block" (click)="$event.stopPropagation()" fxLayoutAlign="center center" fxFlex="23" fxFlex.gt-xs="15">
-          <button mat-icon-button (click)="removeBlock(block)">
+          <button mat-icon-button (click)="removeBlock(block)" [disabled]="block.key === 'SUBSCRIPTION_EXPIRED' ">
             <mat-icon>delete</mat-icon>
           </button>
         </mat-cell>
