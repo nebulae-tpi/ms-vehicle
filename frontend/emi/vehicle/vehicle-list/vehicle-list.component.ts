@@ -366,6 +366,7 @@ export class VehicleListComponent implements OnInit, OnDestroy {
     this.tablePage = 0;
     this.tableCount = 25;
     this.paginator._changePageSize(25);
+    this.filterForm.get('subscriptionExpired').setValue('null');
   }
 
   /**
