@@ -23,7 +23,7 @@ export const VehicleVehicle = gql`
       }
       subscription{
         status
-        expirationTimestamp
+        expirationTime
       }
       state
       creationTimestamp

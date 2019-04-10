@@ -28,16 +28,16 @@
               <div *ngIf="!vehicle.subscription" class="pt-12 font-size-20 font-weight-300 line-height-1 mt-8 red-fg">
                 {{ 'VEHICLE.SUBSCRIPTION.MISSING' | translate }}
               </div>
-              <div *ngIf="vehicle.subscription && (vehicle.subscription.expirationTimestamp > dateNow)"
+              <div *ngIf="vehicle.subscription && (vehicle.subscription.expirationTime > dateNow)"
                 class="pt-12 font-size-20 font-weight-300 line-height-1 mt-8 green-fg">
-                 {{'VEHICLE.SUBSCRIPTION.CURRENT_UNTIL' | translate }} {{ vehicle.subscription.expirationTimestamp |  date: "dd/MM/y HH:mm:ss" }}
+                 {{'VEHICLE.SUBSCRIPTION.CURRENT_UNTIL' | translate }} {{ vehicle.subscription.expirationTime |  date: "dd/MM/y HH:mm:ss" }}
               </div>
 
-              <div *ngIf="vehicle.subscription && (dateNow > vehicle.subscription.expirationTimestamp)"
+              <div *ngIf="vehicle.subscription && (dateNow > vehicle.subscription.expirationTime)"
                 class="pt-12 font-size-20 font-weight-300 line-height-1 mt-8 red-fg">
-                {{'VEHICLE.SUBSCRIPTION.EXPIRED_ON' | translate }}  {{ vehicle.subscription.expirationTimestamp |  date: "dd/MM/y HH:mm:ss" }}
+                {{'VEHICLE.SUBSCRIPTION.EXPIRED_ON' | translate }}  {{ vehicle.subscription.expirationTime |  date: "dd/MM/y HH:mm:ss" }}
               </div>
-              <!-- <div *ngIf="vehicle.subscription && (dateNow > vehicle.subscription.expirationTimestamp)"
+              <!-- <div *ngIf="vehicle.subscription && (dateNow > vehicle.subscription.expirationTime)"
                   class="pt-12 font-size-12 font-weight-300 line-height-1 mt-8">
                    {{ 5 }} {{'VEHICLE.SUBSCRIPTION.DAYS_AGO' | translate }}
                 </div> -->
