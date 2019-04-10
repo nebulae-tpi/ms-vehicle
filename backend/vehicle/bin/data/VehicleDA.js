@@ -87,6 +87,14 @@ class VehicleDA {
 
     const query = {};
 
+    if(filter.subscriptionExpired == 'true'){
+      query["subscription.status"] = "INCTIVE";
+    }
+
+    if(filter.subscriptionExpired == 'false'){
+      query["subscription.status"] = "ACTIVE";
+    }
+
     if(filter.showBlocked){ query.blocks = { $exists: true, $ne: [] } }
     if(filter.showInactive){ query.state = false }
 
