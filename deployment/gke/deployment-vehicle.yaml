@@ -13,7 +13,7 @@ spec:
         app: vehicle
     spec:      
       containers:
-      - image: DOCKERHUB/vehicle.backend.vehicle:0.0.62
+      - image: DOCKERHUB/vehicle.backend.vehicle:0.0.63
         name: vehicle
         volumeMounts:
         - name: google-application-credentials

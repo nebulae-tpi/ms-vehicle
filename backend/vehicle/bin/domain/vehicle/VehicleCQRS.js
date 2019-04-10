@@ -61,7 +61,6 @@ class VehicleCQRS {
    * @param {*} args args
    */
   getVehicleList$({ args }, authToken) {
-    console.log({args});    
     return RoleValidator.checkPermissions$(
       authToken.realm_access.roles,
       "Vehicle",
