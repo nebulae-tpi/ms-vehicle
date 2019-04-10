@@ -77,6 +77,9 @@ export class VehicleDetailFeaturesComponent implements OnInit, OnDestroy {
   vehicleFeaturesForm: any;
   blockings = `Nikola Tesla Industrial.`.split(' ');
   fuelTypes = ['GASOLINE', 'GAS', 'GAS_AND_GASOLINE', 'DIESEL', 'ELECTRIC'];
+  canViewSubscriptionInfo = false;
+  rolesToViewSubscriptionInfo = ['PLATFORM-ADMIN', 'BUSINES-OWNER'];
+  dateNow = Date.now();
 
   constructor(
     private translationLoader: FuseTranslationLoaderService,
@@ -87,7 +90,8 @@ export class VehicleDetailFeaturesComponent implements OnInit, OnDestroy {
     private activatedRouter: ActivatedRoute,
     private VehicleDetailservice: VehicleDetailService,
     private dialog: MatDialog,
-    private toolbarService: ToolbarService
+    private toolbarService: ToolbarService,
+    private keycloakService: KeycloakService
   ) {
       this.translationLoader.loadTranslations(english, spanish);
   }
@@ -125,9 +129,21 @@ export class VehicleDetailFeaturesComponent implements OnInit, OnDestroy {
       }
     });
 
+    this.checkIfUserCanViewSubscriptionInfo();
+
 
 
   }
+
+  checkIfUserCanViewSubscriptionInfo() {
+    of(this.keycloakService.getUserRoles(true))
+    .pipe(
+      map((userRoles: string[]) => userRoles.filter(value => -1 !== this.rolesToViewSubscriptionInfo.indexOf(value)).length),
+      map(commonRoles => commonRoles > 0),
+      takeUntil(this.ngUnsubscribe)
+    )
+    .subscribe( r => this.canViewSubscriptionInfo = r);
+  } 
 
 
   updateVehicleFeatures() {

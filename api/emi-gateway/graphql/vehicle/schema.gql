@@ -12,11 +12,20 @@ enum VehicleFueltType {
   DIESEL
 } 
 
+type VehicleSubscription {
+  "status"
+  status: String
+  "ExpirationTimestamp"
+  expirationTimestamp: BigInt
+}
+
 type VehicleVehicleEntity {
   "Vehicle ID"
   _id: ID!
   "User general info"
   generalInfo: VehicleGeneralInfo
+  "Subscription"
+  subscription: VehicleSubscription
   "Vehicle state"
   state: Boolean!
   "Vehicle features"
@@ -87,6 +96,8 @@ input VehicleFilterInput {
   businessId: String
   "Show only blocked"
   showBlocked: Boolean
+  "show vehicles with subscription Expired"
+  subscriptionExpired: String
   "Show only blocked"
   showInactive: Boolean
   "License place"

@@ -40,6 +40,15 @@ class VehicleDA {
 
     const query = {};
 
+    if(filter.subscriptionExpired == 'true'){
+      query["subscription.status"] = "INCTIVE";
+    }
+
+    if(filter.subscriptionExpired == 'false'){
+      query["subscription.status"] = "ACTIVE";
+    }
+
+
     if(filter.showBlocked){ query.blocks = { $exists: true, $ne: [] } }
 
     if(filter.showInactive){ query.state = false }
@@ -230,7 +239,6 @@ class VehicleDA {
   }
 
   static updateVehicleMembership$(licensePlate, subscription){
-    console.log("updateVehicleMembership$", licensePlate, subscription);
     const collection = mongoDB.db.collection(COLLECTION_NAME);
     return defer( () => collection.updateOne(
       {'generalInfo.licensePlate': licensePlate},

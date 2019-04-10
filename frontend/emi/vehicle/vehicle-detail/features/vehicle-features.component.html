@@ -2,16 +2,16 @@
 
     <form name="vehicleFeaturesForm" [formGroup]="vehicleFeaturesForm" class="w-100-p" fxLayout="row wrap" class="mat-white-bg p-24 mr-24 mb-24">
 
-            <mat-form-field  class="w-100-p">
-            <mat-select  name="fuel" formControlName="fuel" placeholder="{{'VEHICLE.FEATURES.FUEL' | translate}}">
-              <mat-option  *ngFor="let fuelType of fuelTypes" [value]="fuelType">
-                {{ 'VEHICLE.FEATURES.FUEL_TYPES.'+ fuelType | translate }}
-              </mat-option>
-            </mat-select>
-            <mat-error *ngIf="vehicleFeaturesForm.hasError('required', ['fuel'])">
-                {{'VEHICLE.FUEL_REQUIRED' | translate}}
-            </mat-error>
-          </mat-form-field>
+        <mat-form-field class="w-100-p">
+          <mat-select name="fuel" formControlName="fuel" placeholder="{{'VEHICLE.FEATURES.FUEL' | translate}}">
+            <mat-option *ngFor="let fuelType of fuelTypes" [value]="fuelType">
+              {{ 'VEHICLE.FEATURES.FUEL_TYPES.'+ fuelType | translate }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="vehicleFeaturesForm.hasError('required', ['fuel'])">
+            {{'VEHICLE.FUEL_REQUIRED' | translate}}
+          </mat-error>
+        </mat-form-field>
         <mat-form-field class="w-100-p">
             <input type="number" matInput name="capacity" formControlName="capacity" maxlength="15" placeholder="{{'VEHICLE.FEATURES.CAPACITY' | translate}}">
             <mat-error *ngIf="vehicleFeaturesForm.hasError('required', ['capacity'])">
@@ -20,16 +20,46 @@
         </mat-form-field>
 
 
-        <h2>{{ 'VEHICLE.FEATURES.OTHERS_TITLE' | translate }}</h2>
-        <div fxFlex="100" formArrayName="others" *ngFor="let feature of vehicleFeaturesForm.get('others').controls ; let i = index;">
-          <div [formGroupName]="i">
-              <mat-checkbox class="example-margin"  [formControlName]="'active'">
-                  {{ 'VEHICLE.FEATURES.OTHERS.' + feature.get('name').value | translate }}
-              </mat-checkbox>
-          </div>
-         <!-- orderForm.controls.items.controls[i].controls.name.value -->
+        <div *ngIf="canViewSubscriptionInfo" fxFlex="100" fxFlex.gt-xs="50">   
+          <div class="p-16" fxLayout="column" fxLayoutAlign="center start">
+
+            <div class="pr-16">
+              <div class="h2">{{ 'VEHICLE.SUBSCRIPTION.STATE_TITLE_LBL' | translate}}</div>
+              <div *ngIf="!vehicle.subscription" class="pt-12 font-size-20 font-weight-300 line-height-1 mt-8 red-fg">
+                {{ 'VEHICLE.SUBSCRIPTION.MISSING' | translate }}
+              </div>
+              <div *ngIf="vehicle.subscription && (vehicle.subscription.expirationTimestamp > dateNow)"
+                class="pt-12 font-size-20 font-weight-300 line-height-1 mt-8 green-fg">
+                 {{'VEHICLE.SUBSCRIPTION.CURRENT_UNTIL' | translate }} {{ vehicle.subscription.expirationTimestamp |  date: "dd/MM/y HH:mm:ss" }}
+              </div>
+
+              <div *ngIf="vehicle.subscription && (dateNow > vehicle.subscription.expirationTimestamp)"
+                class="pt-12 font-size-20 font-weight-300 line-height-1 mt-8 red-fg">
+                {{'VEHICLE.SUBSCRIPTION.EXPIRED_ON' | translate }}  {{ vehicle.subscription.expirationTimestamp |  date: "dd/MM/y HH:mm:ss" }}
+              </div>
+              <!-- <div *ngIf="vehicle.subscription && (dateNow > vehicle.subscription.expirationTimestamp)"
+                  class="pt-12 font-size-12 font-weight-300 line-height-1 mt-8">
+                   {{ 5 }} {{'VEHICLE.SUBSCRIPTION.DAYS_AGO' | translate }}
+                </div> -->
+
+            </div>
+      
+          </div>      
         </div>
-        <div class="mt-16">
+
+
+        <div fxFlex="100" fxFlex.gt-xs="50" fxLayout="column">
+          <h2>{{ 'VEHICLE.FEATURES.OTHERS_TITLE' | translate }}</h2>
+          <div fxFlex="100" formArrayName="others" *ngFor="let feature of vehicleFeaturesForm.get('others').controls ; let i = index;">
+            <div [formGroupName]="i">
+                <mat-checkbox class="example-margin"  [formControlName]="'active'">
+                    {{ 'VEHICLE.FEATURES.OTHERS.' + feature.get('name').value | translate }}
+                </mat-checkbox>
+            </div>
+           <!-- orderForm.controls.items.controls[i].controls.name.value -->
+          </div>
+        </div>        
+        <div fxFlex="100" class="mt-16">
           <button mat-raised-button *ngIf="pageType === 'edit'" (click)="updateVehicleFeatures()" [disabled]="vehicleFeaturesForm.invalid || vehicleFeaturesForm.pristine">
             {{'VEHICLE.UPDATE' | translate}}
           </button>

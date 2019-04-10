@@ -61,6 +61,7 @@ class VehicleCQRS {
    * @param {*} args args
    */
   getVehicleList$({ args }, authToken) {
+    console.log({args});    
     return RoleValidator.checkPermissions$(
       authToken.realm_access.roles,
       "Vehicle",
@@ -268,9 +269,7 @@ class VehicleCQRS {
       mergeMap(r => GraphqlResponseTools.buildSuccessResponse$(r)),
       catchError(err => GraphqlResponseTools.handleError$(err))
     );
-
   }
-
   removeVehicleBlock$({ root, args, jwt }, authToken) { 
     return RoleValidator.checkPermissions$(
       authToken.realm_access.roles,
@@ -279,6 +278,11 @@ class VehicleCQRS {
       PERMISSION_DENIED,
       ["PLATFORM-ADMIN", "BUSINESS-OWNER", "COORDINATOR", "OPERATION-SUPERVISOR", "DISCIPLINARY-COMMITTEE"]
     ).pipe(
+      // mergeMap(() => (args.blockKey == "SUBSCRIPTION_EXPIRED")
+      //   ? throwError(new CustomError('License Plate already used', 'createVehicle',
+      //   LICENSE_PLATE_ALREADY_USED.code, LICENSE_PLATE_ALREADY_USED.description))
+      //   : of({}) 
+      // ),
       mergeMap(() => eventSourcing.eventStore.emitEvent$(
         new Event({
           eventType: "VehicleBlockRemoved",
@@ -297,7 +301,6 @@ class VehicleCQRS {
   }
 
   addVehicleBlock$({ root, args, jwt }, authToken) {
-    console.log("addVehicleBlock$ ==> ", args);
     return RoleValidator.checkPermissions$(
       authToken.realm_access.roles,
       "vehicleBlocks",

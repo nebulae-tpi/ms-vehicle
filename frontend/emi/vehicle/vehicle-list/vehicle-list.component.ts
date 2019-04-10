@@ -102,6 +102,7 @@ export class VehicleListComponent implements OnInit, OnDestroy {
   tableSize: number;
   tablePage = 0;
   tableCount = 10;
+  threeStates = ["null", "true", "false"];
 
   // Columns to show in the table
   displayedColumns = [
@@ -115,6 +116,10 @@ export class VehicleListComponent implements OnInit, OnDestroy {
   ];
 
   /////// OTHERS ///////
+
+  canViewSubscriptionInfo = false;
+
+  rolesToViewSubscriptionInfo = ['PLATFORM-ADMIN', 'BUSINES-OWNER'];
 
   selectedVehicle: any = null;
 
@@ -138,6 +143,7 @@ export class VehicleListComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.onLangChange();
     this.buildFilterForm();
+    this.checkIfUserCanViewSubscriptionInfo();
     this.updateFilterDataSubscription();
     this.updatePaginatorDataSubscription();
     this.loadLastFilters();
@@ -182,6 +188,7 @@ export class VehicleListComponent implements OnInit, OnDestroy {
   buildFilterForm() {
     // Reactive Filter Form
     this.filterForm = this.formBuilder.group({
+      subscriptionExpired: ['null'],
       licensePlate: [null],
       showBlocked: [false],
       showInactive: [false],
@@ -196,6 +203,16 @@ export class VehicleListComponent implements OnInit, OnDestroy {
       emitEvent: false
     });
   }
+
+  checkIfUserCanViewSubscriptionInfo() {
+    of(this.keycloakService.getUserRoles(true))
+    .pipe(
+      map((userRoles: string[]) => userRoles.filter(value => -1 !== this.rolesToViewSubscriptionInfo.indexOf(value)).length),
+      map(commonRoles => commonRoles > 0),
+      takeUntil(this.ngUnsubscribe)
+    )
+    .subscribe( r => this.canViewSubscriptionInfo = r);
+  } 
 
   updateFilterDataSubscription() {
     this.listenFilterFormChanges$()
@@ -244,6 +261,7 @@ export class VehicleListComponent implements OnInit, OnDestroy {
       map(([filterValue, paginator]) => {
         if (filterValue) {
           this.filterForm.patchValue({
+            subscriptionExpired: filterValue.subscriptionExpired || 'null' ,
             showBlocked: filterValue.showBlocked,
             showInactive: filterValue.showInactive,
             licensePlate: filterValue.licensePlate,
@@ -272,6 +290,7 @@ export class VehicleListComponent implements OnInit, OnDestroy {
         filter(([filterValue, paginator, selectedBusiness]) => filterValue != null && paginator != null), map(
           ([filterValue, paginator, selectedBusiness]) => {
             const filterInput = {
+              subscriptionExpired: filterValue.subscriptionExpired,
               businessId: selectedBusiness ? selectedBusiness.id : null,
               showBlocked: filterValue.showBlocked,
               showInactive: filterValue.showInactive,
@@ -299,6 +318,13 @@ export class VehicleListComponent implements OnInit, OnDestroy {
         this.dataSource.data = list;
         this.tableSize = size;
       });
+  }
+
+  updateSubscriptionExpiredFilterState(){
+    let currentStateAplied = this.filterForm.get('subscriptionExpired').value;
+    currentStateAplied = this.threeStates[(this.threeStates.indexOf(currentStateAplied) + 1) % this.threeStates.length];
+    // console.log('currentStateAplied ==> ', typeof currentStateAplied, ' ==> ', currentStateAplied);
+    this.filterForm.get('subscriptionExpired').setValue(currentStateAplied);
   }
 
   /**

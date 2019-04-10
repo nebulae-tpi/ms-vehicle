@@ -32,6 +32,12 @@
                             <mat-checkbox class="mb-12" formControlName="showBlocked">{{'VEHICLE.VEHICLE_FILTERS.SHOW_BLOCKED' | translate}}</mat-checkbox>
                             <mat-checkbox class="mb-12" formControlName="showInactive">{{'VEHICLE.VEHICLE_FILTERS.SHOW_INACTIVE' | translate}}</mat-checkbox>
 
+                            <mat-checkbox *ngIf="filterForm.get('subscriptionExpired') && canViewSubscriptionInfo" fxFlex="100" class="mb-12"
+                                fxLayoutAlign="start start" [checked]="filterForm.get('subscriptionExpired').value == 'true'"
+                                [indeterminate]="filterForm.get('subscriptionExpired').value == 'null'" (change)="updateSubscriptionExpiredFilterState()">
+                                {{ 'VEHICLE.VEHICLE_FILTERS.SUBSC_STATES' | translate }}
+                            </mat-checkbox>
+
                             <mat-form-field>
                                 <input matInput placeholder="{{'VEHICLE.LICENSE_PLATE' | translate}}" formControlName="licensePlate"
                                 id="licensePlate" maxlength="6" />
@@ -45,7 +51,7 @@
                                 <input matInput [matDatepicker]="pickerCreationDate" placeholder="{{'VEHICLE.CREATION_DATE' | translate}}" formControlName="creationTimestamp" />
                                 <mat-datepicker-toggle matSuffix [for]="pickerCreationDate"></mat-datepicker-toggle>
                                 <mat-datepicker #pickerCreationDate></mat-datepicker>
-                            </mat-form-field>
+                            </mat-form-field>                           
 
                         </div>
                     </form>

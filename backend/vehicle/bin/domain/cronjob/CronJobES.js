@@ -34,7 +34,6 @@ class CronJobES {
   searchExpiredSubscriptions$() {
     return VehicleDA.getExpiredSubscriptions$(Date.now())
       .pipe(
-        tap(v => console.log("BLOCK BY SUBSCRIPTION  ==> ", v.generalInfo.licensePlate )),
         mergeMap(v => forkJoin(
           of(v),
           VehicleBlocksDA.findByPlateAndKey$(v.generalInfo.licensePlate, 'SUBSCRIPTION_EXPIRED'),          

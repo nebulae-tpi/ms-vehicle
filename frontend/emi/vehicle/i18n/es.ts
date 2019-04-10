@@ -23,7 +23,8 @@ export const locale = {
       ADD_NEW: 'Agregar Nuevo',
       VEHICLE_FILTERS: {
         SHOW_BLOCKED: 'Bloqueados',
-        SHOW_INACTIVE: 'Inactivos'
+        SHOW_INACTIVE: 'Inactivos',
+        SUBSC_STATES: 'Subscripción Expirada'
       },
       BLOCK_DETAILS: 'Detalles de Bloqueo',
       CREATE_BLOCK: 'Crear Bloqueo',
@@ -71,6 +72,14 @@ export const locale = {
           SUBSCRIPTION_EXPIRED: 'Subscripción Expirada',
           OTHER: 'Otro'
         },
+      },
+      SUBSCRIPTION: {
+        STATE_TITLE_LBL: 'Estado de subscripción',
+        MISSING: 'Vehículo sin Subscripción',
+        CURRENT_UNTIL: 'Vigente hasta: ',
+        EXPIRED_ON: 'Vencida el: ',
+        DAYS_AGO: 'dias expirada',
+        DAYS_LEFT: 'dias de vigencia'
       },
       FEATURES: {
         FUEL: 'Combustible',
