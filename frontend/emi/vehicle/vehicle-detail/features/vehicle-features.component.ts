@@ -78,7 +78,7 @@ export class VehicleDetailFeaturesComponent implements OnInit, OnDestroy {
   blockings = `Nikola Tesla Industrial.`.split(' ');
   fuelTypes = ['GASOLINE', 'GAS', 'GAS_AND_GASOLINE', 'DIESEL', 'ELECTRIC'];
   canViewSubscriptionInfo = false;
-  rolesToViewSubscriptionInfo = ['PLATFORM-ADMIN', 'BUSINES-OWNER'];
+  rolesToViewSubscriptionInfo = ['PLATFORM-ADMIN', 'BUSINESS-OWNER'];
   dateNow = Date.now();
 
   constructor(

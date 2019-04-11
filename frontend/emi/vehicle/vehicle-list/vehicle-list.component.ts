@@ -119,7 +119,7 @@ export class VehicleListComponent implements OnInit, OnDestroy {
 
   canViewSubscriptionInfo = false;
 
-  rolesToViewSubscriptionInfo = ['PLATFORM-ADMIN', 'BUSINES-OWNER'];
+  rolesToViewSubscriptionInfo = ['PLATFORM-ADMIN', 'BUSINESS-OWNER'];
 
   selectedVehicle: any = null;
 
