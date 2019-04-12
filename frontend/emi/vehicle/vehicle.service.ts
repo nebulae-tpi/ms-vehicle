@@ -6,8 +6,7 @@ import {
 } from './gql/vehicle';
 
 @Injectable()
-export class VehicleService {
-    
+export class VehicleService {    
     
 
 }
