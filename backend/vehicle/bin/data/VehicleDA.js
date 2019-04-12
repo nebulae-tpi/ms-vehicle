@@ -255,6 +255,7 @@ class VehicleDA {
   }
 
   static getExpiredSubscriptions$(timestamp){
+    // (todo) create the vehicle with default subscription to avoid use $exists
     const collection = mongoDB.db.collection(COLLECTION_NAME);
     const query = {
       $or: [
