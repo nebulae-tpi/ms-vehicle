@@ -340,6 +340,7 @@ class VehicleCQRS {
     ).pipe(
       mergeMap(roles => {
         if (!authToken.driverId) {
+          console.log("Driver without driverID ", {args});
           return this.createCustomError$(
             DRIVER_ID_NO_FOUND_IN_TOKEN,
             'vehicleMembershipExpiration'
