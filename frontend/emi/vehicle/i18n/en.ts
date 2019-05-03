@@ -70,6 +70,7 @@ export const locale = {
         TYPES: {
           EXPIRED_MEMBERSHIP: 'Expired Membership',
           SUBSCRIPTION_EXPIRED: 'Subscription Expired',
+          PICO_Y_PLACA: 'License Plate Restriction',
           OTHER: 'Other'
         },
       },

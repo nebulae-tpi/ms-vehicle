@@ -8,7 +8,7 @@
         fxLayoutAlign="start center">
 
         <!-- BLOCK TYPE -->
-        <mat-form-field fxFlex.gt-xs="50" fxFlex="100" class="pr-8 pl-8">
+        <mat-form-field  fxFlex="100" class="pr-8 pl-8">
           <mat-select name="block" formControlName="block" placeholder="{{'VEHICLE.BLOCK_TYPE' | translate}}">
             <mat-option *ngFor="let block of blockTypes" [value]="block">
               {{ 'VEHICLE.BLOCKS.TYPES.'+ block.key | translate }}
@@ -21,7 +21,7 @@
         <!-- BLOCK TYPE -->
 
         <!-- BLOCK DURATION -->
-        <mat-form-field *ngIf="manualBlockForm.controls['block'].value" fxFlex.gt-xs="50" fxFlex="100" class="p-8">
+        <mat-form-field *ngIf="manualBlockForm.controls['block'].value"  fxFlex="100" class="p-8">
           <input matInput readonly placeholder="{{'VEHICLE.BLOCK_DURATION' | translate}}"
             value="{{ manualBlockForm.controls['block'].value.duration ? (manualBlockForm.controls['block'].value.duration / 3600000 ) + ' H'  : 'undefined' | translate }}">
         </mat-form-field>
@@ -49,7 +49,7 @@
     <div *ngIf="mode == 'VIEW' && block" fxFlex="100" fxLayout="row wrap" fxLayoutAlign="center center">
 
       <!-- BLOCK TYPE -->
-      <mat-form-field fxFlex.gt-xs="50" fxFlex="100" class="p-8">
+      <mat-form-field  fxFlex="100" class="p-8">
         <input fxHide fxShow.gt-sm matInput readonly placeholder="{{'VEHICLE.BLOCK_TYPE' | translate}}"
           value="{{ 'VEHICLE.BLOCKS.TYPES.' + block.key | translate }}">
         <textarea  fxShow fxHide.gt-sm readonly matInput placeholder="{{'VEHICLE.BLOCK_TYPE' | translate}}"
@@ -59,19 +59,19 @@
       <!-- BLOCK TYPE -->
 
       <!-- RESPONSIBLE USER -->
-      <mat-form-field fxFlex.gt-xs="50" fxFlex="100" class="p-8">
+      <mat-form-field  fxFlex="100" class="p-8">
         <input matInput readonly placeholder="{{'VEHICLE.BLOCK_RESPONSIBLE_USER' | translate}}" value="{{ block.user }}">
       </mat-form-field>
       <!-- RESPONSIBLE USER -->
 
       <!-- START TIME -->
-      <mat-form-field fxFlex.gt-xs="50" fxFlex="100" class="p-8">
+      <mat-form-field  fxFlex="100" class="p-8">
         <input matInput readonly placeholder="{{'VEHICLE.BLOCK_START_TIME' | translate}}" value="{{ block.startTime | date: 'dd/MM/y HH:mm:ss' }}">
       </mat-form-field>
       <!-- START TIME -->
 
       <!-- END TIME -->
-      <mat-form-field fxFlex.gt-xs="50" fxFlex="100" class="p-8">
+      <mat-form-field  fxFlex="100" class="p-8">
           <input *ngIf="block.endTime" matInput readonly placeholder="{{'VEHICLE.BLOCK_END_TIME' | translate}}" value="{{ block.endTime | date: 'dd/MM/y HH:mm:ss' }}">
           <input *ngIf="!block.endTime" matInput readonly placeholder="{{'VEHICLE.BLOCK_END_TIME' | translate}}" value="{{ 'undefined' | translate }}">
       </mat-form-field>

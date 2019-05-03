@@ -122,6 +122,10 @@ class VehicleCQRS {
     vehicle.creationTimestamp = new Date().getTime();
     vehicle.modifierUser = authToken.preferred_username;
     vehicle.modificationTimestamp = new Date().getTime();
+    vehicle.subscription = {
+      status : "ACTIVE",
+      expirationTime : Date.now() + (1000 * 60 * 60 * 24 * 14 )  // 14 days free subscription
+    };
 
     return RoleValidator.checkPermissions$(
       authToken.realm_access.roles,

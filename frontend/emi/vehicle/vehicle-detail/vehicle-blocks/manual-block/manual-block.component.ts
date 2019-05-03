@@ -22,8 +22,7 @@ export class ManualBlockDialogComponent implements OnInit {
 
   manualBlockForm: any;
   blockTypes = [
-    // { key: 'EXPIRED_MEMBERSHIP', duration: undefined },
-    { key: 'OTHER', duration: undefined },
+    { key: 'OTHER', duration: 1000 * 60 * 60 * 5 }, // TWO HOURS
   ];
   forbidddenBlockKeys = [];
   mode: string;
