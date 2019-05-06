@@ -5,12 +5,18 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 const mongoDB = require('./data/MongoDB').singleton();
-const Rx = require('rxjs');
+const VehicleDA = require('./data/VehicleDA');
+const VehicleBlocksDA = require('./data/VehicleBlocksDA');
+const { concat, forkJoin } = require('rxjs');
 
 const start = () => { 
-    Rx.concat(
+    concat(
         // initializing needed resources
         mongoDB.start$(),
+        forkJoin(
+            VehicleDA.start$(),
+            VehicleBlocksDA.start$(),
+        ), 
         // executing maintenance tasks
         mongoDB.createIndexes$(),
         // stoping resources

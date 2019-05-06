@@ -11,15 +11,17 @@ const mongoDB = require('./data/MongoDB').singleton();
 const VehicleDA = require('./data/VehicleDA');
 const VehicleBlocksDA = require('./data/VehicleBlocksDA');
 const graphQlService = require('./services/emi-gateway/GraphQlService')();
-const Rx = require('rxjs');
+const { concat, forkJoin } = require('rxjs');
 
 const start = () => {
-    Rx.concat(
+    concat(
         eventSourcing.eventStore.start$(),
         eventStoreService.start$(),
         mongoDB.start$(),
-        VehicleDA.start$(),
-        VehicleBlocksDA.start$(),
+        forkJoin(
+            VehicleDA.start$(),
+            VehicleBlocksDA.start$(),
+        ),        
         graphQlService.start$()
     ).subscribe(
         (evt) => {

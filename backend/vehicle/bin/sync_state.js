@@ -7,14 +7,19 @@ if (process.env.NODE_ENV !== 'production') {
 const mongoDB = require('./data/MongoDB').singleton();
 const eventSourcing = require('./tools/EventSourcing')();
 const eventStoreService = require('./services/event-store/EventStoreService')();
-const Rx = require('rxjs');
+const VehicleDA = require('./data/VehicleDA');
+const VehicleBlocksDA = require('./data/VehicleBlocksDA');
+const { concat, forkJoin } = require('rxjs');
 
 const start = () => {
-    Rx.concat(
+    concat(
         // initializing needed resources
         mongoDB.start$(),
-        eventSourcing.eventStore.start$(),
-        
+        forkJoin(
+            VehicleDA.start$(),
+            VehicleBlocksDA.start$(),
+        ),        
+        eventSourcing.eventStore.start$(),        
         // // executing maintenance tasks
         eventStoreService.syncState$(),
 

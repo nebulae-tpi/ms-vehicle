@@ -4,7 +4,6 @@ import { SharedModule } from '../../../core/modules/shared.module';
 import { DatePipe } from '@angular/common';
 import { FuseWidgetModule } from '../../../core/components/widget/widget.module';
 
-import { VehicleService } from './vehicle.service';
 import { VehicleListService } from './vehicle-list/vehicle-list.service';
 import { VehicleListComponent } from './vehicle-list/vehicle-list.component';
 import { VehicleDetailService } from './vehicle-detail/vehicle-detail.service';
@@ -49,7 +48,7 @@ const routes: Routes = [
     ManualBlockDialogComponent
   ],
   entryComponents: [DialogComponent, ManualBlockDialogComponent],
-  providers: [ VehicleService, VehicleListService, VehicleDetailService, DatePipe]
+  providers: [ VehicleListService, VehicleDetailService, DatePipe]
 })
 
 export class VehicleModule {}
