@@ -155,6 +155,7 @@ export class VehicleDetailFeaturesComponent implements OnInit, OnDestroy {
 
   applyTrial(){
     const trialDays = this.trialDaysCtrl.value;
+    const millisInDays = trialDays * 1000 * 60 * 60 * 24;
     if ( 0 < trialDays && trialDays < 15){      
       this.VehicleDetailservice.applyFreeTrialSubscription$(this.vehicle._id, trialDays)
       .pipe(
@@ -163,7 +164,7 @@ export class VehicleDetailFeaturesComponent implements OnInit, OnDestroy {
         tap(resp => {
           if(resp.data.ApplyFreeTrialSubscription.code == 200){            
             this.showMessageSnackbar(this.translate.instant('SUCCESS.APPLY_FREE_TRIAL_SUBSCRIPTION'));
-            this.vehicle = {...this.vehicle, subscription:  { expirationTime: Date.now()-1000, status: 'ACTIVE'} };
+            this.vehicle = {...this.vehicle, subscription:  { expirationTime: Date.now() + (millisInDays) -1000, status: 'ACTIVE'} };
           }
         })
       )
