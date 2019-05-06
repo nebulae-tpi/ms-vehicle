@@ -187,6 +187,29 @@ class VehicleES {
         );
     }
 
+    handleVehicleSubscriptionTrialApplied$({aid, data, user, timestamp}){
+        const millisInDay = 1000 * 60 * 60 * 24;
+        return VehicleDA.getVehicle$(aid)
+        .pipe(
+            mergeMap(vehicle => forkJoin(
+                VehicleDA.updateVehicleMembership$(vehicle.generalInfo.licensePlate, {
+                    status: 'ACTIVE',
+                    expirationTime: timestamp + (data.trialDays * millisInDay)
+                }),
+                eventSourcing.eventStore.emitEvent$(
+                    new Event({
+                      eventType: "VehicleBlockRemoved",
+                      eventTypeVersion: 1,
+                      aggregateType: "Vehicle",
+                      aggregateId: vehicle._id,
+                      data: { blockKey: "SUBSCRIPTION_EXPIRED" },
+                      user: user
+                    })
+                  )
+            )),            
+        );
+    }
+
 }
 
 

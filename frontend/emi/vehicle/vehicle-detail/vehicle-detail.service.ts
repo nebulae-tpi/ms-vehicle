@@ -12,7 +12,8 @@ import {
   VehicleVehicleBlocks,
   removeVehicleBlocking,
   InsertVehicleBlock,
-  VehicleVehicleBlockAddedSubscription
+  VehicleVehicleBlockAddedSubscription,
+  ApplyFreeTrialSubscription
 } from '../gql/vehicle.js';
 
 @Injectable()
@@ -195,6 +196,21 @@ listenVehicleBlockAdded$(vehicleId: string): Observable<any> {
         errorPolicy: 'all'
       });
   }
+
+   /**
+   * Apply the free trial subscription
+   * @param id vehicle id
+   * @param days days
+   */
+  applyFreeTrialSubscription$(id: String, days: number) {
+    return this.gateway.apollo
+      .mutate<any>({
+        mutation: ApplyFreeTrialSubscription,
+        variables: { id: id, days: days },
+        errorPolicy: 'all'
+      });
+  }
+
 
 
 /**

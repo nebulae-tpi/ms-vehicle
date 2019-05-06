@@ -3,43 +3,29 @@ import {
   Component,
   OnInit,
   OnDestroy,
-  ViewChild,
-  ElementRef,
   Input
 } from '@angular/core';
 
 import {
-  FormBuilder,
   FormGroup,
   FormControl,
   Validators,
   FormArray
 } from '@angular/forms';
 
-import { Router, ActivatedRoute } from '@angular/router';
-
 ////////// RXJS ///////////
 import {
   map,
   mergeMap,
-  switchMap,
-  toArray,
   filter,
   tap,
   takeUntil,
-  startWith,
-  debounceTime,
-  distinctUntilChanged,
-  take
 } from 'rxjs/operators';
 
-import { Subject, fromEvent, of, forkJoin, Observable, concat, combineLatest } from 'rxjs';
+import { Subject, of } from 'rxjs';
 
 //////////// ANGULAR MATERIAL ///////////
 import {
-  MatPaginator,
-  MatSort,
-  MatTableDataSource,
   MatSnackBar,
   MatDialog
 } from '@angular/material';
@@ -56,7 +42,6 @@ import { FuseTranslationLoaderService } from '../../../../../core/services/trans
 import { KeycloakService } from 'keycloak-angular';
 import { VehicleDetailService } from '../vehicle-detail.service';
 import { DialogComponent } from '../../dialog/dialog.component';
-import { ToolbarService } from '../../../../toolbar/toolbar.service';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -72,10 +57,11 @@ export class VehicleDetailFeaturesComponent implements OnInit, OnDestroy {
   @Input('pageType') pageType: string;
   @Input('vehicle') vehicle: any;
 
+  trialDaysCtrl = new FormControl(0, [Validators.min(1), Validators.max(14), Validators.required]);
+
   otherFeatures = ['AC', 'TRUNK', 'ROOF_RACK', 'PETS', 'BIKE_RACK' ];
 
   vehicleFeaturesForm: any;
-  blockings = `Nikola Tesla Industrial.`.split(' ');
   fuelTypes = ['GASOLINE', 'GAS', 'GAS_AND_GASOLINE', 'DIESEL', 'ELECTRIC'];
   canViewSubscriptionInfo = false;
   rolesToViewSubscriptionInfo = ['PLATFORM-ADMIN', 'BUSINESS-OWNER'];
@@ -84,13 +70,9 @@ export class VehicleDetailFeaturesComponent implements OnInit, OnDestroy {
   constructor(
     private translationLoader: FuseTranslationLoaderService,
     private translate: TranslateService,
-    private formBuilder: FormBuilder,
     public snackBar: MatSnackBar,
-    private router: Router,
-    private activatedRouter: ActivatedRoute,
     private VehicleDetailservice: VehicleDetailService,
     private dialog: MatDialog,
-    private toolbarService: ToolbarService,
     private keycloakService: KeycloakService
   ) {
       this.translationLoader.loadTranslations(english, spanish);
@@ -171,6 +153,24 @@ export class VehicleDetailFeaturesComponent implements OnInit, OnDestroy {
 
   }
 
+  applyTrial(){
+    const trialDays = this.trialDaysCtrl.value;
+    if ( 0 < trialDays && trialDays < 15){      
+      this.VehicleDetailservice.applyFreeTrialSubscription$(this.vehicle._id, trialDays)
+      .pipe(
+        mergeMap(resp => this.graphQlAlarmsErrorHandler$(resp)),
+        filter(resp => (resp.data && resp.data.ApplyFreeTrialSubscription)),
+        tap(resp => {
+          if(resp.data.ApplyFreeTrialSubscription.code == 200){            
+            this.showMessageSnackbar(this.translate.instant('SUCCESS.APPLY_FREE_TRIAL_SUBSCRIPTION'));
+            this.vehicle = {...this.vehicle, subscription:  { expirationTime: Date.now()-1000, status: 'ACTIVE'} };
+          }
+        })
+      )
+      .subscribe(r => console.log(r), e => console.log(e), () => {})
+    }  
+  }
+
 
   showConfirmationDialog$(dialogMessage, dialogTitle) {
     return this.dialog
@@ -195,37 +195,16 @@ export class VehicleDetailFeaturesComponent implements OnInit, OnDestroy {
   }
 
   graphQlAlarmsErrorHandler$(response) {
-    return of(JSON.parse(JSON.stringify(response)))
-      .pipe(
-        tap((resp: any) => {
-          this.showSnackBarError(resp);
-
-          return resp;
-        })
-      );
-  }
-
-  /**
-   * Shows an error snackbar
-   * @param response
-   */
-  showSnackBarError(response) {
-    if (response.errors) {
-
-      if (Array.isArray(response.errors)) {
-        response.errors.forEach(error => {
-          if (Array.isArray(error)) {
-            error.forEach(errorDetail => {
-              this.showMessageSnackbar('ERRORS.' + errorDetail.message.code);
-            });
-          } else {
-            response.errors.forEach( err => {
-              this.showMessageSnackbar('ERRORS.' + err.message.code);
-            });
-          }
-        });
-      }
-    }
+    return of(JSON.parse(JSON.stringify(response))).pipe(
+      tap((resp: any) => {
+        if (response && Array.isArray(response.errors)) {
+          response.errors.forEach(error => {
+            this.showMessageSnackbar('ERRORS.' + ((error.extensions||{}).code || 1) )
+          });
+        }
+        return resp;
+      })
+    );
   }
 
   /**

@@ -17,7 +17,9 @@ const {
   DefaultError,
   INTERNAL_SERVER_ERROR_CODE,
   PERMISSION_DENIED,
-  LICENSE_PLATE_ALREADY_USED
+  LICENSE_PLATE_ALREADY_USED,
+  VEHICLE_NO_FOUND,
+  TRIAL_DENIED
 } = require("../../tools/customError");
 
 
@@ -112,20 +114,52 @@ class VehicleCQRS {
     );
   }
 
+  applyFreeTrialSubscription$({ root, args, jwt }, authToken){
+    return RoleValidator.checkPermissions$(
+      authToken.realm_access.roles, "Vehicle",
+      "createVehicle$", PERMISSION_DENIED,
+      ["PLATFORM-ADMIN", "BUSINESS-OWNER"]
+    ).pipe(
+      mergeMap((roles) => VehicleDA.getVehicle$(args.id, !roles["PLATFORM-ADMIN"] ? (authToken.businessId || ''): null)),
+      mergeMap(vehicle => {
+        if(!vehicle){
+          return throwError(new CustomError('Vehicle no found', 'ApplyFreeTrialSubscription', VEHICLE_NO_FOUND.code, VEHICLE_NO_FOUND.description));
+        }
+        if( vehicle.subscription && vehicle.creationTimestamp != vehicle.subscription.expirationTime ){
+          return throwError(new CustomError('Subscription Trial Denied ', 'ApplyFreeTrialSubscription', TRIAL_DENIED.code, TRIAL_DENIED.description)); 
+        }
+        return of(vehicle);
+      }),
+      mergeMap( vehicleFound => eventSourcing.eventStore.emitEvent$(
+        new Event({
+          eventType: "VehicleSubscriptionTrialApplied",
+          eventTypeVersion: 1,
+          aggregateType: "Vehicle",
+          aggregateId: vehicleFound._id,
+          data: {
+            trialDays: args.days
+          },
+          user: authToken.preferred_username
+        }))
+      ),
+      map(() => ({ code: 200, message: `Vehicle trial subscription applied` })),
+      mergeMap(r => GraphqlResponseTools.buildSuccessResponse$(r)),
+      catchError(err => GraphqlResponseTools.handleError$(err))
+    );
+  }
+
   /**
   * Create a vehicle
   */
  createVehicle$({ root, args, jwt }, authToken) {
     const vehicle = args ? args.input: undefined;
+    const nowTime = Date.now();
     vehicle._id = uuidv4();
     vehicle.creatorUser = authToken.preferred_username;
-    vehicle.creationTimestamp = new Date().getTime();
+    vehicle.creationTimestamp = nowTime;
     vehicle.modifierUser = authToken.preferred_username;
-    vehicle.modificationTimestamp = new Date().getTime();
-    vehicle.subscription = {
-      status : "ACTIVE",
-      expirationTime : Date.now() + (1000 * 60 * 60 * 24 * 14 )  // 14 days free subscription
-    };
+    vehicle.modificationTimestamp = nowTime;
+    vehicle.subscription = { status : "INACTIVE", expirationTime : nowTime };
 
     return RoleValidator.checkPermissions$(
       authToken.realm_access.roles,
@@ -134,7 +168,7 @@ class VehicleCQRS {
       PERMISSION_DENIED,
       ["PLATFORM-ADMIN", "BUSINESS-OWNER", "COORDINATOR", "OPERATION-SUPERVISOR"]
     ).pipe(
-      mergeMap(()=> VehicleDA.findVehicleByLicensePlate$(vehicle.generalInfo.licensePlate)),
+      mergeMap(() => VehicleDA.findVehicleByLicensePlate$(vehicle.generalInfo.licensePlate )),
       mergeMap( vehicleFound => vehicleFound == null 
         ? eventSourcing.eventStore.emitEvent$(
           new Event({

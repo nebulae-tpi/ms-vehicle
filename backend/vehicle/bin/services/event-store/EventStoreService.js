@@ -159,6 +159,10 @@ class EventStoreService {
         fn: VehicleES.handleVehicleSubscriptionPaid$,
         obj: VehicleES
       },
+      VehicleSubscriptionTrialApplied: {
+        fn: VehicleES.handleVehicleSubscriptionTrialApplied$,
+        obj: VehicleES
+      },
       // cronjob
       PeriodicFiveMinutes: {
         fn: CronJobES.handlePeriodicFiveMinutes$,
@@ -176,44 +180,18 @@ class EventStoreService {
   */
   generateAggregateEventsArray() {
     return [
-      {
-        aggregateType: "Vehicle",
-        eventType: "VehicleCreated"
-      },
-      {
-        aggregateType: "Vehicle",
-        eventType: "VehicleGeneralInfoUpdated"
-      },
-      {
-        aggregateType: "Vehicle",
-        eventType: "VehicleStateUpdated"
-      },
-      {
-        aggregateType: "Vehicle",
-        eventType: "VehicleFeaturesUpdated"
-      },
-      {
-        aggregateType: "Vehicle",
-        eventType: "VehicleBlockRemoved"
-      },
-      {
-        aggregateType: "Cronjob",
-        eventType: "PicoPlacaCaliBlockJobTriggered"
-      },
-      {
-        aggregateType: "Vehicle",
-        eventType: "VehicleBlockAdded"
-      },
-      {
-        aggregateType: "Vehicle",
-        eventType: "VehicleSubscriptionPaid"
-      },
-      {
-        aggregateType: "Cronjob",
-        eventType: "PicoPlacaCaliUnblockJobTriggered"
-      },
+      { aggregateType: "Vehicle", eventType: "VehicleCreated"},
+      { aggregateType: "Vehicle", eventType: "VehicleGeneralInfoUpdated" },
+      { aggregateType: "Vehicle", eventType: "VehicleStateUpdated" },
+      { aggregateType: "Vehicle", eventType: "VehicleFeaturesUpdated"},
+      { aggregateType: "Vehicle", eventType: "VehicleBlockRemoved" },
+      { aggregateType: "Cronjob", eventType: "PicoPlacaCaliBlockJobTriggered" },
+      { aggregateType: "Vehicle", eventType: "VehicleBlockAdded" },
+      { aggregateType: "Vehicle", eventType: "VehicleSubscriptionPaid"},      
+      { aggregateType: "Vehicle", eventType: "VehicleSubscriptionTrialApplied" },
       
       // cronjob
+      { aggregateType: "Cronjob", eventType: "PicoPlacaCaliUnblockJobTriggered"},
       { aggregateType: "Cronjob", eventType: "PeriodicFiveMinutes" },
       { aggregateType: "Cronjob", eventType: "PeriodicFifteenMinutes" },
     ]

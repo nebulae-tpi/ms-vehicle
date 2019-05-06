@@ -185,6 +185,10 @@ class GraphQlService {
         aggregateType: "Vehicle",
         messageType: "emigateway.graphql.mutation.vehicleAddVehicleBlock"
       },
+      {
+        aggregateType: "Vehicle",
+        messageType: "emigateway.graphql.mutation.applyFreeTrialSubscription"
+      },
       // DRIVER GATEWAY
       {
         aggregateType: "Vehicle",
@@ -199,6 +203,7 @@ class GraphQlService {
    */
   generateFunctionMap() {    
     return {
+      // EMI GATEWAY
       "emigateway.graphql.query.VehicleVehicles": {
         fn: VehicleCQRS.getVehicleList$,
         obj: VehicleCQRS
@@ -237,6 +242,10 @@ class GraphQlService {
       },
       "emigateway.graphql.mutation.vehicleAddVehicleBlock": {
         fn: VehicleCQRS.addVehicleBlock$,
+        obj: VehicleCQRS
+      },
+      "emigateway.graphql.mutation.applyFreeTrialSubscription":{
+        fn: VehicleCQRS.applyFreeTrialSubscription$,
         obj: VehicleCQRS
       },
       // DRIVER GATEWAY

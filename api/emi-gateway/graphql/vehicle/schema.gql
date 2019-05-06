@@ -184,6 +184,8 @@ type Mutation {
   VehicleUpdateVehicleFeatures(id: ID!, input: VehicleFeaturesInput!): CommandResponse
   "Insert one vehicle block"
   VehicleInsertVehicleBlock(id: ID!, input: VehicleVehicleBlockInput!): CommandResponse
+  ApplyFreeTrialSubscription(id: ID!, days: Int!): CommandResponse
+  
 }
 
 type Subscription {

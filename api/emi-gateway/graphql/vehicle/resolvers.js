@@ -6,29 +6,22 @@ const { map, mergeMap, catchError } = require('rxjs/operators');
 const broker = require("../../broker/BrokerFactory")();
 const RoleValidator = require('../../tools/RoleValidator');
 const { handleError$ } = require('../../tools/GraphqlResponseTools');
-
-
-
+const { ApolloError } = require("apollo-server");
 
 const INTERNAL_SERVER_ERROR_CODE = 1;
 const PERMISSION_DENIED_ERROR_CODE = 2;
 
 function getResponseFromBackEnd$(response) {
     return of(response)
-        .pipe(
-            map(resp => {
-                if (resp.result.code != 200) {
-                    const err = new Error();
-                    err.name = 'Error';
-                    err.message = resp.result.error;
-                    // this[Symbol()] = resp.result.error;
-                    Error.captureStackTrace(err, 'Error');
-                    throw err;
-                }
-                return resp.data;
-            })
-        );
-}
+    .pipe(
+        map(({result, data}) => {            
+            if (result.code != 200 && result.error) {
+                throw new ApolloError(result.error.msg, result.code, result.error );
+            }
+            return data;
+        })
+    );
+  }
 
 module.exports = {
     //// QUERY ///////
@@ -267,6 +260,33 @@ module.exports = {
                     catchError(err => handleError$(err, "VehicleVehicle")),
                     mergeMap(response => getResponseFromBackEnd$(response))
                 ).toPromise();
+        },
+        ApplyFreeTrialSubscription(root, args, context) {
+            return RoleValidator.checkPermissions$(
+              context.authToken.realm_access.roles,
+              "ms-Vehicle",
+              "ApplyFreeTrialSubscription",
+              PERMISSION_DENIED_ERROR_CODE,
+              "Permission denied",
+              ["PLATFORM-ADMIN", "BUSINESS-OWNER"]
+            )
+              .pipe(
+                mergeMap(() =>
+                  broker.forwardAndGetReply$(
+                    "Vehicle",
+                    "emigateway.graphql.mutation.applyFreeTrialSubscription",
+                    { root, args, jwt: context.encodedToken },
+                    2000
+                  )
+                ),
+                catchError(err =>
+                  handleError$(err, "VehicleVehicle")
+                ),
+                mergeMap(response =>
+                  getResponseFromBackEnd$(response)
+                )
+              )
+              .toPromise();
         },
     },
         

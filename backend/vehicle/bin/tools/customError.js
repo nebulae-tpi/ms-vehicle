@@ -49,5 +49,7 @@ class CustomError extends Error {
     DefaultError,
     INTERNAL_SERVER_ERROR_CODE,
     PERMISSION_DENIED,
-    LICENSE_PLATE_ALREADY_USED
+    LICENSE_PLATE_ALREADY_USED,
+    VEHICLE_NO_FOUND: { code: 22011, description: 'Vehicle no found' },
+    TRIAL_DENIED: { code: 22012, description: 'Trial subscription denied' }
   } 

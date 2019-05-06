@@ -80,7 +80,9 @@ export const locale = {
         CURRENT_UNTIL: 'Vigente hasta: ',
         EXPIRED_ON: 'Vencida el: ',
         DAYS_AGO: 'dias expirada',
-        DAYS_LEFT: 'dias de vigencia'
+        DAYS_LEFT: 'dias de vigencia',
+        APPLY_TRIAL: 'Aplicar Trial',
+        APPLY_TRIAL_PH: 'Dias de Subscricción'
       },
       FEATURES: {
         FUEL: 'Combustible',
@@ -128,7 +130,12 @@ export const locale = {
     ERRORS: {
       1: 'Error Interno de Servidor',
       2: 'Permiso Denegado.',
-      22010: 'Esta placa ya está siendo utilizada'
+      22010: 'Esta placa ya está siendo utilizada',
+      22011: 'Vehiculo no encontrado',
+      22012: 'Operacion denegada'
+    },
+    SUCCESS: {
+      APPLY_FREE_TRIAL_SUBSCRIPTION: 'Subscripción aplicada'
     }
   }
 };

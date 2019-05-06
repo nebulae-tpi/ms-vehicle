@@ -80,7 +80,9 @@ export const locale = {
         CURRENT_UNTIL: 'Current Until: : ',
         EXPIRED_ON: 'Expired on: ',
         DAYS_AGO: 'days ago',
-        DAYS_LEFT: 'days left'
+        DAYS_LEFT: 'days left',
+        APPLY_TRIAL: 'Apply Trial',
+        APPLY_TRIAL_PH: 'Trial Days'
       },
       FEATURES: {
         FUEL: 'Fuel',
@@ -128,7 +130,12 @@ export const locale = {
     ERRORS: {
       1: 'Internal Server Error',
       2: 'Permission Denied',
-      22010: 'License Plate Already Used'
+      22010: 'License Plate Already Used',
+      22011: 'Vehicle no found',
+      22012: 'Trial subscription denied'
     },
+    SUCCESS: {
+      APPLY_FREE_TRIAL_SUBSCRIPTION: 'Trial Subscription Applied'
+    }
   }
 };

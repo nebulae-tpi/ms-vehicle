@@ -83,6 +83,15 @@ export const VehicleCreateVehicle = gql `
   }
 `;
 
+export const ApplyFreeTrialSubscription = gql `
+  mutation ApplyFreeTrialSubscription($id: ID!, $days: Int!){
+    ApplyFreeTrialSubscription(id: $id, days: $days){
+      code
+      message
+    }
+  }
+`;
+
 export const VehicleUpdateVehicleGeneralInfo = gql `
   mutation VehicleUpdateVehicleGeneralInfo($id: ID!, $input: VehicleVehicleGeneralInfoInput!){
     VehicleUpdateVehicleGeneralInfo(id: $id, input: $input){
