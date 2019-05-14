@@ -261,8 +261,8 @@ class VehicleDA {
       $or: [
         {
           $and: [
-            { subscription: { $exists: true } },
-            { "subscription.status": "ACTIVE" },
+            { subscription: { $exists: true } }, 
+            // { "subscription.status": "ACTIVE" },
             { "subscription.expirationTime": { $lte: timestamp } }
           ]
         },
