@@ -72,7 +72,7 @@ class VehicleES {
             mergeMap(({ licensePlateMap }) => of(Crossccutting.getDayOfYear())
                 .pipe(
                     // tap(dyo => console.log("DIA DEL AÑO ==> ", dyo)),
-                    map(dayOfYear => dayOfYear % 10),
+                    map(dayOfYear => dayOfYear % 5),
                     // tap(dyo => console.log("DIA DEL AÑO MODULADO ==> ", dyo)),
                     map(dayKey => licensePlateMap[dayKey].split(",").map(e => e.trim())),
                     // tap(dyo => console.log("PLACAS A BLOQUEAR ==> ", dyo)),
