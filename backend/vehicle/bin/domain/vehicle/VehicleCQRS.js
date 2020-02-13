@@ -159,7 +159,7 @@ class VehicleCQRS {
     vehicle.creationTimestamp = nowTime;
     vehicle.modifierUser = authToken.preferred_username;
     vehicle.modificationTimestamp = nowTime;
-    vehicle.subscription = { status : "ACTIVE", expirationTime : nowTime };
+    vehicle.subscription = { status : "ACTIVE", type: "REGULAR", expirationTime : nowTime };
 
     return RoleValidator.checkPermissions$(
       authToken.realm_access.roles,

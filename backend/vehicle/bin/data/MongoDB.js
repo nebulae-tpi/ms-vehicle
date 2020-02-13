@@ -59,6 +59,13 @@ class MongoDB {
       observer.next('Creating index for vehicle.Vehicle => ({ businessId: 1 })');
       await this.db.collection('Vehicle').createIndex( { businessId: 1} );
 
+      observer.next('Creating index for vehicle.Vehicle => ({ "subscription.status" : 1, "subscription.type" : 1, "subscription.expirationTime" : -1 })');
+      await this.db.collection('Vehicle').createIndex( { 
+        "subscription.status" : 1,
+        "subscription.type" : 1,
+        "subscription.expirationTime" : -1  
+      } );
+
       observer.next("All indexes created");
       observer.complete();
     });

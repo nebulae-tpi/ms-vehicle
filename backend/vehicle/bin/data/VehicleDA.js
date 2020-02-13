@@ -7,6 +7,8 @@ const { CustomError } = require("../tools/customError");
 const { map, tap } = require("rxjs/operators");
 const { of, Observable, defer } = require("rxjs");
 
+const PAY_PER_SERVICE = "PAY_PER_SERVICE";
+
 class VehicleDA {
   static start$(mongoDbInstance) {
     return Observable.create(observer => {
@@ -259,10 +261,19 @@ class VehicleDA {
     const query = {
       $and: [
         { "subscription.status": "ACTIVE" },
+        { "subscription.type": { "$ne": PAY_PER_SERVICE } },
         { "subscription.expirationTime": { $lte: timestamp } }
       ]
     };    
     return mongoDB.extractAllFromMongoCursor$(collection.find(query));
+  }
+
+  static updateVehicleSubscriptionTypeByVehicleId$(vehicleId, subscriptionType){
+    const collection = mongoDB.db.collection(COLLECTION_NAME);
+    return defer(() => collection.updateOne(
+      { _id: vehicleId },
+      { $set: { "subscription.type": subscriptionType } }
+    ));
   }
 
 }

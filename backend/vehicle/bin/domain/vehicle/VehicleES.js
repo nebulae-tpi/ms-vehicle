@@ -161,6 +161,7 @@ class VehicleES {
         return VehicleDA.findVehicleByLicensePlate$(data.licensePlate)
         .pipe(
             mergeMap(vehicle => forkJoin(
+                // update vehicle subscription
                 of(vehicle.subscription)
                     .pipe(
                         mergeMap(vehicleMembership => {
@@ -173,6 +174,7 @@ class VehicleES {
                         }),
                         mergeMap(vehicleMembership => VehicleDA.updateVehicleMembership$(data.licensePlate, vehicleMembership))
                     ),
+                // send event to remove block by expired subscription
                 eventSourcing.eventStore.emitEvent$(
                     new Event({
                       eventType: "VehicleBlockRemoved",
@@ -182,6 +184,22 @@ class VehicleES {
                       data: { blockKey: "SUBSCRIPTION_EXPIRED" },
                       user: user
                     })
+                  ),
+                  // if current subscriptiontype == PAY_PER_SERVICE ==> send event to change it
+                  of(vehicle.subscription).pipe(
+                      mergeMap(( vehicleMembership ) =>  (!vehicleMembership || vehicleMembership.type === "PAY_PER_SERVICE")
+                        ? eventSourcing.eventStore.emitEvent$(
+                            new Event({
+                              eventType: "VehicleSubscriptionTypeUpdated",
+                              eventTypeVersion: 1,
+                              aggregateType: "Vehicle",
+                              aggregateId: vehicle._id,
+                              data: { type: "REGULAR" },
+                              user: user
+                            })
+                          )
+                        : of(null)
+                      )
                   )
             )),            
         );
@@ -208,6 +226,11 @@ class VehicleES {
                   )
             )),            
         );
+    }
+
+    handleVehicleSubscriptionTypeUpdated$({aid, data, user, timestamp}){
+        const { type } = data;
+        return VehicleDA.updateVehicleSubscriptionTypeByVehicleId$(aid, type);
     }
 
 }

@@ -163,6 +163,10 @@ class EventStoreService {
         fn: VehicleES.handleVehicleSubscriptionTrialApplied$,
         obj: VehicleES
       },
+      VehicleSubscriptionTypeUpdated: {
+        fn: VehicleES.handleVehicleSubscriptionTypeUpdated$,
+        obj: VehicleES
+      },
       // cronjob
       PeriodicFiveMinutes: {
         fn: CronJobES.handlePeriodicFiveMinutes$,
@@ -180,6 +184,7 @@ class EventStoreService {
   */
   generateAggregateEventsArray() {
     return [
+      // Vehicle
       { aggregateType: "Vehicle", eventType: "VehicleCreated"},
       { aggregateType: "Vehicle", eventType: "VehicleGeneralInfoUpdated" },
       { aggregateType: "Vehicle", eventType: "VehicleStateUpdated" },
@@ -189,7 +194,7 @@ class EventStoreService {
       { aggregateType: "Vehicle", eventType: "VehicleBlockAdded" },
       { aggregateType: "Vehicle", eventType: "VehicleSubscriptionPaid"},      
       { aggregateType: "Vehicle", eventType: "VehicleSubscriptionTrialApplied" },
-      
+      { aggregateType: "Vehicle", eventType: "VehicleSubscriptionTypeUpdated" },
       // cronjob
       { aggregateType: "Cronjob", eventType: "PicoPlacaCaliUnblockJobTriggered"},
       { aggregateType: "Cronjob", eventType: "PeriodicFiveMinutes" },
