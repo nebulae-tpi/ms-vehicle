@@ -193,6 +193,10 @@ class GraphQlService {
       {
         aggregateType: "Vehicle",
         messageType: "drivergateway.graphql.query.vehicleMembershipExpiration"
+      },
+      {
+        aggregateType: "Vehicle",
+        messageType: "drivergateway.graphql.query.vehicleMemberShipSwitchMode"
       }
     ];
   }
@@ -253,6 +257,10 @@ class GraphQlService {
         fn: VehicleCQRS.vehicleMembershipExpiration$,
         obj: VehicleCQRS
       },
+      "drivergateway.graphql.query.vehicleMemberShipSwitchMode": {
+        fn: VehicleCQRS.vehicleMemberShipSwitchMode$,
+        obj: VehicleCQRS
+      }
     };
   }
 }

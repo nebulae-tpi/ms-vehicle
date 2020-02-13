@@ -19,7 +19,9 @@ const {
   PERMISSION_DENIED,
   LICENSE_PLATE_ALREADY_USED,
   VEHICLE_NO_FOUND,
-  TRIAL_DENIED
+  TRIAL_DENIED,
+  SUBSCRIPTION_TYPE_MODE_NOT_ALLOWED,
+  DRIVER_ID_NO_FOUND_IN_TOKEN
 } = require("../../tools/customError");
 
 
@@ -367,6 +369,8 @@ class VehicleCQRS {
 
   }
 
+  // DRIVER API GATE-WAY
+
   vehicleMembershipExpiration$({ root, args, jwt }, authToken) {
     // console.log("vehicleMembershipExpiration$ ==> ", args);
     return RoleValidator.checkPermissions$(
@@ -379,10 +383,7 @@ class VehicleCQRS {
       mergeMap(roles => {
         if (!authToken.driverId) {
           console.log("Driver without driverID ", {args});
-          return this.createCustomError$(
-            DRIVER_ID_NO_FOUND_IN_TOKEN,
-            'vehicleMembershipExpiration'
-          );
+          return throwError(this.createCustomError$( DRIVER_ID_NO_FOUND_IN_TOKEN, 'vehicleMembershipExpiration'));
         }
         return of(roles);
       }),
@@ -392,9 +393,46 @@ class VehicleCQRS {
       mergeMap(r => GraphqlResponseTools.buildSuccessResponse$(r)),
       catchError(err => GraphqlResponseTools.handleError$(err))
     );
-
   }
 
+  vehicleMemberShipSwitchMode$({ root, args, jwt }, authToken) {
+    const { licensePlate, mode } = args;
+    const newSubscriptionMode = mode || "PAY_PER_SERVICE";
+    return RoleValidator.checkPermissions$( authToken.realm_access.roles, "vehicleBlocks", "vehicleMemberShipSwitchMode$", PERMISSION_DENIED, ["DRIVER"]).pipe(
+      mergeMap(roles => {
+        if (!authToken.driverId) {
+          console.log("Driver without driverID ", { args });
+          return throwError(this.createCustomError( DRIVER_ID_NO_FOUND_IN_TOKEN, 'vehicleMemberShipSwitchMode'));
+        }
+        if( newSubscriptionMode !== "PAY_PER_SERVICE" && newSubscriptionMode !== "REGULAR"){          
+          return throwError( this.createCustomError(SUBSCRIPTION_TYPE_MODE_NOT_ALLOWED, "vehicleMemberShipSwitchMode") );
+        }
+        return of(roles);
+      }),
+      mergeMap(() => VehicleDA.findVehicleByLicensePlate$(licensePlate)),
+      // if vehicle subscription type is different to argument in query it send the ES event, else nothing happen
+      mergeMap(vehicle => ( vehicle && vehicle.subscription.type !== newSubscriptionMode )
+        ? eventSourcing.eventStore.emitEvent$(
+            new Event({
+              eventType: "VehicleSubscriptionTypeUpdated",
+              eventTypeVersion: 1,
+              aggregateType: "Vehicle",
+              aggregateId: vehicle._id,
+              data: { type: newSubscriptionMode },
+              user: authToken.preferred_username
+            })
+        )
+        : of(null)
+      ),
+      map(() => ({ code: 200, message: `Vehicle with plate ${licensePlate} has updated it's subscription type to ${newSubscriptionMode}` })),
+      mergeMap(r => GraphqlResponseTools.buildSuccessResponse$(r)),
+      catchError(err => GraphqlResponseTools.handleError$(err))
+    );
+  }
+
+  createCustomError(customError, method){
+    return new CustomError(undefined, method, customError.code, customError.description );
+  }
   //#endregion
 
 

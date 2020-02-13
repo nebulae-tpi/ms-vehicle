@@ -58,6 +58,28 @@ module.exports = {
         )
         .toPromise();
     }
+  },
+
+  Mutation: {
+    VehicleMemberShipSwitchMode(root, args, context) {
+      return RoleValidator.checkPermissions$(
+        context.authToken.realm_access.roles, "ms-Vehicle",
+        "VehicleMemberShipSwitchMode", PERMISSION_DENIED_ERROR_CODE,
+        "Permission denied", ["DRIVER"]
+      )
+        .pipe(
+          mergeMap(() =>
+            broker.forwardAndGetReply$(
+              "Vehicle",
+              "drivergateway.graphql.query.vehicleMemberShipSwitchMode",
+              { root, args, jwt: context.encodedToken }, 2000
+            )
+          ),
+          catchError(err => handleError$(err, "VehicleVehicles")),
+          mergeMap(response => getResponseFromBackEnd$(response))
+        )
+        .toPromise();
+    }
   }
 };
 

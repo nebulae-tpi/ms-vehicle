@@ -51,5 +51,7 @@ class CustomError extends Error {
     PERMISSION_DENIED,
     LICENSE_PLATE_ALREADY_USED,
     VEHICLE_NO_FOUND: { code: 22011, description: 'Vehicle no found' },
-    TRIAL_DENIED: { code: 22012, description: 'Trial subscription denied' }
+    TRIAL_DENIED: { code: 22012, description: 'Trial subscription denied' },
+    SUBSCRIPTION_TYPE_MODE_NOT_ALLOWED: { code: 22013, description: 'Subscription type does not allowed' },
+    DRIVER_ID_NO_FOUND_IN_TOKEN: { code: 22014, description: 'user have not driverId property intoken' }
   } 
