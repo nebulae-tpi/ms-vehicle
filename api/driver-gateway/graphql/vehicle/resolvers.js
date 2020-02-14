@@ -59,7 +59,6 @@ module.exports = {
         .toPromise();
     }
   },
-
   Mutation: {
     VehicleMemberShipSwitchMode(root, args, context) {
       return RoleValidator.checkPermissions$(

@@ -265,8 +265,7 @@ module.exports = {
         ApplyFreeTrialSubscription(root, args, context) {
             return RoleValidator.checkPermissions$(
               context.authToken.realm_access.roles,
-              "ms-Vehicle",
-              "ApplyFreeTrialSubscription",
+              "ms-Vehicle", "ApplyFreeTrialSubscription",
               PERMISSION_DENIED_ERROR_CODE,
               "Permission denied",
               ["PLATFORM-ADMIN", "BUSINESS-OWNER"]

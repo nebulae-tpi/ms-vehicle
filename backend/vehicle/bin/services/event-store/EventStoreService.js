@@ -178,7 +178,6 @@ class EventStoreService {
       },
     };
   }
-
   /**
   * Generates a map that assocs each AggretateType withs its events
   */
