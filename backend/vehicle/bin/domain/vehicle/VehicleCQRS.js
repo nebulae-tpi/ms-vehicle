@@ -424,7 +424,7 @@ class VehicleCQRS {
         )
         : of(null)
       ),
-      map(() => ({ code: 200, message: `Vehicle with plate ${licensePlate} has updated it's subscription type to ${newSubscriptionMode}` })),
+      map(() => ({ accepted: true })),
       mergeMap(r => GraphqlResponseTools.buildSuccessResponse$(r)),
       catchError(err => GraphqlResponseTools.handleError$(err))
     );
