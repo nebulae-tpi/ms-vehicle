@@ -231,15 +231,16 @@ class VehicleES {
     handleVehicleSubscriptionTypeUpdated$({aid, data, user, timestamp}){
         const { type } = data;
         return VehicleDA.updateVehicleSubscriptionTypeByVehicleId$(aid, type).pipe(
-            mergeMap(() => eventSourcing.eventStore.emitEvent$(
-                new Event({
-                  eventType: "VehicleBlockRemoved",
-                  eventTypeVersion: 1,
-                  aggregateType: "Vehicle",
-                  aggregateId: aid,
-                  data: { blockKey: "SUBSCRIPTION_EXPIRED" },
-                  user: "SYSTEM"
-                })
+            mergeMap(() => (type !== "PAY_PER_SERVICE") ? of({})
+                : eventSourcing.eventStore.emitEvent$(
+                    new Event({
+                    eventType: "VehicleBlockRemoved",
+                    eventTypeVersion: 1,
+                    aggregateType: "Vehicle",
+                    aggregateId: aid,
+                    data: { blockKey: "SUBSCRIPTION_EXPIRED" },
+                    user: "SYSTEM"
+                    })
               ))
         )
     }
