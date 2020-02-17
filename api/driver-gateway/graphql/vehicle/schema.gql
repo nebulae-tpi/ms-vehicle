@@ -8,6 +8,7 @@ type Query {
   VehicleMembershipExpiration(licensePlate: String!): BigInt @requireAuth
 }
 
+
 type Mutation {
   "switch to subscription type mode. Using PAY_PER_SERVICE as default"
   VehicleMemberShipSwitchMode(licensePlate: String!, mode: String): CommandResponseVehicle @requireAuth
