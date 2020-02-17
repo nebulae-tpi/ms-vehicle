@@ -187,7 +187,7 @@ class VehicleES {
                   ),
                   // if current subscriptiontype == PAY_PER_SERVICE ==> send event to change it
                   of(vehicle.subscription).pipe(
-                      mergeMap(( vehicleMembership ) =>  (!vehicleMembership || vehicleMembership.type === "PAY_PER_SERVICE")
+                      mergeMap(( vehicleMembership ) =>  (!vehicleMembership || vehicleMembership.type !== "REGULAR")
                         ? eventSourcing.eventStore.emitEvent$(
                             new Event({
                               eventType: "VehicleSubscriptionTypeUpdated",
