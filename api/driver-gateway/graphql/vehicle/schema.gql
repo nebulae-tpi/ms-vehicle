@@ -1,6 +1,5 @@
-type CommandResponseVehicle {
-  code: Int,
-  message: String
+type CommandAck {
+  accepted: Boolean
 }
 
 type Query {
@@ -10,5 +9,5 @@ type Query {
 
 type Mutation {
   "switch to subscription type mode. Using PAY_PER_SERVICE as default"
-  VehicleMemberShipSwitchMode(licensePlate: String!, mode: String): CommandResponseVehicle @requireAuth
+  VehicleMemberShipSwitchMode(licensePlate: String!, mode: String): CommandAck @requireAuth
 }
