@@ -233,12 +233,12 @@ class VehicleES {
         const update= { "subscription.type": type };
         if (type === "PAY_PER_SERVICE"){
             update["subscription.status"]= "ACTIVE";
-        }
+        }        
         return VehicleDA.updateVehicleSubscriptionTypeByVehicleId$(aid, update).pipe(
             mergeMap((afterUpdate) => {
                 switch (type) {
                     case "REGULAR":
-                        return of(afterUpdate.subscription).pipe(
+                        return of(afterUpdate.subscription).pipe(                            
                             mergeMap(vehicleSubscription => vehicleSubscription.expirationTime > Date.now()
                                 ? of([null, null])
                                 : forkJoin(
@@ -252,11 +252,11 @@ class VehicleES {
                                         afterUpdate.generalInfo.licensePlate,
                                         { ...vehicleSubscription, status: 'INACTIVE' } 
                                     )
-                                ),
-                                mergeMap(([event, a]) => event ? eventSourcing.eventStore.emitEvent$(event) : of({})),
-                            )
+                                )),
+                            mergeMap(([event, a]) => event ? eventSourcing.eventStore.emitEvent$(event) : of({})),
+                            
                         );
-                    case "PAY_PER_SERVICE":
+                    case "PAY_PER_SERVICE":                        
                         return eventSourcing.eventStore.emitEvent$(
                             new Event({
                                 eventType: "VehicleBlockRemoved",

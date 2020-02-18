@@ -279,7 +279,9 @@ class VehicleDA {
       { _id: vehicleId },
       { $set: {...update} },
       { returnOriginal: false }
-    ));
+    )).pipe(
+      map(result => result && result.value ? result.value : undefined)
+    );
   }
 
 }
