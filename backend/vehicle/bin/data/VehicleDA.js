@@ -275,9 +275,10 @@ class VehicleDA {
    */
   static updateVehicleSubscriptionTypeByVehicleId$(vehicleId, update){
     const collection = mongoDB.db.collection(COLLECTION_NAME);
-    return defer(() => collection.updateOne(
+    return defer(() => collection.findOneAndUpdate(
       { _id: vehicleId },
-      { $set: {...update} }
+      { $set: {...update} },
+      { returnOriginal: false }
     ));
   }
 

@@ -235,19 +235,55 @@ class VehicleES {
             update["subscription.status"]= "ACTIVE";
         }
         return VehicleDA.updateVehicleSubscriptionTypeByVehicleId$(aid, update).pipe(
-            mergeMap(() => (type !== "PAY_PER_SERVICE") ? of({})
-                : eventSourcing.eventStore.emitEvent$(
-                    new Event({
-                    eventType: "VehicleBlockRemoved",
-                    eventTypeVersion: 1,
-                    aggregateType: "Vehicle",
-                    aggregateId: aid,
-                    data: { blockKey: "SUBSCRIPTION_EXPIRED" },
-                    user: "SYSTEM"
-                    })
-              ))
+            mergeMap((afterUpdate) => {
+                switch (type) {
+                    case "REGULAR":
+                        return of(afterUpdate.subscription).pipe(
+                            mergeMap(vehicleSubscription => vehicleSubscription.expirationTime > Date.now()
+                                ? of([null, null])
+                                : forkJoin(
+                                    this.generateEventStoreEvent$("VehicleBlockAdded", 1, "Vehicle", afterUpdate._id,
+                                        {
+                                        blockKey: 'SUBSCRIPTION_EXPIRED',
+                                        startTime: Date.now(),
+                                        notes: 'Blocked by system because returned to Regular subscription type'
+                                        }, "SYSTEM"),
+                                    VehicleDA.updateVehicleMembership$(
+                                        afterUpdate.generalInfo.licensePlate,
+                                        { ...vehicleSubscription, status: 'INACTIVE' } 
+                                    )
+                                ),
+                                mergeMap(([event, a]) => event ? eventSourcing.eventStore.emitEvent$(event) : of({})),
+                            )
+                        );
+                    case "PAY_PER_SERVICE":
+                        return eventSourcing.eventStore.emitEvent$(
+                            new Event({
+                                eventType: "VehicleBlockRemoved",
+                                eventTypeVersion: 1,
+                                aggregateType: "Vehicle",
+                                aggregateId: aid,
+                                data: { blockKey: "SUBSCRIPTION_EXPIRED" },
+                                user: "SYSTEM"
+                            })
+                      )             
+                    default:
+                        break;
+                }
+            })
         )
     }
+
+    generateEventStoreEvent$(eventType, eventVersion, aggregateType, aggregateId, data, user) {
+        return of(new Event({
+          eventType: eventType,
+          eventTypeVersion: eventVersion,
+          aggregateType: aggregateType,
+          aggregateId: aggregateId,
+          data: data,
+          user: user
+        }))
+      }
 
 }
 
