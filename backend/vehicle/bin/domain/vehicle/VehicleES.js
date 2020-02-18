@@ -230,7 +230,11 @@ class VehicleES {
 
     handleVehicleSubscriptionTypeUpdated$({aid, data, user, timestamp}){
         const { type } = data;
-        return VehicleDA.updateVehicleSubscriptionTypeByVehicleId$(aid, type).pipe(
+        const update= { "subscription.type": type };
+        if (type === "PAY_PER_SERVICE"){
+            update["subscription.status"]= "ACTIVE";
+        }
+        return VehicleDA.updateVehicleSubscriptionTypeByVehicleId$(aid, update).pipe(
             mergeMap(() => (type !== "PAY_PER_SERVICE") ? of({})
                 : eventSourcing.eventStore.emitEvent$(
                     new Event({

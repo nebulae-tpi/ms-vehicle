@@ -268,11 +268,16 @@ class VehicleDA {
     return mongoDB.extractAllFromMongoCursor$(collection.find(query));
   }
 
-  static updateVehicleSubscriptionTypeByVehicleId$(vehicleId, subscriptionType){
+  /**
+   * 
+   * @param {String} vehicleId 
+   * @param {Object} update 
+   */
+  static updateVehicleSubscriptionTypeByVehicleId$(vehicleId, update){
     const collection = mongoDB.db.collection(COLLECTION_NAME);
     return defer(() => collection.updateOne(
       { _id: vehicleId },
-      { $set: { "subscription.type": subscriptionType } }
+      { $set: {...update} }
     ));
   }
 
