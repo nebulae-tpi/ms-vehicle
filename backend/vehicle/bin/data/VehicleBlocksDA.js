@@ -87,6 +87,11 @@ class VehicleBlocksDA {
     return defer(() => collection.findOne({ licensePlate: licensePlate, key: blockKey }));
   }
 
+  static findByVehicleIdAndKey$(vehicleId, blockKey){
+    const collection = mongoDB.db.collection(COLLECTION_NAME);
+    return defer(() => collection.findOne({ vehicleId, key: blockKey }));
+  }
+
 }
 /**
  * @returns {VehicleDA}

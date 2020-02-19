@@ -251,9 +251,11 @@ class VehicleES {
                                     VehicleDA.updateVehicleMembership$(
                                         afterUpdate.generalInfo.licensePlate,
                                         { ...vehicleSubscription, status: 'INACTIVE' } 
-                                    )
+                                    ),
+                                    VehicleBlocksDA.findByVehicleIdAndKey$(aid, "SUBSCRIPTION_EXPIRED" )
                                 )),
-                            mergeMap(([event, a]) => event ? eventSourcing.eventStore.emitEvent$(event) : of({})),
+
+                            mergeMap(([event, a, blocks]) => (event && !blocks ) ? eventSourcing.eventStore.emitEvent$(event) : of({}) ),
                             
                         );
                     case "PAY_PER_SERVICE":                        
