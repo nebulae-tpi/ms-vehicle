@@ -46,26 +46,23 @@ class VehicleBlocksDA {
   static insertVehicleBlock$({vehicleId, businessId, licensePlate, blockKey, notes = '', endTime = undefined, user} ){
     const collection = mongoDB.db.collection(COLLECTION_NAME);
 
-    return defer(() =>
-      collection.insertOne({
-        vehicleId: vehicleId,
-        businessId: businessId,
-        licensePlate: licensePlate,
-        key: blockKey,
-        notes: notes,
-        startTime: Date.now(),
-        endTime: endTime,
-        user: user
-      })
-    )
-    .pipe(
+    const query = { vehicleId, key: blockKey };
+    const update =  { 
+      vehicleId, businessId, licensePlate, key: blockKey,
+      notes, startTime: Date.now(), endTime, user
+    };
+
+    return defer(() => collection.findOneAndUpdate(
+      query,
+      { $set: { ...update } },
+      { upsert: true })
+    ).pipe(
       catchError(err => {
         if(err.code == 11000){
           console.log(err.message);
           return of(null);
         }
-        return throwError(err);
-        
+        return throwError(err);        
       })
     )
 

@@ -104,11 +104,7 @@ class VehicleES {
     }
 
     handleVehicleBlockAdded$({ aid, user, data }){
-        return of({
-            vehicleId: aid,
-            user: user,
-            ...data
-        })
+        return of({ vehicleId: aid, user: user, ...data })
         .pipe(
             mergeMap((blockInfo) => forkJoin(
                 VehicleBlocksDA.insertVehicleBlock$(blockInfo),
