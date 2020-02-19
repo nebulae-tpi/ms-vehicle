@@ -27,11 +27,8 @@ function getResponseFromBackEnd$(response) {
   );
 }
 
-
 module.exports = {
   //// QUERY ///////
-
-
   Query: {
     VehicleMembershipExpiration(root, args, context) {
       return RoleValidator.checkPermissions$(
@@ -56,8 +53,7 @@ module.exports = {
         )
         .toPromise();
     }
-  },
-  
+  },  
   Mutation: {
     VehicleMemberShipSwitchMode(root, args, context) {
       return RoleValidator.checkPermissions$(
