@@ -7,7 +7,7 @@ const eventSourcing = require("../../tools/EventSourcing")();
 const MATERIALIZED_VIEW_TOPIC = "emi-gateway-materialized-view-updates";
 const VehicleBlocksDA = require('../../data/VehicleBlocksDA');
 const VehicleDA = require('../../data/VehicleDA');
-
+ 
 /**
  * Singleton instance
  */
