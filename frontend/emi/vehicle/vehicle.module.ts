@@ -16,6 +16,7 @@ import { VehicleLocationComponent } from './vehicle-detail/location/vehicle-loca
 import { VehicleBlocksComponent } from './vehicle-detail/vehicle-blocks/vehicle-blocks.component';
 import { ManualBlockDialogComponent } from './vehicle-detail/vehicle-blocks/manual-block/manual-block.component';
 
+
 const routes: Routes = [
   {
     path: '',
