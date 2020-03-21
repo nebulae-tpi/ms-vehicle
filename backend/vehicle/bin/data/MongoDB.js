@@ -64,7 +64,7 @@ class MongoDB {
         "subscription.status" : 1,
         "subscription.type" : 1,
         "subscription.expirationTime" : -1  
-      } );
+      } , {name:'subscription_status_type_expirationTime'});
 
       observer.next("All indexes created");
       observer.complete();
