@@ -51,6 +51,11 @@ class Crosscutting{
         return Math.floor( diff / oneDay );
     }
 
+    static getDayOfWeek(date = Date.now()){
+        const now = new Date(new Date(date).toLocaleString('es-CO', { timeZone: 'America/Bogota' }));
+        return now.getDay();
+    }
+
 }
 
 /**

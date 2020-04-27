@@ -66,22 +66,17 @@ class VehicleES {
     }
 
 
-    handlePicoPlacaCaliBlockJobTriggered$(PicoPlacaCaliBlockJobTriggered){
-        return of(PicoPlacaCaliBlockJobTriggered.data)
-        .pipe(
-            mergeMap(({ licensePlateMap }) => of(Crossccutting.getDayOfYear())
-                .pipe(
-                    // tap(dyo => console.log("DIA DEL AÑO ==> ", dyo)),
-                    map(dayOfYear => dayOfYear % 5),
-                    // tap(dyo => console.log("DIA DEL AÑO MODULADO ==> ", dyo)),
-                    map(dayKey => licensePlateMap[dayKey].split(",").map(e => e.trim())),
-                    // tap(dyo => console.log("PLACAS A BLOQUEAR ==> ", dyo)),
-                )
-            ),
-            mergeMap(platesKey =>  VehicleDA.getVehicleListToAplyPYP_Blocks$( PicoPlacaCaliBlockJobTriggered.data.buIds, platesKey) ),
-            
+    handlePicoPlacaCaliBlockJobTriggered$({ data }){        
+        return of(data).pipe(
+            mergeMap(({ licensePlateMap }) => of(Crossccutting.getDayOfYear()).pipe(
+                // tap(dyo => console.log("DIA DEL AÑO ==> ", dyo)),
+                map(dayOfYear => dayOfYear % Object.keys(data.licensePlateMap).length),
+                // tap(dyo => console.log("DIA DEL AÑO MODULADO ==> ", dyo)),
+                map(dayKey => licensePlateMap[dayKey].split(",").map(e => e.trim())),
+                // tap(dyo => console.log("PLACAS A BLOQUEAR ==> ", dyo)),
+            )),
+            mergeMap(platesKey =>  VehicleDA.getVehicleListToAplyPYP_Blocks$( data.buIds, platesKey) ),            
             //tap(vehicle => console.log("VEHICLE FOUND TO BLOCK BY PICO_Y_PLACA ==> ", JSON.stringify(vehicle))),
-
             mergeMap(vehicle => eventSourcing.eventStore.emitEvent$(
                 new Event({
                     eventType: "VehicleBlockAdded",
