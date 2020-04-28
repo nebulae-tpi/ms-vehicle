@@ -1,7 +1,7 @@
 'use strict'
 
-const { of, interval, forkJoin } = require("rxjs");
-const { tap, mergeMap, catchError, map, mapTo, delay, take, toArray, filter } = require('rxjs/operators');
+const { of, interval, forkJoin, from } = require("rxjs");
+const { tap, mergeMap, catchError, map, mapTo, delay, take, toArray, filter, concatMap } = require('rxjs/operators');
 const broker = require("../../tools/broker/BrokerFactory")();
 const Event = require("@nebulae/event-store").Event;
 const eventSourcing = require("../../tools/EventSourcing")();
@@ -77,6 +77,7 @@ class VehicleES {
             )),
             mergeMap(platesKey =>  VehicleDA.getVehicleListToAplyPYP_Blocks$( data.buIds, platesKey) ),            
             //tap(vehicle => console.log("VEHICLE FOUND TO BLOCK BY PICO_Y_PLACA ==> ", JSON.stringify(vehicle))),
+            concatMap(e => of(e).pipe(delay(50))),
             mergeMap(vehicle => eventSourcing.eventStore.emitEvent$(
                 new Event({
                     eventType: "VehicleBlockAdded",
@@ -127,7 +128,7 @@ class VehicleES {
         return of(PicoPlacaCaliUnblockJobTriggeredEvt.data)
             .pipe(
                 mergeMap(() => VehicleBlocksDA.getVehicleListToRemovePYP_Blocks$(PicoPlacaCaliUnblockJobTriggeredEvt.data.buIds)),
-                //tap(vehicle => console.log("VEHICLE FOUNF TO REMOVE PICO_Y_PLACA BLOCK ==> ", JSON.stringify(vehicle))),
+                concatMap(e => of(e).pipe(delay(50))),
                 mergeMap(vehicle => eventSourcing.eventStore.emitEvent$(
                     new Event({
                         eventType: "VehicleBlockRemoved",
@@ -142,8 +143,7 @@ class VehicleES {
                         user: "SYSTEM"
                     })
                 )),
-                toArray(),
-
+                toArray()
             )
     }
 
