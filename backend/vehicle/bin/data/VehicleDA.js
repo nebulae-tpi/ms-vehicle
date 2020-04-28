@@ -220,6 +220,7 @@ class VehicleDA {
     const collection = mongoDB.db.collection(COLLECTION_NAME);
     const query = {};
     query["$and"] = [
+      { state: true },
       { businessId: { $in: buIds } },
       { "generalInfo.licensePlate": { $regex: `.*(${licensePlateEnding.join("|")})$` } },
     ];
