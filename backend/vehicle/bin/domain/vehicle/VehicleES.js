@@ -9,6 +9,8 @@ const VehicleDA = require('../../data/VehicleDA');
 const VehicleBlocksDA = require('../../data/VehicleBlocksDA');
 const MATERIALIZED_VIEW_TOPIC = "emi-gateway-materialized-view-updates";
 const Crossccutting = require("../../tools/Crosscutting");
+const moment = require("moment");
+
 
 /**
  * Singleton instance
@@ -76,7 +78,7 @@ class VehicleES {
                 // tap(dyo => console.log("PLACAS A BLOQUEAR ==> ", dyo)),
             )),
             mergeMap(platesKey =>  VehicleDA.getVehicleListToAplyPYP_Blocks$( data.buIds, platesKey) ),            
-            //tap(vehicle => console.log("VEHICLE FOUND TO BLOCK BY PICO_Y_PLACA ==> ", JSON.stringify(vehicle))),
+            tap(v => console.log(`${moment().format("YYYY/MM/DD HH:mm:ss")} ADDING PICO_Y_PLACA LOCK => AID: ${v._id}  PLATE: ${v.licensePlate} `)),
             concatMap(e => of(e).pipe(delay(50))),
             mergeMap(vehicle => eventSourcing.eventStore.emitEvent$(
                 new Event({
@@ -129,6 +131,7 @@ class VehicleES {
             .pipe(
                 mergeMap(() => VehicleBlocksDA.getVehicleListToRemovePYP_Blocks$(PicoPlacaCaliUnblockJobTriggeredEvt.data.buIds)),
                 concatMap(e => of(e).pipe(delay(50))),
+                tap(v => console.log(`${moment().format("YYYY/MM/DD HH:mm:ss")} REMOVING PICO_Y_PLACA LOCK => AID: ${v.vehicleId}  PLATE: ${v.licensePlate} `)),
                 mergeMap(vehicle => eventSourcing.eventStore.emitEvent$(
                     new Event({
                         eventType: "VehicleBlockRemoved",
