@@ -23,7 +23,6 @@ class VehicleES {
         
     }
 
-
     /**
      * Persists the vehicle on the materialized view according to the received data from the event store.
      * @param {*} businessCreatedEvent business created event
