@@ -11,7 +11,6 @@ const MATERIALIZED_VIEW_TOPIC = "emi-gateway-materialized-view-updates";
 const Crossccutting = require("../../tools/Crosscutting");
 const moment = require("moment");
 
-
 /**
  * Singleton instance
  */
@@ -123,6 +122,7 @@ class VehicleES {
 
         )
     }
+    
 
     handlePicoPlacaCaliUnblockJobTriggered$(PicoPlacaCaliUnblockJobTriggeredEvt){
         //console.log("handlePicoYPlacaUnblocksRuleEmitted !!!!!!!!!!!!!!!!!!!!!! handlePicoPlacaCaliBlockJobTriggered !!!!!!!!!!!!!!!!!!!!!");
