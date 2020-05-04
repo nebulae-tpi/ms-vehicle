@@ -78,7 +78,7 @@ class VehicleES {
             )),
             mergeMap(platesKey =>  VehicleDA.getVehicleListToAplyPYP_Blocks$( data.buIds, platesKey) ),            
             tap(v => console.log(`${moment().format("YYYY/MM/DD HH:mm:ss")} ADDING PICO_Y_PLACA LOCK => AID: ${v._id}  PLATE: ${v.licensePlate} `)),
-            concatMap(e => of(e).pipe(delay(50))),
+            concatMap(e => of(e).pipe(delay(200))),
             mergeMap(vehicle => eventSourcing.eventStore.emitEvent$(
                 new Event({
                     eventType: "VehicleBlockAdded",
@@ -129,7 +129,7 @@ class VehicleES {
         return of(PicoPlacaCaliUnblockJobTriggeredEvt.data)
             .pipe(
                 mergeMap(() => VehicleBlocksDA.getVehicleListToRemovePYP_Blocks$(PicoPlacaCaliUnblockJobTriggeredEvt.data.buIds)),
-                concatMap(e => of(e).pipe(delay(50))),
+                concatMap(e => of(e).pipe(delay(200))),
                 tap(v => console.log(`${moment().format("YYYY/MM/DD HH:mm:ss")} REMOVING PICO_Y_PLACA LOCK => AID: ${v.vehicleId}  PLATE: ${v.licensePlate} `)),
                 mergeMap(vehicle => eventSourcing.eventStore.emitEvent$(
                     new Event({
