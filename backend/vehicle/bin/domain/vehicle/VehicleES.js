@@ -75,9 +75,9 @@ class VehicleES {
                 map(dayKey => licensePlateMap[dayKey].split(",").map(e => e.trim())),
                 // tap(dyo => console.log("PLACAS A BLOQUEAR ==> ", dyo)),
             )),
-            mergeMap(platesKey =>  VehicleDA.getVehicleListToAplyPYP_Blocks$( data.buIds, platesKey) ),            
-            tap(v => console.log(`${moment().format("YYYY/MM/DD HH:mm:ss")} ADDING PICO_Y_PLACA LOCK => AID: ${v._id}  PLATE: ${v.licensePlate} `)),
+            mergeMap(platesKey =>  VehicleDA.getVehicleListToAplyPYP_Blocks$( data.buIds, platesKey) ),
             concatMap(e => of(e).pipe(delay(200))),
+            tap(v => console.log(`${moment().format("YYYY/MM/DD HH:mm:ss")} ADDING PICO_Y_PLACA LOCK => AID: ${v._id}  PLATE: ${v.licensePlate} `)),
             mergeMap(vehicle => eventSourcing.eventStore.emitEvent$(
                 new Event({
                     eventType: "VehicleBlockAdded",
