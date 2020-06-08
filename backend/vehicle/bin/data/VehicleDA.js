@@ -239,6 +239,28 @@ class VehicleDA {
     ))
   }
 
+  static findVehiclesToSetInactive$(businessId, timestamp){
+    const collection = mongoDB.db.collection(COLLECTION_NAME);
+    const query = { 
+      state: true,  
+      businessId,
+      lastServiceTimestamp: { $lte: timestamp }, 
+      "subscription.expirationTime": { $lte: timestamp },
+    };
+    const projection = { _id: 1, businessId: 1, "generalInfo.licensePlate": 1 };
+    const cursor = collection.find(query, { projection });
+    console.log(`QUERY: ${JSON.stringify(query)}`)
+    return mongoDB.extractAllFromMongoCursor$(cursor);
+  }
+
+  static updateLastServiceTimestamp$(vehicleId, timestamp){
+    const collection = mongoDB.db.collection(COLLECTION_NAME);
+    const query = { _id: vehicleId };
+    const update = { $set: { lastServiceTimestamp: timestamp } };
+    // console.log(`QUERY: ${JSON.stringify(query)} -- UPDATE: ${JSON.stringify(update)}`)
+    return defer(() => collection.updateOne( query, update ));
+  }
+
   static removeBlock$({vehicleId, blockKey}){
     const collection = mongoDB.db.collection(COLLECTION_NAME);
     return defer(() => collection.updateOne(

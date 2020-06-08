@@ -3,6 +3,7 @@ const { of, from, concat } = require("rxjs");
 const eventSourcing = require("../../tools/EventSourcing")();
 const { VehicleES } = require("../../domain/vehicle");
 const { CronJobES } = require("../../domain/cronjob");
+const { ServiceES } =  require("../../domain/service");
 const { map, switchMap, filter, mergeMap, concatMap } = require('rxjs/operators');
 /**
  * Singleton instance
@@ -176,6 +177,15 @@ class EventStoreService {
         fn: CronJobES.handlePeriodicFifteenMinutes$,
         obj: CronJobES
       },
+      ValidateInactiveVehicles: {
+        fn: CronJobES.handleValidateInactiveVehicles$,
+        obj: CronJobES
+      },
+      // Service
+      ServiceAssigned: {
+        fn: ServiceES.handleServiceAssigned$,
+        obj: ServiceES
+      }
     };
   }
   /**
@@ -198,6 +208,9 @@ class EventStoreService {
       { aggregateType: "Cronjob", eventType: "PicoPlacaCaliUnblockJobTriggered"},
       { aggregateType: "Cronjob", eventType: "PeriodicFiveMinutes" },
       { aggregateType: "Cronjob", eventType: "PeriodicFifteenMinutes" },
+      { aggregateType: "Cronjob", eventType: "ValidateInactiveVehicles" },
+      // Service
+      { aggregateType: "Service", eventType: "ServiceAssigned" },
     ]
   }
 }
