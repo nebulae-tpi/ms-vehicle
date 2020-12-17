@@ -75,6 +75,7 @@ export class VehicleDetailGeneralInfoComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.vehicleGeneralInfoForm = new FormGroup({
       licensePlate: new FormControl(this.vehicle ? (this.vehicle.generalInfo || {}).licensePlate : ''),
+      complementaryField: new FormControl(this.vehicle ? (this.vehicle.generalInfo || {}).complementaryField : ''),
       model: new FormControl(this.vehicle ? (this.vehicle.generalInfo || {}).model : ''),
       brand: new FormControl(this.vehicle ? (this.vehicle.generalInfo || {}).brand : ''),
       line: new FormControl(this.vehicle ? (this.vehicle.generalInfo || {}).line : '')
@@ -102,6 +103,7 @@ export class VehicleDetailGeneralInfoComponent implements OnInit, OnDestroy {
               generalInfo: {
                 ...this.vehicleGeneralInfoForm.getRawValue(),
                 licensePlate: this.vehicleGeneralInfoForm.getRawValue().licensePlate.trim().toUpperCase(),
+                complementaryField: this.vehicleGeneralInfoForm.getRawValue().complementaryField.trim().toUpperCase(),
                 brand: this.vehicleGeneralInfoForm.getRawValue().brand.trim().toUpperCase(),
                 line: this.vehicleGeneralInfoForm.getRawValue().line.trim().toUpperCase()
 
@@ -133,6 +135,7 @@ export class VehicleDetailGeneralInfoComponent implements OnInit, OnDestroy {
         mergeMap(() => this.VehicleDetailservice.updateVehicleVehicleGeneralInfo$(
           this.vehicle._id, {
             licensePlate: this.vehicleGeneralInfoForm.getRawValue().licensePlate.trim().toUpperCase(),
+            complementaryField: this.vehicleGeneralInfoForm.getRawValue().complementaryField.trim().toUpperCase(),
             model: this.vehicleGeneralInfoForm.getRawValue().model,
             brand: this.vehicleGeneralInfoForm.getRawValue().brand.trim().toUpperCase(),
             line: this.vehicleGeneralInfoForm.getRawValue().line.trim().toUpperCase()

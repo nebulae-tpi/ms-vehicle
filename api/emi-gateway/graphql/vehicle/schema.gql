@@ -47,6 +47,8 @@ type VehicleVehicleEntity {
 type VehicleGeneralInfo {
   "Vehicle name"
   licensePlate: String!,
+  "Complementary field"
+  complementaryField: String,
   "Vehicle description"
   model: Int!
   "Vehicle brand"
@@ -137,6 +139,7 @@ input VehicleVehicleInput {
 input VehicleVehicleGeneralInfoInput {
   "Vehicle name"
   licensePlate: String!,
+  complementaryField: String,
   "Vehicle description"
   model: Int!
   "Vehicle brand"

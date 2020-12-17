@@ -30,7 +30,7 @@ const {
  * Singleton instance
  */
 let instance;
-
+ 
 class VehicleCQRS {
   constructor() {
   }

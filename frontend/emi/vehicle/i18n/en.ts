@@ -3,7 +3,7 @@ export const locale = {
   data: {
     undefined: 'Undefined',
     VEHICLE: {
-      LICENSE_PLATE_ALREADY_USED: 'License Plate Already Used',
+      LICENSE_PLATE_ALREADY_USED: 'Identifier Already Used',
       NAME_REQUIRED: 'Name required',
       BRAND_REQUIRED: 'Brand required',
       MODEL_REQUIRED: 'Model required',
@@ -50,7 +50,8 @@ export const locale = {
         GENERAL_INFO: 'General Info',
         ENABLED: 'Enabled',
         DISABLED: 'Disabled',
-        LICENSE_PLATE: 'License Plate',
+        LICENSE_PLATE: 'Identifier',
+        COMPLEMENTARY_FIELD: 'Complementario',
         MODEL: 'Model',
         BRAND: 'Brand',
         LINE: 'Line',
@@ -104,14 +105,14 @@ export const locale = {
         }
       },
       ACTIVE: 'Active',
-      LICENSE_PLATE: 'Plate',
+      LICENSE_PLATE: 'Identifier',
       BLOCKINGS: 'Blocks',
       MODEL: 'Model',
       CREATE: 'Create',
       UPDATE: 'Save',
       UPDATE_TITLE: 'Update',
       UPDATE_MESSAGE: 'Are you sure you want to make the modification?',
-      UPDATE_LICENSE_PLATE_MESSAGE: 'Are you sure you want to make the modification? If license plate is asigned to some driver that assignment will lose',
+      UPDATE_LICENSE_PLATE_MESSAGE: 'Are you sure you want to make the modification? If identifier is asigned to some driver that assignment will lose',
       CREATE_TITLE: 'Creation',
       CREATE_MESSAGE: '¿Are you sure you want to make the creation?',
       CANCEL: 'Cancel',
@@ -130,7 +131,7 @@ export const locale = {
     ERRORS: {
       1: 'Internal Server Error',
       2: 'Permission Denied',
-      22010: 'License Plate Already Used',
+      22010: 'Identificador Already Used',
       22011: 'Vehicle no found',
       22012: 'Trial subscription denied'
     },

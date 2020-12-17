@@ -3,8 +3,8 @@ export const locale = {
   data: {
     undefined: 'Indefinido',
     VEHICLE: {
-      LICENSE_PLATE_ALREADY_USED: 'Esta Placa Ya Está Siendo Usada',
-      NAME_REQUIRED: 'Placa requerida',
+      LICENSE_PLATE_ALREADY_USED: 'Este Identificador Ya Está Siendo Usada',
+      NAME_REQUIRED: 'Identificador requerido',
       BRAND_REQUIRED: 'Marca requerida',
       MODEL_REQUIRED: 'Módelo requerida',
       LINE_REQUIRED: 'Línea requerida',
@@ -50,7 +50,8 @@ export const locale = {
         GENERAL_INFO: 'Información General',
         ENABLED: 'Activo',
         DISABLED: 'Desactivado',
-        LICENSE_PLATE: 'Placa',
+        LICENSE_PLATE: 'Identificador',
+        COMPLEMENTARY_FIELD: 'Complementario',
         MODEL: 'Modelo',
         BRAND: 'Marca',
         LINE: 'Línea',
@@ -104,14 +105,14 @@ export const locale = {
         }
       },
       ACTIVE: 'Activo',
-      LICENSE_PLATE: 'Placa',
+      LICENSE_PLATE: 'Identificador',
       BLOCKINGS: 'Bloqueos',
       MODEL: 'Modelo',
       CREATE: 'Crear',
       UPDATE: 'Guardar',
       UPDATE_TITLE: 'Actualizar',
       UPDATE_MESSAGE: '¿Estás seguro que desea realizar la modificación?',
-      UPDATE_LICENSE_PLATE_MESSAGE: '¿Estás seguro que desea realizar la modificación? Si la placa está asignada a un conductor esta asignación se perderá',
+      UPDATE_LICENSE_PLATE_MESSAGE: '¿Estás seguro que desea realizar la modificación? Si el identificador está asignado a un conductor esta asignación se perderá',
       CREATE_TITLE: 'Creación',
       CREATE_MESSAGE: '¿Estás seguro que desea realizar la creación?',
       CANCEL: 'Cancelar',
@@ -130,7 +131,7 @@ export const locale = {
     ERRORS: {
       1: 'Error Interno de Servidor',
       2: 'Permiso Denegado.',
-      22010: 'Esta placa ya está siendo utilizada',
+      22010: 'Este identificador ya está siendo utilizado',
       22011: 'Vehiculo no encontrado',
       22012: 'Operacion denegada'
     },

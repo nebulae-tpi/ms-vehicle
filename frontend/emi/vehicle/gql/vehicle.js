@@ -8,6 +8,7 @@ export const VehicleVehicle = gql`
       _id
       generalInfo {
         licensePlate
+        complementaryField
         model
         brand
         line
@@ -54,6 +55,7 @@ export const VehicleVehicles = gql`
       _id
       generalInfo {
         licensePlate
+        complementaryField
         model
         brand
         line
@@ -145,6 +147,7 @@ export const VehicleVehicleUpdatedSubscription = gql`
       _id
       generalInfo {
         licensePlate
+        complementaryField
         model
         brand
         line
