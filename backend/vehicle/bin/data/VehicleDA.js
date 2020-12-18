@@ -216,14 +216,17 @@ class VehicleDA {
    * @param {Array} buIds String array
    * @param {Array} licensePlateEnding Array with number as string to use in regular expresion
    */
-  static getVehicleListToAplyPYP_Blocks$(buIds, licensePlateEnding) {
+  static getVehicleListToAplyPYP_Blocks$(buIds, licensePlateEnding, originField) {
     const collection = mongoDB.db.collection(COLLECTION_NAME);
-    const query = {};
-    query["$and"] = [
-      { state: true },
-      { businessId: { $in: buIds } },
-      { "generalInfo.licensePlate": { $regex: `.*(${licensePlateEnding.join("|")})$` } },
-    ];
+    const query = { state: true, businessId: { $in: buIds } };
+    if (originField === "COMPLEMENTARY") {
+      query["generalInfo.complementary"] = { $regex: `.*(${licensePlateEnding.join("|")})$` };
+    } else { 
+      { 
+        query["generalInfo.licensePlate"] = { $regex: `.*(${licensePlateEnding.join("|")})$` };
+      }
+  
+    }
 
     const cursor = collection.find(query, { projection: { "generalInfo.licensePlate": 1, businessId: 1 } });
     return mongoDB.extractAllFromMongoCursor$(cursor);
