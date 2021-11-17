@@ -278,7 +278,20 @@ class VehicleDA {
     const collection = mongoDB.db.collection(COLLECTION_NAME);
     return defer( () => collection.updateOne(
       {'generalInfo.licensePlate': licensePlate},
-      { $set: { subscription: subscription } }
+      { 
+        $set: { subscription: subscription }, 
+      }
+      ))
+  }
+
+  static incrementVehicleMembership$(licensePlate, subscription){
+    const collection = mongoDB.db.collection(COLLECTION_NAME);
+    return defer( () => collection.updateOne(
+      {'generalInfo.licensePlate': licensePlate},
+      { 
+        $set: { "subscription.status": subscription.status },
+        $inc: { "subscription.expirationTime": subscription.expirationTime }
+      }
       ))
   }
 

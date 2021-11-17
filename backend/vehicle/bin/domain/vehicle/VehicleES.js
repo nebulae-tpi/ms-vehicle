@@ -162,10 +162,10 @@ class VehicleES {
                                 status: 'ACTIVE',
                                 expirationTime: !vehicleMembership || vehicleMembership.expirationTime < timestamp
                                     ? timestamp + (data.daysPaid * millisInDay)
-                                    : vehicleMembership.expirationTime + (data.daysPaid * millisInDay)
+                                    : (data.daysPaid * millisInDay)
                             });
                         }),
-                        mergeMap(vehicleMembership => VehicleDA.updateVehicleMembership$(data.licensePlate, vehicleMembership))
+                        mergeMap(vehicleMembership => VehicleDA.incrementVehicleMembership$(data.licensePlate, vehicleMembership))
                     ),
                 // send event to remove block by expired subscription
                 eventSourcing.eventStore.emitEvent$(
