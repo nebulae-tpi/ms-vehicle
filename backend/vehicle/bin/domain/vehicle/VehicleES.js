@@ -162,7 +162,7 @@ class VehicleES {
                                 status: 'ACTIVE',
                                 expirationTime: !vehicleMembership || vehicleMembership.expirationTime < timestamp
                                     ? timestamp + (data.daysPaid * millisInDay)
-                                    : (data.daysPaid * millisInDay)
+                                    : vehicleMembership.expirationTime + (data.daysPaid * millisInDay)
                             });
                         }),
                         mergeMap(vehicleMembership => VehicleDA.updateVehicleMembership$(data.licensePlate, vehicleMembership))
