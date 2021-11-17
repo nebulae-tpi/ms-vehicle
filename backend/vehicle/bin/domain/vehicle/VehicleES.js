@@ -165,7 +165,7 @@ class VehicleES {
                                     : (data.daysPaid * millisInDay)
                             });
                         }),
-                        mergeMap(vehicleMembership => VehicleDA.incrementVehicleMembership$(data.licensePlate, vehicleMembership))
+                        mergeMap(vehicleMembership => VehicleDA.updateVehicleMembership$(data.licensePlate, vehicleMembership))
                     ),
                 // send event to remove block by expired subscription
                 eventSourcing.eventStore.emitEvent$(
