@@ -60,7 +60,7 @@ class VehicleDA {
     }
 
     if (filter.licensePlate) {
-      query["generalInfo.licensePlate"] = { $regex: filter.licensePlate, $options: "i" };
+      query["generalInfo.licensePlate"] = filter.licensePlate.toUpperCase();
     }
 
     if (filter.creationTimestamp) {
@@ -78,8 +78,7 @@ class VehicleDA {
     const cursor = collection
       .find(query)
       .skip(pagination.count * pagination.page)
-      .limit(pagination.count)
-      .sort({ creationTimestamp: pagination.sort });
+      .limit(pagination.count);
 
     return mongoDB.extractAllFromMongoCursor$(cursor);
   }
