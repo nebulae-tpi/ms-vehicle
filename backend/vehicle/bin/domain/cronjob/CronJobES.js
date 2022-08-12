@@ -78,10 +78,7 @@ class CronJobES {
               blockKey: 'SUBSCRIPTION_EXPIRED',
               startTime: Date.now(),
               notes: 'Blocked by System CronJob'
-            }, "SYSTEM"),
-            VehicleDA.updateVehicleMembership$(vehicle.generalInfo.licensePlate, vehicle.subscription 
-                ? { ...vehicle.subscription, status: 'INACTIVE'} : { expirationTime: 0, status: 'INACTIVE' }
-            )
+            }, "SYSTEM")
           )
         ),
         mergeMap(([event, a]) => event ? eventSourcing.eventStore.emitEvent$(event) : of({})),

@@ -233,11 +233,15 @@ class VehicleDA {
 
   static inserBlock$({vehicleId, businessId, licensePlate, blockKey, notes = '', endTime = undefined, user}){
     const collection = mongoDB.db.collection(COLLECTION_NAME);
+    const updateInfo = {
+      $addToSet: { blocks: blockKey }
+    } 
+    if(blockKey === "SUBSCRIPTION_EXPIRED"){
+      updateInfo.$set = {"subscription.status": "INACTIVE"};
+    }
     return defer(() => collection.updateOne(
       { _id: vehicleId },
-      {
-        $addToSet: { blocks: blockKey }
-      } 
+      updateInfo
     ))
   }
 
