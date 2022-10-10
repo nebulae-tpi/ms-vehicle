@@ -30,7 +30,8 @@ class VehicleES {
         const vehicle = vehicleCreatedEvent.data;
         return VehicleDA.createVehicle$(vehicle)
         .pipe(
-            mergeMap(result => broker.send$(MATERIALIZED_VIEW_TOPIC, `VehicleVehicleUpdatedSubscription`, result.ops[0]))
+            mergeMap(result => broker.send$(MATERIALIZED_VIEW_TOPIC, `VehicleVehicleUpdatedSubscription`, result.ops[0])),
+            catchError(err => console.log("ERROR ==> ", err))
         );
     }
 
