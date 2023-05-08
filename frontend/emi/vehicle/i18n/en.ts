@@ -101,7 +101,9 @@ export const locale = {
           TRUNK: 'Trunk',
           ROOF_RACK: 'Roof Rack',
           PETS: 'Pets',
-          BIKE_RACK: 'Bike Rack'
+          BIKE_RACK: 'Bike Rack',
+          VIP: 'VIP',
+          JUMPER_CABLES: "Jumper cables"
         }
       },
       ACTIVE: 'Active',

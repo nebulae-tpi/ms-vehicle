@@ -59,7 +59,7 @@ export class VehicleDetailFeaturesComponent implements OnInit, OnDestroy {
 
   trialDaysCtrl = new FormControl(0, [Validators.min(1), Validators.max(14), Validators.required]);
 
-  otherFeatures = ['AC', 'TRUNK', 'ROOF_RACK', 'PETS', 'BIKE_RACK' ];
+  otherFeatures = ['AC', 'TRUNK', 'ROOF_RACK', 'PETS', 'BIKE_RACK', 'VIP', 'JUMPER_CABLES' ];
 
   vehicleFeaturesForm: any;
   fuelTypes = ['GASOLINE', 'GAS', 'GAS_AND_GASOLINE', 'DIESEL', 'ELECTRIC'];

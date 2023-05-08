@@ -101,7 +101,9 @@ export const locale = {
           TRUNK: 'Baúl',
           ROOF_RACK: 'Parrilla de Techo',
           PETS: 'Permite Mascotas',
-          BIKE_RACK: 'Portabicicletas'
+          BIKE_RACK: 'Portabicicletas',
+          VIP: 'VIP',
+          JUMPER_CABLES: "Cables de corriente"
         }
       },
       ACTIVE: 'Activo',
