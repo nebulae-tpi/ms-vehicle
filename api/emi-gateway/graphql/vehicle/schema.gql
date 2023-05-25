@@ -17,6 +17,7 @@ type VehicleSubscription {
   status: String
   "ExpirationTimestamp"
   expirationTime: BigInt
+  onTrial: Boolean
 }
 
 type VehicleVehicleEntity {
