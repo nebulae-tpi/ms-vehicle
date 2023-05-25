@@ -12,7 +12,7 @@ const GraphqlResponseTools = require('../../tools/GraphqlResponseTools');
 const RoleValidator = require("../../tools/RoleValidator");
 const { take, mergeMap, catchError, map, toArray, tap, delay } = require('rxjs/operators');
 const VehicleHelper = require("./VehicleHelper");
-const {
+const { 
   CustomError,
   DefaultError,
   INTERNAL_SERVER_ERROR_CODE,
