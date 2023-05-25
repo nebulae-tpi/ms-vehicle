@@ -50,7 +50,7 @@ class VehicleDA {
       query["subscription.status"] = "ACTIVE";
     }
 
-    if(filter.onTrial === 'true'){
+    if(filter.onTrial){
       query["subscription.onTrial"] = {$gte: Date.now()};
     }
 
