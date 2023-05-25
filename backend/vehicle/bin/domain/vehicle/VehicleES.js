@@ -207,7 +207,7 @@ class VehicleES {
             mergeMap(vehicle => forkJoin(
                 VehicleDA.updateVehicleMembership$(vehicle.generalInfo.licensePlate, {
                     status: 'ACTIVE',
-                    onTrial: true,
+                    onTrial: Date.now(),
                     expirationTime: timestamp + (data.trialDays * millisInDay)
                 }),
                 eventSourcing.eventStore.emitEvent$(

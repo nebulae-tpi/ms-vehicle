@@ -101,6 +101,7 @@ input VehicleFilterInput {
   showBlocked: Boolean
   "show vehicles with subscription Expired"
   subscriptionExpired: String
+  onTrial: String
   "Show only blocked"
   showInactive: Boolean
   "License place"

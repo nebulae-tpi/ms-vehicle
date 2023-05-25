@@ -50,6 +50,10 @@ class VehicleDA {
       query["subscription.status"] = "ACTIVE";
     }
 
+    if(filter.onTrial === 'true'){
+      query["subscription.onTrial"] = {$gte: Date.now()};
+    }
+
 
     if(filter.showBlocked){ query.blocks = { $exists: true, $ne: [] } }
 
