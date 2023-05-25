@@ -62,7 +62,7 @@ class VehicleDA {
     if (filter.businessId) {
       query.businessId = filter.businessId;
     }
-
+ 
     if (filter.licensePlate) {
       query["generalInfo.licensePlate"] = filter.licensePlate.toUpperCase();
     }
