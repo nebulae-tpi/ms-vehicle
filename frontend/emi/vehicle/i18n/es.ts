@@ -24,7 +24,8 @@ export const locale = {
       VEHICLE_FILTERS: {
         SHOW_BLOCKED: 'Bloqueados',
         SHOW_INACTIVE: 'Inactivos',
-        SUBSC_STATES: 'Subscripción Expirada'
+        SUBSC_STATES: 'Subscripción Expirada',
+        ON_TRIAL: 'En Trial'
       },
       BLOCK_DETAILS: 'Detalles de Bloqueo',
       CREATE_BLOCK: 'Crear Bloqueo',

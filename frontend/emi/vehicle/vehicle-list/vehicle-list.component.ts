@@ -103,6 +103,7 @@ export class VehicleListComponent implements OnInit, OnDestroy {
   tablePage = 0;
   tableCount = 10;
   threeStates = ["null", "true", "false"];
+  onTrialthreeStates = ["null", "true", "false"];
 
   // Columns to show in the table
   displayedColumns = [
@@ -189,6 +190,7 @@ export class VehicleListComponent implements OnInit, OnDestroy {
     // Reactive Filter Form
     this.filterForm = this.formBuilder.group({
       subscriptionExpired: ['null'],
+      onTrial: [false],
       licensePlate: [null],
       showBlocked: [false],
       showInactive: [false],
@@ -262,6 +264,7 @@ export class VehicleListComponent implements OnInit, OnDestroy {
         if (filterValue) {
           this.filterForm.patchValue({
             subscriptionExpired: filterValue.subscriptionExpired || 'null' ,
+            onTrial: filterValue.onTrial ,
             showBlocked: filterValue.showBlocked,
             showInactive: filterValue.showInactive,
             licensePlate: filterValue.licensePlate,
@@ -291,6 +294,7 @@ export class VehicleListComponent implements OnInit, OnDestroy {
           ([filterValue, paginator, selectedBusiness]) => {
             const filterInput = {
               subscriptionExpired: filterValue.subscriptionExpired,
+              onTrial: filterValue.onTrial,
               businessId: selectedBusiness ? selectedBusiness.id : null,
               showBlocked: filterValue.showBlocked,
               showInactive: filterValue.showInactive,
@@ -325,6 +329,13 @@ export class VehicleListComponent implements OnInit, OnDestroy {
     currentStateAplied = this.threeStates[(this.threeStates.indexOf(currentStateAplied) + 1) % this.threeStates.length];
     // console.log('currentStateAplied ==> ', typeof currentStateAplied, ' ==> ', currentStateAplied);
     this.filterForm.get('subscriptionExpired').setValue(currentStateAplied);
+  }
+
+  updateOnTrialFilterState(){
+    let currentStateAplied = this.filterForm.get('onTrial').value;
+    currentStateAplied = this.onTrialthreeStates[(this.onTrialthreeStates.indexOf(currentStateAplied) + 1) % this.onTrialthreeStates.length];
+    // console.log('currentStateAplied ==> ', typeof currentStateAplied, ' ==> ', currentStateAplied);
+    this.filterForm.get('onTrial').setValue(currentStateAplied);
   }
 
   /**
@@ -367,6 +378,7 @@ export class VehicleListComponent implements OnInit, OnDestroy {
     this.tableCount = 25;
     this.paginator._changePageSize(25);
     this.filterForm.get('subscriptionExpired').setValue('null');
+    this.filterForm.get('onTrial').setValue('null');
   }
 
   /**
