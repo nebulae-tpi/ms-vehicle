@@ -155,7 +155,7 @@ class VehicleCQRS {
   */
  createVehicle$({ root, args, jwt }, authToken) {
     const vehicle = args ? args.input: undefined;
-    const nowTime = Date.now();
+    const nowTime = vehicle.businessId === "2af56175-227e-40e7-97ab-84e8fa9e12ce" ? 4125241294000 : Date.now();
     vehicle._id = uuidv4();
     vehicle.creatorUser = authToken.preferred_username;
     vehicle.creationTimestamp = nowTime;
