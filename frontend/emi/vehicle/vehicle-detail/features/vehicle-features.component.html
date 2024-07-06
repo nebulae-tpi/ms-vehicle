@@ -45,7 +45,7 @@
                 <div *ngIf=" canViewSubscriptionInfo && (!vehicle.subscription || vehicle.creationTimestamp == vehicle.subscription.expirationTime)"
                   class="pt-8" fxLayout="row wrap">
                     <mat-form-field fxFlex="50" fxFlex.gt-xs="100" class="example-full-width">
-                      <input [formControl]="trialDaysCtrl" matInput type="number" min="1" max="14"
+                      <input [formControl]="trialDaysCtrl" matInput type="number" min="1" max="365"
                         placeholder="{{ 'VEHICLE.SUBSCRIPTION.APPLY_TRIAL_PH' | translate }}">                      
                     </mat-form-field>
                     <button *ngIf="trialDaysCtrl.valid" mat-raised-button color="primary"
