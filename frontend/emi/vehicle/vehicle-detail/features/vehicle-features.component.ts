@@ -57,7 +57,7 @@ export class VehicleDetailFeaturesComponent implements OnInit, OnDestroy {
   @Input('pageType') pageType: string;
   @Input('vehicle') vehicle: any;
 
-  trialDaysCtrl = new FormControl(0, [Validators.min(1), Validators.max(14), Validators.required]);
+  trialDaysCtrl = new FormControl(0, [Validators.min(1), Validators.max(366), Validators.required]);
 
   otherFeatures = ['AC', 'TRUNK', 'ROOF_RACK', 'PETS', 'BIKE_RACK', 'VIP', 'JUMPER_CABLES' ];
 
@@ -156,7 +156,7 @@ export class VehicleDetailFeaturesComponent implements OnInit, OnDestroy {
   applyTrial(){
     const trialDays = this.trialDaysCtrl.value;
     const millisInDays = trialDays * 1000 * 60 * 60 * 24;
-    if ( 0 < trialDays && trialDays < 15){      
+    if ( 0 < trialDays && trialDays < 366){      
       this.VehicleDetailservice.applyFreeTrialSubscription$(this.vehicle._id, trialDays)
       .pipe(
         mergeMap(resp => this.graphQlAlarmsErrorHandler$(resp)),
