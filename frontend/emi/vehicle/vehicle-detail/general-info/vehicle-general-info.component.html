@@ -44,7 +44,9 @@
         <mat-divider *ngIf="vehicle && vehicle.creatorUser " fxFlex="100" class="mb-12"></mat-divider>
 
         <mat-form-field fxFlex.gt-xs="50" fxFlex="100" fxLayout="column" class="pr-8 pl-8">
-            <input required matInput name="licensePlate" formControlName="licensePlate" minlength="2"
+            <input required matInput name="licensePlate"
+            [readonly]="vehicle != null"
+             formControlName="licensePlate" minlength="2"
                 placeholder="{{'VEHICLE.DETAILS.LICENSE_PLATE' | translate}}">
             <mat-error *ngIf="vehicleGeneralInfoForm.hasError('required', ['licensePlate'])">
                 {{'VEHICLE.NAME_REQUIRED' | translate}}
