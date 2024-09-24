@@ -159,12 +159,15 @@ class VehicleCQRS {
     ).pipe(
       mergeMap((roles) => VehicleDA.getVehicle$(args.id)),
       mergeMap(vehicleOrigin => {
+        console.log("exp TIme ==> ", vehicleOrigin.subscription.expirationTime);
+        console.log("trial ==> ", vehicleOrigin.subscription.onTrial);
         if(vehicleOrigin == null){
           return throwError(new CustomError('Vehicle origin not found', 'ApplyFreeTrialSubscription', VEHICLE_NO_FOUND.code, VEHICLE_NO_FOUND.description));
         }
         else if(vehicleOrigin.subscription.expirationTime == vehicleOrigin.subscription.onTrial){
           return throwError(new CustomError('Vehicle origin on trial', 'ApplyFreeTrialSubscription', VEHICLE_ON_TRIAL.code, VEHICLE_ON_TRIAL.description));
         }
+        
         return VehicleDA.getVehicleByLicensePlate$(args.licensePlateToTransfer, args.businessId).pipe(
           mergeMap(vehicleDestination => {
             if(vehicleDestination == null){
