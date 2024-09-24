@@ -19,6 +19,7 @@ const {
   PERMISSION_DENIED,
   LICENSE_PLATE_ALREADY_USED,
   VEHICLE_NO_FOUND,
+  VEHICLE_ON_TRIAL,
   TRIAL_DENIED,
   SUBSCRIPTION_TYPE_MODE_NOT_ALLOWED,
   DRIVER_ID_NO_FOUND_IN_TOKEN
@@ -140,6 +141,48 @@ class VehicleCQRS {
           aggregateId: vehicleFound._id,
           data: {
             trialDays: args.days
+          },
+          user: authToken.preferred_username
+        }))
+      ),
+      map(() => ({ code: 200, message: `Vehicle trial subscription applied` })),
+      mergeMap(r => GraphqlResponseTools.buildSuccessResponse$(r)),
+      catchError(err => GraphqlResponseTools.handleError$(err))
+    );
+  }
+
+  transferSubsctiptionTime$({ root, args, jwt }, authToken){
+    return RoleValidator.checkPermissions$(
+      authToken.realm_access.roles, "Vehicle",
+      "createVehicle$", PERMISSION_DENIED,
+      ["PLATFORM-ADMIN", "BUSINESS-OWNER"]
+    ).pipe(
+      mergeMap((roles) => VehicleDA.getVehicle$(args.id)),
+      mergeMap(vehicleOrigin => {
+        if(vehicleOrigin == null){
+          return throwError(new CustomError('Vehicle origin not found', 'ApplyFreeTrialSubscription', VEHICLE_NO_FOUND.code, VEHICLE_NO_FOUND.description));
+        }
+        else if(vehicleOrigin.subscription.expirationTime == vehicleOrigin.subscription.onTrial){
+          return throwError(new CustomError('Vehicle origin on trial', 'ApplyFreeTrialSubscription', VEHICLE_ON_TRIAL.code, VEHICLE_ON_TRIAL.description));
+        }
+        return VehicleDA.getVehicleByLicensePlate$(args.licensePlateToTransfer, args.businessId).pipe(
+          mergeMap(vehicleDestination => {
+            if(vehicleDestination == null){
+              return throwError(new CustomError('Vehicle destination not found', 'ApplyFreeTrialSubscription', VEHICLE_NO_FOUND.code, VEHICLE_NO_FOUND.description));
+            }
+            return of([vehicleOrigin, vehicleDestination]);
+          })
+        )
+      }),
+      mergeMap( ([vehicleOrigin,vehicleDestination ]) => eventSourcing.eventStore.emitEvent$(
+        new Event({
+          eventType: "VehicleSubscriptionTransferred",
+          eventTypeVersion: 1,
+          aggregateType: "Vehicle",
+          aggregateId: vehicleDestination._id,
+          data: {
+            newSubscriptionTime: vehicleOrigin.subscription.expirationTime,
+            vehicleOriginId: vehicleOrigin._id
           },
           user: authToken.preferred_username
         }))

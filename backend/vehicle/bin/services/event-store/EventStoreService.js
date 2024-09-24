@@ -164,6 +164,10 @@ class EventStoreService {
         fn: VehicleES.handleVehicleSubscriptionTrialApplied$,
         obj: VehicleES
       },
+      VehicleSubscriptionTransferred: {
+        fn: VehicleES.handleVehicleSubscriptionTransferred$,
+        obj: VehicleES
+      },
       VehicleSubscriptionTypeUpdated: {
         fn: VehicleES.handleVehicleSubscriptionTypeUpdated$,
         obj: VehicleES
@@ -203,6 +207,7 @@ class EventStoreService {
       { aggregateType: "Vehicle", eventType: "VehicleBlockAdded" },
       { aggregateType: "Vehicle", eventType: "VehicleSubscriptionPaid"},      
       { aggregateType: "Vehicle", eventType: "VehicleSubscriptionTrialApplied" },
+      { aggregateType: "Vehicle", eventType: "VehicleSubscriptionTransferred" },
       { aggregateType: "Vehicle", eventType: "VehicleSubscriptionTypeUpdated" },
       // cronjob
       { aggregateType: "Cronjob", eventType: "PicoPlacaCaliUnblockJobTriggered"},

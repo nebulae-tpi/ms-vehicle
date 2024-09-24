@@ -37,6 +37,11 @@ class VehicleDA {
     return defer(() => collection.findOne(query));
   }
 
+  static getVehicleByLicensePlate$(licensePlate, businessId){
+    const collection = mongoDB.db.collection(COLLECTION_NAME);
+    return defer(() => collection.findOne({'generalInfo.licensePlate': licensePlate, businessId }));
+  }
+
   static getVehicleList$(filter, pagination) {
     const collection = mongoDB.db.collection(COLLECTION_NAME);
 
@@ -283,13 +288,26 @@ class VehicleDA {
 
   static updateVehicleMembership$(licensePlate, subscription){
     const collection = mongoDB.db.collection(COLLECTION_NAME);
-    return defer( () => collection.updateOne(
+    return defer( () => collection.findOneAndUpdate(
       {'generalInfo.licensePlate': licensePlate},
       { 
         $set: { subscription: subscription }, 
-      }
+      },
+      { returnOriginal: false }
       ))
   }
+
+  static updateVehicleTimeById$(_id, subscriptionTime){
+    const collection = mongoDB.db.collection(COLLECTION_NAME);
+    return defer( () => collection.findOneAndUpdate(
+      {_id},
+      { 
+        $set: { "subscription.expirationTime": subscriptionTime }, 
+      },
+      { returnOriginal: false }
+      ))
+  }
+
 
   static incrementVehicleMembership$(licensePlate, subscription){
     const collection = mongoDB.db.collection(COLLECTION_NAME);

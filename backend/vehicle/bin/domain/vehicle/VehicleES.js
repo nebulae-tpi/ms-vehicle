@@ -223,6 +223,37 @@ class VehicleES {
         );
     }
 
+    handleVehicleSubscriptionTransferred$({aid, data, user, timestamp}){
+        return VehicleDA.getVehicle$(aid)
+        .pipe(
+            mergeMap(vehicle => forkJoin(
+                VehicleDA.updateVehicleMembership$(vehicle.generalInfo.licensePlate, {
+                    status: 'ACTIVE',
+                    expirationTime: data.newSubscriptionTime
+                }).pipe(
+                    mergeMap(vehicle => {
+                        return broker.send$(MATERIALIZED_VIEW_TOPIC, `VehicleVehicleUpdatedSubscription`, vehicle.value)
+                    })
+                ),
+                eventSourcing.eventStore.emitEvent$(
+                    new Event({
+                      eventType: "VehicleBlockRemoved",
+                      eventTypeVersion: 1,
+                      aggregateType: "Vehicle",
+                      aggregateId: vehicle._id,
+                      data: { blockKey: "SUBSCRIPTION_EXPIRED" },
+                      user: user
+                    })
+                ),
+                VehicleDA.updateVehicleTimeById$(data.vehicleOriginId, Date.now()).pipe(
+                    mergeMap(vehicle => {
+                        return broker.send$(MATERIALIZED_VIEW_TOPIC, `VehicleVehicleUpdatedSubscription`, vehicle.value)
+                    })
+                )
+            )),            
+        );
+    }
+
     handleVehicleSubscriptionTypeUpdated$({aid, data, user, timestamp}){
         const { type } = data;
         const update= { "subscription.type": type };

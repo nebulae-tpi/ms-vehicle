@@ -53,5 +53,6 @@ class CustomError extends Error {
     VEHICLE_NO_FOUND: { code: 22011, description: 'Vehicle no found' },
     TRIAL_DENIED: { code: 22012, description: 'Trial subscription denied' },
     SUBSCRIPTION_TYPE_MODE_NOT_ALLOWED: { code: 22013, description: 'Subscription type does not allowed' },
-    DRIVER_ID_NO_FOUND_IN_TOKEN: { code: 22014, description: 'user have not driverId property intoken' }
+    DRIVER_ID_NO_FOUND_IN_TOKEN: { code: 22014, description: 'user have not driverId property intoken' },
+    VEHICLE_ON_TRIAL: { code: 22015, description: 'Vehicle on trial' },
   } 

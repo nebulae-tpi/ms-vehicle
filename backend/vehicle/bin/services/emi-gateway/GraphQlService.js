@@ -189,6 +189,10 @@ class GraphQlService {
         aggregateType: "Vehicle",
         messageType: "emigateway.graphql.mutation.applyFreeTrialSubscription"
       },
+      {
+        aggregateType: "Vehicle",
+        messageType: "emigateway.graphql.mutation.transferSubsctiptionTime"
+      },
       // DRIVER GATEWAY
       {
         aggregateType: "Vehicle",
@@ -250,6 +254,10 @@ class GraphQlService {
       },
       "emigateway.graphql.mutation.applyFreeTrialSubscription":{
         fn: VehicleCQRS.applyFreeTrialSubscription$,
+        obj: VehicleCQRS
+      },
+      "emigateway.graphql.mutation.transferSubsctiptionTime": {
+        fn: VehicleCQRS.transferSubsctiptionTime$,
         obj: VehicleCQRS
       },
       // DRIVER GATEWAY
