@@ -22,6 +22,7 @@ export const VehicleVehicle = gql`
           active
         }
       }
+      businessId
       subscription{
         status
         expirationTime
@@ -94,6 +95,15 @@ export const ApplyFreeTrialSubscription = gql `
   }
 `;
 
+export const TransferSubsctiptionTime = gql `
+  mutation TransferSubsctiptionTime($id: String, $licensePlateToTransfer: String, $businessId: String){
+    TransferSubsctiptionTime(id: $id, licensePlateToTransfer: $licensePlateToTransfer, businessId: $businessId){
+      code
+      message
+    }
+  }
+`;
+
 export const VehicleUpdateVehicleGeneralInfo = gql `
   mutation VehicleUpdateVehicleGeneralInfo($id: ID!, $input: VehicleVehicleGeneralInfoInput!){
     VehicleUpdateVehicleGeneralInfo(id: $id, input: $input){
@@ -151,6 +161,10 @@ export const VehicleVehicleUpdatedSubscription = gql`
         model
         brand
         line
+      }
+      subscription{
+        status
+        expirationTime
       }
       state
       creationTimestamp

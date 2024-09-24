@@ -59,6 +59,8 @@ export class VehicleDetailFeaturesComponent implements OnInit, OnDestroy {
 
   trialDaysCtrl = new FormControl(0, [Validators.min(1), Validators.max(366), Validators.required]);
 
+  licensePlateToTransfer = new FormControl("", []);
+  
   otherFeatures = ['AC', 'TRUNK', 'ROOF_RACK', 'PETS', 'BIKE_RACK', 'VIP', 'JUMPER_CABLES' ];
 
   vehicleFeaturesForm: any;
@@ -170,6 +172,47 @@ export class VehicleDetailFeaturesComponent implements OnInit, OnDestroy {
       )
       .subscribe(r => console.log(r), e => console.log(e), () => {})
     }  
+  }
+
+  transferTime(){
+    let newLicensePlate = this.licensePlateToTransfer.value;
+    if(newLicensePlate == "" || newLicensePlate == null){
+      this.showSnackBar('Por favor ingresa la placa a la que se desea transferir el tiempo de subscripción');
+      return;
+    }
+    newLicensePlate = newLicensePlate.toUpperCase();
+    this.dialog
+    // Opens confirm dialog
+    .open(DialogComponent, {
+      data: {
+        dialogMessage: `¿Está seguro que desea transferir la subscripción del vehículo ${this.vehicle.generalInfo.licensePlate} al vehículo ${newLicensePlate}`,
+        dialogTitle: "Transferir Subscripción"
+      }
+    })
+    .afterClosed()
+    .pipe(
+      filter(okButton => okButton),
+      mergeMap(() => {
+        return this.VehicleDetailservice.transferVehicleSubscription$(this.vehicle._id, newLicensePlate, this.vehicle.businessId);
+      })
+    ).subscribe(result => {
+      if(result.errors && result.errors[0]){
+        if(result.errors[0].extensions.code == 22015){
+          this.showSnackBar('El vehículo se encuentra en periodo de trial, por lo que no se puede transferir la subscripción');
+        }else {
+          this.showSnackBar('El vehículo al que se le desea transferir la subscripción no se ha encontrado, por favor verifique la placa e intentelo nuevamente');
+        }
+        
+      }else {
+        this.showSnackBar('La subscripción se ha transferido exitosamente');
+      }
+      //this.showSnackBar('VEHICLE.WAIT_OPERATION');
+    },
+      error => {
+        //this.showSnackBar('VEHICLE.ERROR_OPERATION');
+        console.log('Error aqui');
+      }
+    );;
   }
 
 

@@ -3,6 +3,7 @@ export const locale = {
   data: {
     undefined: 'Indefinido',
     VEHICLE: {
+      LICENSE_PLATE_TO_TRANSFER: 'Placa a transferir',
       LICENSE_PLATE_ALREADY_USED: 'Este Identificador Ya Está Siendo Usada',
       NAME_REQUIRED: 'Identificador requerido',
       BRAND_REQUIRED: 'Marca requerida',
@@ -78,6 +79,7 @@ export const locale = {
       },
       SUBSCRIPTION: {
         STATE_TITLE_LBL: 'Estado de subscripción',
+        TRANSFER_TIME: 'Transferir subscripción',
         MISSING: 'Vehículo sin Subscripción',
         CURRENT_UNTIL: 'Vigente hasta: ',
         EXPIRED_ON: 'Vencida el: ',

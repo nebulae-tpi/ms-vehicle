@@ -289,6 +289,32 @@ module.exports = {
               )
               .toPromise();
         },
+        TransferSubsctiptionTime(root, args, context) {
+            return RoleValidator.checkPermissions$(
+              context.authToken.realm_access.roles,
+              "ms-Vehicle", "TransferSubsctiptionTime",
+              PERMISSION_DENIED_ERROR_CODE,
+              "Permission denied",
+              ["PLATFORM-ADMIN", "BUSINESS-OWNER"]
+            )
+              .pipe(
+                mergeMap(() =>
+                  broker.forwardAndGetReply$(
+                    "Vehicle",
+                    "emigateway.graphql.mutation.transferSubsctiptionTime",
+                    { root, args, jwt: context.encodedToken },
+                    2000
+                  )
+                ),
+                catchError(err =>
+                  handleError$(err, "VehicleVehicle")
+                ),
+                mergeMap(response =>
+                  getResponseFromBackEnd$(response)
+                )
+              )
+              .toPromise();
+        },
     },
     
     

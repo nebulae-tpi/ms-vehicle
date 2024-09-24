@@ -123,7 +123,8 @@ export class VehicleDetailComponent implements OnInit, OnDestroy {
     }else{
       if (this.vehicle != null && newvehicle._id === this.vehicle._id){
         // Show message indicating that the entity has been updated
-        this.showSnackBar('VEHICLE.ENTITY_UPDATED');
+        //this.showSnackBar('VEHICLE.ENTITY_UPDATED');
+        this.router.navigate(['vehicle/']);
       }
     }
   }

@@ -13,7 +13,8 @@ import {
   removeVehicleBlocking,
   InsertVehicleBlock,
   VehicleVehicleBlockAddedSubscription,
-  ApplyFreeTrialSubscription
+  ApplyFreeTrialSubscription,
+  TransferSubsctiptionTime
 } from '../gql/vehicle.js';
 
 @Injectable()
@@ -207,6 +208,15 @@ listenVehicleBlockAdded$(vehicleId: string): Observable<any> {
       .mutate<any>({
         mutation: ApplyFreeTrialSubscription,
         variables: { id: id, days: days },
+        errorPolicy: 'all'
+      });
+  }
+
+  transferVehicleSubscription$(id: String, licensePlateToTransfer: String, businessId: String) {
+    return this.gateway.apollo
+      .mutate<any>({
+        mutation: TransferSubsctiptionTime,
+        variables: { id: id, licensePlateToTransfer, businessId },
         errorPolicy: 'all'
       });
   }
