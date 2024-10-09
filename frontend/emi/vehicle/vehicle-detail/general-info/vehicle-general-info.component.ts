@@ -18,7 +18,8 @@ import {
   filter,
   tap,
   takeUntil,
-  take
+  take,
+  map
 } from 'rxjs/operators';
 
 import { Subject, of } from 'rxjs';
@@ -41,6 +42,7 @@ import { FuseTranslationLoaderService } from '../../../../../core/services/trans
 import { VehicleDetailService } from '../vehicle-detail.service';
 import { DialogComponent } from '../../dialog/dialog.component';
 import { ToolbarService } from '../../../../toolbar/toolbar.service';
+import { KeycloakService } from "keycloak-angular";
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -58,6 +60,7 @@ export class VehicleDetailGeneralInfoComponent implements OnInit, OnDestroy {
 
   vehicleGeneralInfoForm: any;
   vehicleStateForm: any;
+  canUpdateVehiclePlate: Boolean = false;
 
   constructor(
     private translationLoader: FuseTranslationLoaderService,
@@ -65,7 +68,8 @@ export class VehicleDetailGeneralInfoComponent implements OnInit, OnDestroy {
     public snackBar: MatSnackBar,
     private VehicleDetailservice: VehicleDetailService,
     private dialog: MatDialog,
-    private toolbarService: ToolbarService
+    private toolbarService: ToolbarService,
+    private keycloakService: KeycloakService,
   ) {
       this.translationLoader.loadTranslations(english, spanish);
 
@@ -84,7 +88,16 @@ export class VehicleDetailGeneralInfoComponent implements OnInit, OnDestroy {
     this.vehicleStateForm = new FormGroup({
       state: new FormControl(this.vehicle ? this.vehicle.state : true)
     });
+    this.checkIfUserCanUpdateLicensePlate$().subscribe();
   }
+
+  checkIfUserCanUpdateLicensePlate$() {
+    return of(this.keycloakService.getUserRoles(true)).pipe(
+      map(userRoles => userRoles.some(role => role === 'PLATFORM-ADMIN' || role ==='LICENSE_PLATE_WRITE')),
+      tap(canUpdateVehiclePlate => { this.canUpdateVehiclePlate = canUpdateVehiclePlate; }),
+    );
+  }
+
 
   createVehicle() {
     this.toolbarService.onSelectedBusiness$
