@@ -26,9 +26,7 @@ class VehicleES {
     handleServiceAssigned$({aid, data, user, timestamp}){
         const { id, plate } = data.vehicle || {};
         // console.log(`HandleServiceAssigned ${JSON.stringify(data)}`);
-        return VehicleDA.updateLastServiceTimestamp$(id, timestamp).pipe(
-            tap(r => console.log(`[${new Date().toLocaleString()}] SE HA ACTUALIZADO LA FECHA DE ULTIMO SERVICIO DEL VEHICULO => PLACA: ${plate}, ID: ${id} `))
-        )
+        return VehicleDA.updateLastServiceTimestamp$(id, timestamp)
     }
 
 

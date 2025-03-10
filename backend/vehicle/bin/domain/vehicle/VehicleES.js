@@ -166,7 +166,9 @@ class VehicleES {
                                     : vehicleMembership.expirationTime + (data.daysPaid * millisInDay)
                             });
                         }),
-                        mergeMap(vehicleMembership => VehicleDA.updateVehicleMembership$(data.licensePlate, vehicleMembership))
+                        mergeMap(vehicleMembership => VehicleDA.updateVehicleMembership$(data.licensePlate, vehicleMembership).pipe(
+                            tap(r => console.log(`[${new Date().toLocaleString()}] Se actualiza el tiempo de subscripcion => PLACA: ${data.licensePlate}, ID: ${r._id} `))
+                        ))
                     ),
                 // send event to remove block by expired subscription
                 eventSourcing.eventStore.emitEvent$(
