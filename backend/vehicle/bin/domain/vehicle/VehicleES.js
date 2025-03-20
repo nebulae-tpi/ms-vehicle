@@ -167,7 +167,7 @@ class VehicleES {
                             });
                         }),
                         mergeMap(vehicleMembership => VehicleDA.updateVehicleMembership$(data.licensePlate, vehicleMembership).pipe(
-                            tap(r => console.log(`[${new Date().toLocaleString()}] Se actualiza el tiempo de subscripcion => PLACA: ${data.licensePlate}, ID: ${r._id}, subscription: ${(r.subscription || {}).expirationTime}`))
+                            tap(r => console.log(`[${new Date().toLocaleString()}] Se actualiza el tiempo de subscripcion => PLACA: ${data.licensePlate}, ID: ${r.value._id}, subscription: ${(r.value.subscription || {}).expirationTime}`))
                         ))
                     ),
                 // send event to remove block by expired subscription
