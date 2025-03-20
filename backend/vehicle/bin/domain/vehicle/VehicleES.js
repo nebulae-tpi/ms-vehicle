@@ -159,11 +159,13 @@ class VehicleES {
                 of(vehicle.subscription)
                     .pipe(
                         mergeMap(vehicleMembership => {
+                            const newExpirationTime = !vehicleMembership || vehicleMembership.expirationTime < timestamp
+                                    ? timestamp + (data.daysPaid * millisInDay)
+                                    : vehicleMembership.expirationTime + (data.daysPaid * millisInDay);
+                            console.log(`[${new Date().toLocaleString()}] Nuevo tiempo de expiracion => PLACA: ${data.licensePlate}, ID: ${vehicle._id}, subscription: ${newExpirationTime}`);
                             return of({
                                 status: 'ACTIVE',
-                                expirationTime: !vehicleMembership || vehicleMembership.expirationTime < timestamp
-                                    ? timestamp + (data.daysPaid * millisInDay)
-                                    : vehicleMembership.expirationTime + (data.daysPaid * millisInDay)
+                                expirationTime: newExpirationTime
                             });
                         }),
                         mergeMap(vehicleMembership => VehicleDA.updateVehicleMembership$(data.licensePlate, vehicleMembership).pipe(
@@ -279,6 +281,8 @@ class VehicleES {
                                     VehicleDA.updateVehicleMembership$(
                                         afterUpdate.generalInfo.licensePlate,
                                         { ...vehicleSubscription, status: 'INACTIVE' } 
+                                    ).pipe(
+                                        tap(v => console.log(`[${new Date().toLocaleString()}] Se actualiza tipo de subscripcion => ID: ${v.value._id}, subscription: ${(v.value.subscription || {}).expirationTime}`))
                                     ),
                                     VehicleBlocksDA.findByVehicleIdAndKey$(aid, "SUBSCRIPTION_EXPIRED" )
                                 )),
