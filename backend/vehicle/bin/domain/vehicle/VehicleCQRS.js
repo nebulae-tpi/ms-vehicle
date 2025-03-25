@@ -12,6 +12,7 @@ const GraphqlResponseTools = require('../../tools/GraphqlResponseTools');
 const RoleValidator = require("../../tools/RoleValidator");
 const { take, mergeMap, catchError, map, toArray, tap, delay } = require('rxjs/operators');
 const VehicleHelper = require("./VehicleHelper");
+const moment = require('moment-timezone');
 const { 
   CustomError,
   DefaultError,
@@ -159,8 +160,6 @@ class VehicleCQRS {
     ).pipe(
       mergeMap((roles) => VehicleDA.getVehicle$(args.id)),
       mergeMap(vehicleOrigin => {
-        console.log("exp TIme ==> ", vehicleOrigin.subscription.expirationTime);
-        console.log("trial ==> ", vehicleOrigin.subscription.onTrial);
         if(vehicleOrigin == null){
           return throwError(new CustomError('Vehicle origin not found', 'ApplyFreeTrialSubscription', VEHICLE_NO_FOUND.code, VEHICLE_NO_FOUND.description));
         }
@@ -173,6 +172,7 @@ class VehicleCQRS {
             if(vehicleDestination == null){
               return throwError(new CustomError('Vehicle destination not found', 'ApplyFreeTrialSubscription', VEHICLE_NO_FOUND.code, VEHICLE_NO_FOUND.description));
             }
+            console.log(`Sub Modificada (Transferencia) => PLACA ORIGEN: ${vehicleOrigin.generalInfo.licensePlate}, PLACA DESTINO: ${args.licensePlateToTransfer} subscription: ${moment(vehicleOrigin.subscription.expirationTime).tz("America/Bogota").format("YYYY/MM/DD HH:mm")}`);
             return of([vehicleOrigin, vehicleDestination]);
           })
         )

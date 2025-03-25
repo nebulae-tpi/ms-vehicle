@@ -9,7 +9,7 @@ const VehicleDA = require('../../data/VehicleDA');
 const VehicleBlocksDA = require('../../data/VehicleBlocksDA');
 const MATERIALIZED_VIEW_TOPIC = "emi-gateway-materialized-view-updates";
 const Crossccutting = require("../../tools/Crosscutting");
-const moment = require("moment");
+const moment = require('moment-timezone');
 
 /**
  * Singleton instance
@@ -162,14 +162,14 @@ class VehicleES {
                             const newExpirationTime = !vehicleMembership || vehicleMembership.expirationTime < timestamp
                                     ? timestamp + (data.daysPaid * millisInDay)
                                     : vehicleMembership.expirationTime + (data.daysPaid * millisInDay);
-                            console.log(`[${new Date().toLocaleString()}] Nuevo tiempo de expiracion => PLACA: ${data.licensePlate}, ID: ${vehicle._id}, subscription: ${newExpirationTime}`);
+                            console.log(`Sub Modificada (Pagada) => PLACA: ${data.licensePlate}, subscription nueva: ${moment(newExpirationTime).tz("America/Bogota").format("YYYY/MM/DD HH:mm")}`);
                             return of({
                                 status: 'ACTIVE',
                                 expirationTime: newExpirationTime
                             });
                         }),
                         mergeMap(vehicleMembership => VehicleDA.updateVehicleMembership$(data.licensePlate, vehicleMembership).pipe(
-                            tap(r => console.log(`[${new Date().toLocaleString()}] Se actualiza el tiempo de subscripcion => PLACA: ${data.licensePlate}, ID: ${r.value._id}, subscription: ${(r.value.subscription || {}).expirationTime}`))
+                            tap(r => console.log(`Se actualiza el tiempo de subscripcion => PLACA: ${data.licensePlate}, ID: ${r.value._id}, subscription: ${(r.value.subscription || {}).expirationTime}`))
                         ))
                     ),
                 // send event to remove block by expired subscription
