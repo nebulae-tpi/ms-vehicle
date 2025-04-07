@@ -172,7 +172,7 @@ class VehicleCQRS {
             if(vehicleDestination == null){
               return throwError(new CustomError('Vehicle destination not found', 'ApplyFreeTrialSubscription', VEHICLE_NO_FOUND.code, VEHICLE_NO_FOUND.description));
             }
-            console.log(`Sub Modificada (Transferencia) => PLACA ORIGEN: ${vehicleOrigin.generalInfo.licensePlate}, PLACA DESTINO: ${args.licensePlateToTransfer} subscription: ${moment(vehicleOrigin.subscription.expirationTime).tz("America/Bogota").format("YYYY/MM/DD HH:mm")}`);
+            console.log(`Sub Modificada (Transferencia) => PLACA ORIGEN: ${vehicleOrigin.generalInfo.licensePlate}, PLACA DESTINO: ${args.licensePlateToTransfer} subscription: ${moment(vehicleOrigin.subscription.expirationTime).tz("America/Bogota").format("YYYY/MM/DD HH:mm")} usuario: ${authToken.preferred_username}`);
             return of([vehicleOrigin, vehicleDestination]);
           })
         )
