@@ -231,7 +231,7 @@ class VehicleES {
         return VehicleDA.getVehicle$(aid)
         .pipe(
             mergeMap(vehicle => {
-                const currentSubDate = (((vehicle || {}).subscription || {}).expirationTime || 0) > Date.now() ?  vehicle.subscription.expirationTime : Date.now();
+                let currentSubDate = (((vehicle || {}).subscription || {}).expirationTime || 0) > Date.now() ?  vehicle.subscription.expirationTime : Date.now();
                 currentSubDate = currentSubDate + (data.newSubscriptionTime - Date.now());
                 console.log("currentSubDate ==> ", currentSubDate);
                 return forkJoin(
