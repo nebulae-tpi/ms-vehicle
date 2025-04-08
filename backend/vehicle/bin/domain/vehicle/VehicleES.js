@@ -233,11 +233,10 @@ class VehicleES {
             mergeMap(vehicle => {
                 let currentSubDate = (((vehicle || {}).subscription || {}).expirationTime || 0) > Date.now() ?  vehicle.subscription.expirationTime : Date.now();
                 currentSubDate = currentSubDate + (data.newSubscriptionTime - Date.now());
-                console.log("currentSubDate ==> ", currentSubDate);
                 return forkJoin(
                 VehicleDA.updateVehicleMembership$(vehicle.generalInfo.licensePlate, {
                     status: 'ACTIVE',
-                    expirationTime: data.newSubscriptionTime
+                    expirationTime: currentSubDate
                 }).pipe(
                     mergeMap(vehicle => {
                         return broker.send$(MATERIALIZED_VIEW_TOPIC, `VehicleVehicleUpdatedSubscription`, vehicle.value)
