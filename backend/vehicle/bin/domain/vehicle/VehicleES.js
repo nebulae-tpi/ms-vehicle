@@ -230,7 +230,11 @@ class VehicleES {
     handleVehicleSubscriptionTransferred$({aid, data, user, timestamp}){
         return VehicleDA.getVehicle$(aid)
         .pipe(
-            mergeMap(vehicle => forkJoin(
+            mergeMap(vehicle => {
+                const currentSubDate = (((vehicle || {}).subscription || {}).expirationTime || 0) > Date.now() ?  vehicle.subscription.expirationTime : Date.now();
+                currentSubDate = currentSubDate + (data.newSubscriptionTime - Date.now());
+                console.log("currentSubDate ==> ", currentSubDate);
+                return forkJoin(
                 VehicleDA.updateVehicleMembership$(vehicle.generalInfo.licensePlate, {
                     status: 'ACTIVE',
                     expirationTime: data.newSubscriptionTime
@@ -254,7 +258,8 @@ class VehicleES {
                         return broker.send$(MATERIALIZED_VIEW_TOPIC, `VehicleVehicleUpdatedSubscription`, vehicle.value)
                     })
                 )
-            )),            
+            )}
+        ),            
         );
     }
 
