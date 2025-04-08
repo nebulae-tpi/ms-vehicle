@@ -255,6 +255,7 @@ class VehicleES {
                 ),
                 VehicleDA.updateVehicleTimeById$(data.vehicleOriginId, Date.now()).pipe(
                     mergeMap(vehicle => {
+                        console.log("remueve sub time del origen ==> ", vehicle.value._id);
                         return broker.send$(MATERIALIZED_VIEW_TOPIC, `VehicleVehicleUpdatedSubscription`, vehicle.value)
                     })
                 )
