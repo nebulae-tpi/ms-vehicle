@@ -149,7 +149,7 @@ class VehicleES {
                 toArray()
             )
     }
-
+ 
     handleVehicleSubscriptionPaid$({aid, data, user, timestamp}){
         const millisInDay = 1000 * 60 * 60 * 24;
         return VehicleDA.findVehicleByLicensePlate$(data.licensePlate)
