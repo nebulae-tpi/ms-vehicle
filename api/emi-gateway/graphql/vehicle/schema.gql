@@ -19,7 +19,7 @@ type VehicleSubscription {
   expirationTime: BigInt
   onTrial: BigInt
 } 
-
+ 
 type VehicleVehicleEntity {
   "Vehicle ID"
   _id: ID!
