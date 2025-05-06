@@ -93,6 +93,45 @@
       </button>
     </div>
 
+    <table *ngIf="vehicle && vehicle.subscriptionHistorical" class="table">
+      <thead>
+        <tr>
+          <th>
+            Tipo
+          </th>
+          <th>
+            Fecha de Operación
+          </th>
+          <th>
+            Fecha de Expiración
+          </th>
+          <th>
+            Producto
+          </th>
+          <th>
+            Cantidad
+          </th>
+          <th>
+            Vehículo Origen
+          </th>
+          <th>
+            Usuario
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of vehicle.subscriptionHistorical">
+          <td>{{ ('VEHICLE.TYPE_'+row.type) | translate }}</td>
+          <td>{{ row.timestamp | date:'dd/MM/yyyy HH:mm' }}</td>
+          <td>{{ row.expirationTime | date:'dd/MM/yyyy' }}</td>
+          <td>{{ row.packProduct ? (('VEHICLE.'+row.packProduct ) | translate) : ""}}</td>
+          <td>{{ row.quantity }}</td>
+          <td>{{ row.vehicleOrigin }}</td>
+          <td>{{ row.user }}</td>
+        </tr>
+      </tbody>
+    </table>
+
   </form>
 
 </div>

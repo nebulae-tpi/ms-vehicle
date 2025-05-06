@@ -43,6 +43,7 @@ type VehicleVehicleEntity {
   modifierUser: String!
   "Business ID"
   businessId: String!
+  subscriptionHistorical: JSON
 }
 
 type VehicleGeneralInfo {

@@ -166,14 +166,15 @@ class VehicleCQRS {
         else if(vehicleOrigin.subscription.expirationTime == vehicleOrigin.subscription.onTrial){
           return throwError(new CustomError('Vehicle origin on trial', 'ApplyFreeTrialSubscription', VEHICLE_ON_TRIAL.code, VEHICLE_ON_TRIAL.description));
         }
-        
-        return VehicleDA.getVehicleByLicensePlate$(args.licensePlateToTransfer, args.businessId).pipe(
+        const subscriptionHistorical = {type: "TRANSFER", amount: 0, timestamp: Date.now(), packProduct: undefined, quantity: 0, expirationTime: vehicleOrigin.subscription.expirationTime, vehicleOrigin: vehicleOrigin.generalInfo.licensePlate, user: authToken.preferred_username }
+        return VehicleDA.registersubscriptionHistoricalElement$(args.licensePlateToTransfer, args.businessId, subscriptionHistorical).pipe(
           mergeMap(vehicleDestination => {
-            if(vehicleDestination == null){
+            console.log("vehicleDestination ==> ", vehicleDestination);
+            if(vehicleDestination == null || vehicleDestination.value == null || vehicleDestination.value._id == null){
               return throwError(new CustomError('Vehicle destination not found', 'ApplyFreeTrialSubscription', VEHICLE_NO_FOUND.code, VEHICLE_NO_FOUND.description));
             }
             console.log(`Sub Modificada (Transferencia) => PLACA ORIGEN: ${vehicleOrigin.generalInfo.licensePlate}, PLACA DESTINO: ${args.licensePlateToTransfer} subscription: ${moment(vehicleOrigin.subscription.expirationTime).tz("America/Bogota").format("YYYY/MM/DD HH:mm")} usuario: ${authToken.preferred_username}`);
-            return of([vehicleOrigin, vehicleDestination]);
+            return of([vehicleOrigin, vehicleDestination.value]);
           })
         )
       }),

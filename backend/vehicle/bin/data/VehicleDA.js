@@ -37,6 +37,25 @@ class VehicleDA {
     return defer(() => collection.findOne(query));
   }
 
+
+  static registersubscriptionHistoricalElement$(licensePlate, businessId, subscriptionHistorical){
+    const collection = mongoDB.db.collection(COLLECTION_NAME);
+    const updateInfo = { 
+      $push: { subscriptionHistorical: {
+        $each: [subscriptionHistorical],
+        $slice: -5
+      }}
+    };
+    const query = {
+      'generalInfo.licensePlate': licensePlate,
+      businessId
+    }
+    return defer( () => collection.findOneAndUpdate(
+      query,
+      updateInfo,
+      { returnOriginal: false }
+      ))
+  }
   static getVehicleByLicensePlate$(licensePlate, businessId){
     const collection = mongoDB.db.collection(COLLECTION_NAME);
     return defer(() => collection.findOne({'generalInfo.licensePlate': licensePlate, businessId }));
@@ -286,13 +305,20 @@ class VehicleDA {
     ))
   }
 
-  static updateVehicleMembership$(licensePlate, subscription){
+  static updateVehicleMembership$(licensePlate, subscription, subscriptionHistorical){
     const collection = mongoDB.db.collection(COLLECTION_NAME);
+    const updateInfo = { 
+      $set: { subscription: subscription }, 
+    }
+    if(subscriptionHistorical){
+      updateInfo.$push = { subscriptionHistorical: {
+        $each: [subscriptionHistorical],
+        $slice: -5
+      }}
+    }
     return defer( () => collection.findOneAndUpdate(
       {'generalInfo.licensePlate': licensePlate},
-      { 
-        $set: { subscription: subscription }, 
-      },
+      updateInfo,
       { returnOriginal: false }
       ))
   }

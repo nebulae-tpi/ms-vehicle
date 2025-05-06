@@ -163,12 +163,12 @@ class VehicleES {
                                     ? timestamp + (data.daysPaid * millisInDay)
                                     : vehicleMembership.expirationTime + (data.daysPaid * millisInDay);
                             console.log(`Sub Modificada (Pagada) => PLACA: ${data.licensePlate}, subscription nueva: ${moment(newExpirationTime).tz("America/Bogota").format("YYYY/MM/DD HH:mm")}`);
-                            return of({
+                            return of([{
                                 status: 'ACTIVE',
                                 expirationTime: newExpirationTime
-                            });
+                            }, {type: "SUBSCRIPTION", amount: data.amount, timestamp: Date.now(), packProduct: data.packProduct, quantity: data.quantity, expirationTime: newExpirationTime, user: user }]);   
                         }),
-                        mergeMap(vehicleMembership => VehicleDA.updateVehicleMembership$(data.licensePlate, vehicleMembership).pipe(
+                        mergeMap(([vehicleMembership, subscriptionHistorical]) => VehicleDA.updateVehicleMembership$(data.licensePlate, vehicleMembership, subscriptionHistorical).pipe(
                             tap(r => console.log(`Se actualiza el tiempo de subscripcion => PLACA: ${data.licensePlate}, ID: ${r.value._id}, subscription: ${(r.value.subscription || {}).expirationTime}`))
                         ))
                     ),

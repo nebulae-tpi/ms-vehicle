@@ -32,6 +32,7 @@ export const VehicleVehicle = gql`
       creatorUser
       modificationTimestamp
       modifierUser
+      subscriptionHistorical
     }
   }
 `;
