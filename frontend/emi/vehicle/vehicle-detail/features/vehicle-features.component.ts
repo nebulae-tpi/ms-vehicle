@@ -67,7 +67,10 @@ export class VehicleDetailFeaturesComponent implements OnInit, OnDestroy {
   fuelTypes = ['GASOLINE', 'GAS', 'GAS_AND_GASOLINE', 'DIESEL', 'ELECTRIC'];
   canViewSubscriptionInfo = false;
   rolesToViewSubscriptionInfo = ['PLATFORM-ADMIN', 'BUSINESS-OWNER'];
-  dateNow = Date.now();
+
+  get dateNow(): number {
+    return Date.now();
+  }
 
   constructor(
     private translationLoader: FuseTranslationLoaderService,

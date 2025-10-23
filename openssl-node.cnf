@@ -1,0 +1,6 @@
+# minimal openssl config compatible con OpenSSL 1.1 (no providers/modules)
+openssl_conf = default_conf
+
+[ default_conf ]
+# No engines, no providers, configuración mínima
+

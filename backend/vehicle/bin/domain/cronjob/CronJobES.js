@@ -64,23 +64,34 @@ class CronJobES {
   
   
   searchExpiredSubscriptions$() {
-    return VehicleDA.getExpiredSubscriptions$(Date.now())
+    const currentTime = Date.now();
+    console.log(`[${new Date(currentTime).toISOString()}] Checking expired subscriptions...`);
+    return VehicleDA.getExpiredSubscriptions$(currentTime)
       .pipe(
+        tap(v => console.log(`Found potentially expired vehicle: ${v.generalInfo.licensePlate}, expiration: ${new Date(v.subscription.expirationTime).toISOString()}`)),
         mergeMap(v => forkJoin(
           of(v),
           VehicleBlocksDA.findByPlateAndKey$(v.generalInfo.licensePlate, 'SUBSCRIPTION_EXPIRED'),          
         )),
-        mergeMap(([vehicle, blockExists]) => blockExists 
-          ? of([null, null])
-          : forkJoin(
-          this.generateEventStoreEvent$("VehicleBlockAdded", 1, "Vehicle", vehicle._id,
-            {
-              blockKey: 'SUBSCRIPTION_EXPIRED',
-              startTime: Date.now(),
-              notes: 'Blocked by System CronJob'
-            }, "SYSTEM")
+        mergeMap(([vehicle, blockExists]) => {
+          if (blockExists) {
+            console.log(`Vehicle ${vehicle.generalInfo.licensePlate} already blocked`);
+            return of([null, null]);
+          }
+          if (vehicle.subscription.type === "PAY_PER_SERVICE") {
+            console.log(`Vehicle ${vehicle.generalInfo.licensePlate} is PAY_PER_SERVICE, skipping block`);
+            return of([null, null]);
+          }
+          console.log(`Blocking vehicle ${vehicle.generalInfo.licensePlate} due to expired subscription`);
+          return forkJoin(
+            this.generateEventStoreEvent$("VehicleBlockAdded", 1, "Vehicle", vehicle._id,
+              {
+                blockKey: 'SUBSCRIPTION_EXPIRED',
+                startTime: currentTime,
+                notes: `Blocked by System CronJob - Subscription expired at ${new Date(vehicle.subscription.expirationTime).toISOString()}`
+              }, "SYSTEM")
           )
-        ),
+        }),
         mergeMap(([event, a]) => event ? eventSourcing.eventStore.emitEvent$(event) : of({})),
         toArray(),
       )

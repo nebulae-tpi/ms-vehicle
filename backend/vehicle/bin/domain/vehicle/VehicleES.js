@@ -152,6 +152,7 @@ class VehicleES {
   
     handleVehicleSubscriptionPaid$({aid, data, user, timestamp}){
         const millisInDay = 1000 * 60 * 60 * 24;
+
         return VehicleDA.findVehicleByLicensePlate$(data.licensePlate)
         .pipe(
             mergeMap(vehicle => forkJoin(
@@ -159,14 +160,29 @@ class VehicleES {
                 of(vehicle.subscription)
                     .pipe(
                         mergeMap(vehicleMembership => {
+                            // Use the event's timestamp to determine the base for the new expiration time.
                             const newExpirationTime = !vehicleMembership || vehicleMembership.expirationTime < timestamp
                                     ? timestamp + (data.daysPaid * millisInDay)
                                     : vehicleMembership.expirationTime + (data.daysPaid * millisInDay);
+                            
                             console.log(`Sub Modificada (Pagada) => PLACA: ${data.licensePlate}, subscription nueva: ${moment(newExpirationTime).tz("America/Bogota").format("YYYY/MM/DD HH:mm")}`);
-                            return of([{
+                            
+                            // Create the new membership state and the historical record for the transaction.
+                            const newVehicleMembership = {
                                 status: 'ACTIVE',
                                 expirationTime: newExpirationTime
-                            }, {type: "SUBSCRIPTION", amount: data.amount, timestamp: Date.now(), packProduct: data.packProduct, quantity: data.quantity, expirationTime: newExpirationTime, user: user }]);   
+                            };
+                            const subscriptionHistorical = {
+                                type: "SUBSCRIPTION", 
+                                amount: data.amount, 
+                                timestamp: timestamp, // USE event timestamp for consistency
+                                packProduct: data.packProduct, 
+                                quantity: data.quantity, 
+                                expirationTime: newExpirationTime, 
+                                user: user 
+                            };
+
+                            return of([newVehicleMembership, subscriptionHistorical]);
                         }),
                         mergeMap(([vehicleMembership, subscriptionHistorical]) => VehicleDA.updateVehicleMembership$(data.licensePlate, vehicleMembership, subscriptionHistorical).pipe(
                             tap(r => console.log(`Se actualiza el tiempo de subscripcion => PLACA: ${data.licensePlate}, ID: ${r.value._id}, subscription: ${(r.value.subscription || {}).expirationTime}`))

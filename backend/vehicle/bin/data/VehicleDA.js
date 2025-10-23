@@ -348,13 +348,31 @@ class VehicleDA {
 
   static getExpiredSubscriptions$(timestamp){
     const collection = mongoDB.db.collection(COLLECTION_NAME);
+    // Asegurarse que el timestamp es un número
+    const numericTimestamp = parseInt(timestamp);
+    if (isNaN(numericTimestamp)) {
+      console.error(`Invalid timestamp provided: ${timestamp}`);
+      return of([]);
+    }
+
+    console.log(`Checking subscriptions with expiration before ${new Date(numericTimestamp).toISOString()}`);
+    
     const query = {
       $and: [
         { "subscription.status": "ACTIVE" },
         { "subscription.type": { "$ne": PAY_PER_SERVICE } },
-        { "subscription.expirationTime": { $lte: timestamp } }
+        { "subscription.expirationTime": { 
+          $exists: true, 
+          $type: "number",
+          $lte: numericTimestamp 
+        }},
+        // Asegurarse que no está ya bloqueado
+        { blocks: { 
+          $not: { $elemMatch: { $eq: "SUBSCRIPTION_EXPIRED" } } 
+        }}
       ]
     };    
+    
     return mongoDB.extractAllFromMongoCursor$(collection.find(query));
   }
 

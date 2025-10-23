@@ -22,7 +22,7 @@ class MongoDB {
    */
   start$() {
     console.log("MongoDB.start$()... ");
-    return bindNodeCallback(MongoClient.connect)(this.url).pipe(
+    return bindNodeCallback(MongoClient.connect)(this.url, { useUnifiedTopology: true }).pipe(
       map(client => {
         console.log(this.url);
         this.client = client;

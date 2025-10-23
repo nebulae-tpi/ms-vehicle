@@ -202,13 +202,22 @@ class VehicleCQRS {
   */
  createVehicle$({ root, args, jwt }, authToken) {
     const vehicle = args ? args.input: undefined;
-    const nowTime = vehicle.businessId === "2af56175-227e-40e7-97ab-84e8fa9e12ce" ? 4125241294000 : Date.now();
+    const nowTime = Date.now();
+    // Solo usar tiempo especial para el business ID específico
+    const expirationTime = vehicle.businessId === "2af56175-227e-40e7-97ab-84e8fa9e12ce" 
+      ? 4125241294000 
+      : nowTime;
+    
     vehicle._id = uuidv4();
     vehicle.creatorUser = authToken.preferred_username;
     vehicle.creationTimestamp = nowTime;
     vehicle.modifierUser = authToken.preferred_username;
     vehicle.modificationTimestamp = nowTime;
-    vehicle.subscription = { status : "ACTIVE", type: "REGULAR", expirationTime : nowTime };
+    vehicle.subscription = { 
+      status: "ACTIVE", 
+      type: vehicle.subscription?.type || "REGULAR", 
+      expirationTime: expirationTime 
+    };
 
     return RoleValidator.checkPermissions$(
       authToken.realm_access.roles,
@@ -394,7 +403,26 @@ class VehicleCQRS {
       PERMISSION_DENIED,
       ["PLATFORM-ADMIN", "BUSINESS-OWNER", "COORDINATOR", "OPERATION-SUPERVISOR", "DISCIPLINARY-COMMITTEE"]
     ).pipe(
-      mergeMap(() => eventSourcing.eventStore.emitEvent$(
+      mergeMap(() => {
+        // Validar que startTime no esté en el futuro
+        if (args.input.startTime && args.input.startTime > Date.now()) {
+          return throwError(new CustomError(
+            'Invalid start time',
+            'addVehicleBlock',
+            'INVALID_START_TIME',
+            'Block start time cannot be in the future'
+          ));
+        }
+        // Validar que endTime sea mayor que startTime si está presente
+        if (args.input.endTime && args.input.endTime <= args.input.startTime) {
+          return throwError(new CustomError(
+            'Invalid end time',
+            'addVehicleBlock',
+            'INVALID_END_TIME',
+            'Block end time must be after start time'
+          ));
+        }
+        return eventSourcing.eventStore.emitEvent$(
         new Event({
           eventType: "VehicleBlockAdded",
           eventTypeVersion: 1,
