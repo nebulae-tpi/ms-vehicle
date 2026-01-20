@@ -53,7 +53,7 @@ import { DialogComponent } from '../../dialog/dialog.component';
 export class VehicleDetailFeaturesComponent implements OnInit, OnDestroy {
   // Subject to unsubscribe
   private ngUnsubscribe = new Subject();
-
+ 
   @Input('pageType') pageType: string;
   @Input('vehicle') vehicle: any;
 

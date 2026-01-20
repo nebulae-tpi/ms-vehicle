@@ -150,7 +150,7 @@ input VehicleVehicleGeneralInfoInput {
   "Vehicle line"
   line: String!
 }
-
+ 
 type VehicleVehicleBlock {
   key: String
   notes: String

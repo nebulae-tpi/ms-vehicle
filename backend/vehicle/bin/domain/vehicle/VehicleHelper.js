@@ -7,7 +7,7 @@ const { map, tap, mergeMap } = require("rxjs/operators");
 const { of, Observable, defer, throwError } = require("rxjs");
 const VehicleDA = require("../../data/VehicleDA");
 
-class VehicleHelper {
+class VehicleHelper { 
 
     static verifyLicencePlateUpdate$(Id, licencePlate) {
         return VehicleDA.findVehicleByLicensePlate$(licencePlate)
